@@ -42,8 +42,8 @@
             btnUpdate = new Button();
             btnDelete = new Button();
             btnClear = new Button();
-            dataGridView1 = new DataGridView();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            dgvReceiving = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)dgvReceiving).BeginInit();
             SuspendLayout();
             // 
             // lblReceivingCode
@@ -51,57 +51,56 @@
             lblReceivingCode.AutoSize = true;
             lblReceivingCode.Location = new Point(99, 31);
             lblReceivingCode.Name = "lblReceivingCode";
-            lblReceivingCode.Size = new Size(50, 20);
+            lblReceivingCode.Size = new Size(112, 20);
             lblReceivingCode.TabIndex = 0;
-            lblReceivingCode.Text = "label1";
+            lblReceivingCode.Text = "Receiving Code";
             // 
             // lblSupplier
             // 
             lblSupplier.AutoSize = true;
             lblSupplier.Location = new Point(99, 75);
             lblSupplier.Name = "lblSupplier";
-            lblSupplier.Size = new Size(50, 20);
+            lblSupplier.Size = new Size(64, 20);
             lblSupplier.TabIndex = 1;
-            lblSupplier.Text = "label2";
+            lblSupplier.Text = "Supplier";
             // 
             // lblReceivingDate
             // 
             lblReceivingDate.AutoSize = true;
             lblReceivingDate.Location = new Point(99, 118);
             lblReceivingDate.Name = "lblReceivingDate";
-            lblReceivingDate.Size = new Size(50, 20);
+            lblReceivingDate.Size = new Size(109, 20);
             lblReceivingDate.TabIndex = 2;
-            lblReceivingDate.Text = "label3";
+            lblReceivingDate.Text = "Receiving Date";
             // 
             // lblCocoaWeight
             // 
             lblCocoaWeight.AutoSize = true;
             lblCocoaWeight.Location = new Point(99, 163);
             lblCocoaWeight.Name = "lblCocoaWeight";
-            lblCocoaWeight.Size = new Size(50, 20);
+            lblCocoaWeight.Size = new Size(102, 20);
             lblCocoaWeight.TabIndex = 3;
-            lblCocoaWeight.Text = "label4";
-            lblCocoaWeight.Click += lblCocoaWeight_Click;
+            lblCocoaWeight.Text = "Cocoa Weight";
             // 
             // lblVehicle
             // 
             lblVehicle.AutoSize = true;
             lblVehicle.Location = new Point(99, 208);
             lblVehicle.Name = "lblVehicle";
-            lblVehicle.Size = new Size(50, 20);
+            lblVehicle.Size = new Size(114, 20);
             lblVehicle.TabIndex = 4;
-            lblVehicle.Text = "label5";
+            lblVehicle.Text = "Vehicle Number";
             // 
             // txtReceivingCode
             // 
-            txtReceivingCode.Location = new Point(224, 24);
+            txtReceivingCode.Location = new Point(296, 24);
             txtReceivingCode.Name = "txtReceivingCode";
             txtReceivingCode.Size = new Size(250, 27);
             txtReceivingCode.TabIndex = 5;
             // 
             // txtCocoaWeight
             // 
-            txtCocoaWeight.Location = new Point(224, 156);
+            txtCocoaWeight.Location = new Point(296, 156);
             txtCocoaWeight.Name = "txtCocoaWeight";
             txtCocoaWeight.Size = new Size(250, 27);
             txtCocoaWeight.TabIndex = 6;
@@ -109,21 +108,21 @@
             // cbSupplier
             // 
             cbSupplier.FormattingEnabled = true;
-            cbSupplier.Location = new Point(224, 67);
+            cbSupplier.Location = new Point(296, 67);
             cbSupplier.Name = "cbSupplier";
             cbSupplier.Size = new Size(250, 28);
             cbSupplier.TabIndex = 7;
             // 
             // dtpReceivingDate
             // 
-            dtpReceivingDate.Location = new Point(224, 111);
+            dtpReceivingDate.Location = new Point(296, 111);
             dtpReceivingDate.Name = "dtpReceivingDate";
             dtpReceivingDate.Size = new Size(250, 27);
             dtpReceivingDate.TabIndex = 8;
             // 
             // txtVehicleNumber
             // 
-            txtVehicleNumber.Location = new Point(224, 201);
+            txtVehicleNumber.Location = new Point(296, 201);
             txtVehicleNumber.Name = "txtVehicleNumber";
             txtVehicleNumber.Size = new Size(250, 27);
             txtVehicleNumber.TabIndex = 9;
@@ -136,51 +135,55 @@
             btnSave.TabIndex = 10;
             btnSave.Text = "Save";
             btnSave.UseVisualStyleBackColor = true;
+            btnSave.Click += btnSave_Click;
             // 
             // btnUpdate
             // 
-            btnUpdate.Location = new Point(211, 259);
+            btnUpdate.Location = new Point(229, 259);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(94, 29);
             btnUpdate.TabIndex = 11;
             btnUpdate.Text = "Update";
             btnUpdate.UseVisualStyleBackColor = true;
-            btnUpdate.Click += button2_Click;
+            btnUpdate.Click += btnUpdate_Click;
             // 
             // btnDelete
             // 
-            btnDelete.Location = new Point(335, 259);
+            btnDelete.Location = new Point(370, 259);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(94, 29);
             btnDelete.TabIndex = 12;
             btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
             // 
             // btnClear
             // 
             btnClear.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnClear.Location = new Point(458, 259);
+            btnClear.Location = new Point(517, 259);
             btnClear.Name = "btnClear";
             btnClear.Size = new Size(94, 29);
             btnClear.TabIndex = 13;
             btnClear.Text = "Clear";
             btnClear.UseVisualStyleBackColor = true;
+            btnClear.Click += btnClear_Click;
             // 
-            // dataGridView1
+            // dgvReceiving
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(99, 294);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(640, 154);
-            dataGridView1.TabIndex = 14;
+            dgvReceiving.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvReceiving.Location = new Point(99, 294);
+            dgvReceiving.Name = "dgvReceiving";
+            dgvReceiving.RowHeadersWidth = 51;
+            dgvReceiving.Size = new Size(640, 154);
+            dgvReceiving.TabIndex = 14;
+            dgvReceiving.CellClick += dgvReceiving_CellClick;
             // 
             // FormReceiving
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(872, 460);
-            Controls.Add(dataGridView1);
+            Controls.Add(dgvReceiving);
             Controls.Add(btnClear);
             Controls.Add(btnDelete);
             Controls.Add(btnUpdate);
@@ -197,7 +200,8 @@
             Controls.Add(lblReceivingCode);
             Name = "FormReceiving";
             Text = "FormReceiving";
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            Load += FormReceiving_Load;
+            ((System.ComponentModel.ISupportInitialize)dgvReceiving).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -218,6 +222,6 @@
         private Button btnUpdate;
         private Button btnDelete;
         private Button btnClear;
-        private DataGridView dataGridView1;
+        private DataGridView dgvReceiving;
     }
 }

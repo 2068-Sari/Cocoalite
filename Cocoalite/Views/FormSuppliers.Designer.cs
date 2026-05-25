@@ -47,10 +47,10 @@
             // dgv1
             // 
             dgv1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv1.Location = new Point(77, 266);
+            dgv1.Location = new Point(77, 260);
             dgv1.Name = "dgv1";
             dgv1.RowHeadersWidth = 51;
-            dgv1.Size = new Size(528, 167);
+            dgv1.Size = new Size(635, 146);
             dgv1.TabIndex = 0;
             dgv1.CellClick += dgv1_CellClick;
             dgv1.CellContentClick += dgv1_CellContentClick;
@@ -59,28 +59,28 @@
             // 
             txtSupplierName.Location = new Point(270, 29);
             txtSupplierName.Name = "txtSupplierName";
-            txtSupplierName.Size = new Size(125, 27);
+            txtSupplierName.Size = new Size(224, 27);
             txtSupplierName.TabIndex = 1;
             // 
             // txtAddress
             // 
             txtAddress.Location = new Point(270, 70);
             txtAddress.Name = "txtAddress";
-            txtAddress.Size = new Size(125, 27);
+            txtAddress.Size = new Size(224, 27);
             txtAddress.TabIndex = 2;
             // 
             // txtPhone
             // 
             txtPhone.Location = new Point(270, 107);
             txtPhone.Name = "txtPhone";
-            txtPhone.Size = new Size(125, 27);
+            txtPhone.Size = new Size(224, 27);
             txtPhone.TabIndex = 3;
             // 
             // txtEmail
             // 
             txtEmail.Location = new Point(270, 143);
             txtEmail.Name = "txtEmail";
-            txtEmail.Size = new Size(125, 27);
+            txtEmail.Size = new Size(224, 27);
             txtEmail.TabIndex = 4;
             // 
             // btnSave
@@ -95,7 +95,7 @@
             // 
             // btnUpdate
             // 
-            btnUpdate.Location = new Point(225, 215);
+            btnUpdate.Location = new Point(230, 215);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(94, 29);
             btnUpdate.TabIndex = 6;
@@ -105,7 +105,7 @@
             // 
             // btnDelete
             // 
-            btnDelete.Location = new Point(372, 215);
+            btnDelete.Location = new Point(392, 215);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(94, 29);
             btnDelete.TabIndex = 7;
@@ -115,7 +115,7 @@
             // 
             // btnClear
             // 
-            btnClear.Location = new Point(511, 215);
+            btnClear.Location = new Point(553, 215);
             btnClear.Name = "btnClear";
             btnClear.Size = new Size(94, 29);
             btnClear.TabIndex = 8;
