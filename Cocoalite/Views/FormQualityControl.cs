@@ -97,7 +97,7 @@ namespace Cocoalite.Views
                     Convert.ToDecimal(txtFermentation.Text),
                     Convert.ToDecimal(txtDefect.Text),
                     cbBeanSize.Text,
-                    cbGrade.Text,
+                    //cbGrade.Text,
                     cbQcStatus.Text,
                     txtNotes.Text,
                     dtpInspectionDate.Value
@@ -172,7 +172,7 @@ namespace Cocoalite.Views
                     Convert.ToDecimal(txtFermentation.Text),
                     Convert.ToDecimal(txtDefect.Text),
                     cbBeanSize.Text,
-                    cbGrade.Text,
+                    //cbGrade.Text,
                     cbQcStatus.Text,
                     txtNotes.Text,
                     dtpInspectionDate.Value

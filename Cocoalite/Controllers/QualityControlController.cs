@@ -64,6 +64,35 @@ namespace Cocoalite.Controllers
 
             return table;
         }
+
+        public string DetermineGrade(
+            decimal moistureLevel,
+            decimal fermentationLevel,
+            decimal defectLevel)
+        {
+            using (var conn = db.GetConnection())
+            {
+                conn.Open();
+
+                string query = @"
+            SELECT determine_grade(
+                @moisture_level,
+                @fermentation_level,
+                @defect_level
+            )";
+
+                using (var cmd = new NpgsqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@moisture_level", moistureLevel);
+                    cmd.Parameters.AddWithValue("@fermentation_level", fermentationLevel);
+                    cmd.Parameters.AddWithValue("@defect_level", defectLevel);
+
+                    object? result = cmd.ExecuteScalar();
+
+                    return result?.ToString() ?? "Reject";
+                }
+            }
+        }
         public void AddQualityControl(
             int receivingId,
             int inspectedBy,
@@ -71,7 +100,6 @@ namespace Cocoalite.Controllers
             decimal fermentation,
             decimal defect,
             string beanSize,
-            string grade,
             string qcStatus,
             string notes,
             DateTime inspectionDate)
@@ -80,13 +108,35 @@ namespace Cocoalite.Controllers
             {
                 conn.Open();
 
+                string gradeQuery = @"
+            SELECT determine_grade(
+                @moisture,
+                @fermentation,
+                @defect
+            )";
+
+                string grade;
+
+                using (var gradeCmd = new NpgsqlCommand(gradeQuery, conn))
+                {
+                    gradeCmd.Parameters.AddWithValue("@moisture", moisture);
+                    gradeCmd.Parameters.AddWithValue("@fermentation", fermentation);
+                    gradeCmd.Parameters.AddWithValue("@defect", defect);
+
+                    grade = gradeCmd.ExecuteScalar()?.ToString() ?? "Reject";
+                }
+
                 string query = @"
-                    INSERT INTO quality_control
-                    (receiving_id, inspected_by, moisture_level, fermentation_level, defect_level,
-                    bean_size, grade, qc_status, inspection_notes, inspection_date)
-                    VALUES
-                    (@receivingId, @inspectedBy, @moisture, @fermentation, @defect,
-                    @beanSize, @grade, @qcStatus, @notes, @inspectionDate)";
+            INSERT INTO quality_control
+            ( 
+              receiving_id, inspected_by, moisture_level, fermentation_level, defect_level, bean_size, 
+              grade,qc_status, inspection_notes, inspection_date
+            )
+            VALUES
+            (
+                @receivingId, @inspectedBy, @moisture, @fermentation, @defect, @beanSize,
+                @grade, @qcStatus, @notes, @inspectionDate
+            )";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
                 {
@@ -112,7 +162,6 @@ namespace Cocoalite.Controllers
             decimal fermentation,
             decimal defect,
             string beanSize,
-            string grade,
             string qcStatus,
             string notes,
             DateTime inspectionDate)
@@ -120,6 +169,24 @@ namespace Cocoalite.Controllers
             using (var conn = db.GetConnection())
             {
                 conn.Open();
+
+                string gradeQuery = @"
+            SELECT determine_grade(
+                @moisture,
+                @fermentation,
+                @defect
+            )";
+
+                string grade;
+
+                using (var gradeCmd = new NpgsqlCommand(gradeQuery, conn))
+                {
+                    gradeCmd.Parameters.AddWithValue("@moisture", moisture);
+                    gradeCmd.Parameters.AddWithValue("@fermentation", fermentation);
+                    gradeCmd.Parameters.AddWithValue("@defect", defect);
+
+                    grade = gradeCmd.ExecuteScalar()?.ToString() ?? "Reject";
+                }
 
                 string query = @"
             UPDATE quality_control

@@ -28,24 +28,9 @@ namespace Cocoalite.Views
                 cbBatch.DisplayMember = "batch_code";
                 cbBatch.ValueMember = "batch_id";
 
-                cbInventoryStatus.Items.Clear();
-                cbInventoryStatus.Items.Add("Available");
-                cbInventoryStatus.Items.Add("Low Stock");
-                cbInventoryStatus.Items.Add("Empty");
-
-                if (cbInventoryStatus.Items.Count > 0)
-                {
-                    cbInventoryStatus.SelectedIndex = 0;
-                }
-
-                LoadInventory();
-
-                dgvInventory.AutoSizeColumnsMode =
-                    DataGridViewAutoSizeColumnsMode.Fill;
-
-                dgvInventory.SelectionMode =
-                    DataGridViewSelectionMode.FullRowSelect;
-
+                dgvInventory.DataSource = controller.GetAllInventory();
+                dgvInventory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                dgvInventory.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 dgvInventory.MultiSelect = false;
             }
             catch (Exception ex)
@@ -69,48 +54,24 @@ namespace Cocoalite.Views
                 cbBatch.SelectedIndex = 0;
             }
 
-            txtStockIn.Clear();
-            txtStockOut.Clear();
-            txtCurrentStock.Clear();
-
-            if (cbInventoryStatus.Items.Count > 0)
-            {
-                cbInventoryStatus.SelectedIndex = 0;
-            }
+            txtStockQuantity.Clear();
+            txtWarehouseLocation.Clear();
         }
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (cbBatch.SelectedValue == null ||
-                txtStockIn.Text == "" ||
-                txtStockOut.Text == "" ||
-                txtCurrentStock.Text == "" ||
-                cbInventoryStatus.Text == "")
-            {
-                MessageBox.Show("Semua data harus diisi!");
-                return;
-            }
-
             try
             {
                 InventoryController controller = new InventoryController();
 
                 int batchId = Convert.ToInt32(cbBatch.SelectedValue);
-                decimal stockIn = Convert.ToDecimal(txtStockIn.Text);
-                decimal stockOut = Convert.ToDecimal(txtStockOut.Text);
-                decimal currentStock = Convert.ToDecimal(txtCurrentStock.Text);
-                string inventoryStatus = cbInventoryStatus.Text;
+                decimal stockQuantity = Convert.ToDecimal(txtStockQuantity.Text);
+                string warehouseLocation = txtWarehouseLocation.Text;
 
-                controller.AddInventory(
-                    batchId,
-                    stockIn,
-                    stockOut,
-                    currentStock,
-                    inventoryStatus
-                );
+                controller.AddInventory(batchId, stockQuantity, warehouseLocation);
 
-                MessageBox.Show("Data inventory berhasil disimpan!");
+                MessageBox.Show("Data inventory berhasil ditambahkan");
 
-                LoadInventory();
+                dgvInventory.DataSource = controller.GetAllInventory();
                 ClearForm();
             }
             catch (Exception ex)
@@ -131,60 +92,35 @@ namespace Cocoalite.Views
                 cbBatch.SelectedValue =
                     Convert.ToInt32(row.Cells["batch_id"].Value);
 
-                txtStockIn.Text =
-                    row.Cells["stock_in"].Value?.ToString() ?? "";
+                txtStockQuantity.Text =
+                    row.Cells["stock_quantity"].Value?.ToString() ?? "";
 
-                txtStockOut.Text =
-                    row.Cells["stock_out"].Value?.ToString() ?? "";
-
-                txtCurrentStock.Text =
-                    row.Cells["current_stock"].Value?.ToString() ?? "";
-
-                cbInventoryStatus.Text =
-                    row.Cells["inventory_status"].Value?.ToString() ?? "";
+                txtWarehouseLocation.Text =
+                    row.Cells["warehouse_location"].Value?.ToString() ?? "";
             }
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            if (selectedInventoryId == 0)
-            {
-                MessageBox.Show("Pilih data inventory dulu!");
-                return;
-            }
-
-            if (cbBatch.SelectedValue == null ||
-                txtStockIn.Text == "" ||
-                txtStockOut.Text == "" ||
-                txtCurrentStock.Text == "" ||
-                cbInventoryStatus.Text == "")
-            {
-                MessageBox.Show("Semua data harus diisi!");
-                return;
-            }
-
             try
             {
                 InventoryController controller = new InventoryController();
 
+                int inventoryId = selectedInventoryId;
                 int batchId = Convert.ToInt32(cbBatch.SelectedValue);
-                decimal stockIn = Convert.ToDecimal(txtStockIn.Text);
-                decimal stockOut = Convert.ToDecimal(txtStockOut.Text);
-                decimal currentStock = Convert.ToDecimal(txtCurrentStock.Text);
-                string inventoryStatus = cbInventoryStatus.Text;
+                decimal stockQuantity = Convert.ToDecimal(txtStockQuantity.Text);
+                string warehouseLocation = txtWarehouseLocation.Text;
 
                 controller.UpdateInventory(
-                    selectedInventoryId,
+                    inventoryId,
                     batchId,
-                    stockIn,
-                    stockOut,
-                    currentStock,
-                    inventoryStatus
+                    stockQuantity,
+                    warehouseLocation
                 );
 
-                MessageBox.Show("Data inventory berhasil diupdate!");
+                MessageBox.Show("Data inventory berhasil diupdate");
 
-                LoadInventory();
+                dgvInventory.DataSource = controller.GetAllInventory();
                 ClearForm();
             }
             catch (Exception ex)

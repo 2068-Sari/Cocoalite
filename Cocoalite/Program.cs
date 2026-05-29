@@ -30,7 +30,8 @@ namespace Cocoalite
             //Application.Run(new FormReceiving());
             //Application.Run(new FormQualityControl());
             //Application.Run(new FormBatch());
-            Application.Run(new FormInventory());
+            //Application.Run(new FormInventory());
+            Application.Run(new FormShipment());
         }
     }
 }

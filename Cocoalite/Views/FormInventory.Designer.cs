@@ -31,13 +31,9 @@
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
-            label4 = new Label();
-            label5 = new Label();
             cbBatch = new ComboBox();
-            cbInventoryStatus = new ComboBox();
-            txtStockIn = new TextBox();
-            txtStockOut = new TextBox();
-            txtCurrentStock = new TextBox();
+            txtStockQuantity = new TextBox();
+            txtWarehouseLocation = new TextBox();
             btnSave = new Button();
             btnUpdate = new Button();
             btnDelete = new Button();
@@ -60,36 +56,18 @@
             label2.AutoSize = true;
             label2.Location = new Point(89, 84);
             label2.Name = "label2";
-            label2.Size = new Size(84, 20);
+            label2.Size = new Size(97, 20);
             label2.TabIndex = 1;
-            label2.Text = "Stok Masuk";
+            label2.Text = "Stok Tersedia";
             // 
             // label3
             // 
             label3.AutoSize = true;
             label3.Location = new Point(89, 127);
             label3.Name = "label3";
-            label3.Size = new Size(84, 20);
+            label3.Size = new Size(106, 20);
             label3.TabIndex = 2;
-            label3.Text = "Stok Keluar";
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Location = new Point(89, 168);
-            label4.Name = "label4";
-            label4.Size = new Size(97, 20);
-            label4.TabIndex = 3;
-            label4.Text = "Stok Tersedia";
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Location = new Point(89, 211);
-            label5.Name = "label5";
-            label5.Size = new Size(114, 20);
-            label5.TabIndex = 4;
-            label5.Text = "Status Inventory";
+            label3.Text = "Lokasi Gudang";
             // 
             // cbBatch
             // 
@@ -99,35 +77,19 @@
             cbBatch.Size = new Size(162, 28);
             cbBatch.TabIndex = 5;
             // 
-            // cbInventoryStatus
+            // txtStockQuantity
             // 
-            cbInventoryStatus.FormattingEnabled = true;
-            cbInventoryStatus.Items.AddRange(new object[] { "Available", "Low Stock", "Empty" });
-            cbInventoryStatus.Location = new Point(261, 203);
-            cbInventoryStatus.Name = "cbInventoryStatus";
-            cbInventoryStatus.Size = new Size(162, 28);
-            cbInventoryStatus.TabIndex = 6;
+            this.txtStockQuantity.Location = new Point(261, 77);
+            this.txtStockQuantity.Name = "txtStockQuantity";
+            this.txtStockQuantity.Size = new Size(162, 27);
+            this.txtStockQuantity.TabIndex = 7;
             // 
-            // txtStockIn
+            // txtWarehouseLocation
             // 
-            txtStockIn.Location = new Point(261, 77);
-            txtStockIn.Name = "txtStockIn";
-            txtStockIn.Size = new Size(162, 27);
-            txtStockIn.TabIndex = 7;
-            // 
-            // txtStockOut
-            // 
-            txtStockOut.Location = new Point(261, 120);
-            txtStockOut.Name = "txtStockOut";
-            txtStockOut.Size = new Size(162, 27);
-            txtStockOut.TabIndex = 8;
-            // 
-            // txtCurrentStock
-            // 
-            txtCurrentStock.Location = new Point(261, 161);
-            txtCurrentStock.Name = "txtCurrentStock";
-            txtCurrentStock.Size = new Size(162, 27);
-            txtCurrentStock.TabIndex = 9;
+            txtWarehouseLocation.Location = new Point(261, 120);
+            txtWarehouseLocation.Name = "txtWarehouseLocation";
+            txtWarehouseLocation.Size = new Size(162, 27);
+            txtWarehouseLocation.TabIndex = 8;
             // 
             // btnSave
             // 
@@ -189,13 +151,9 @@
             Controls.Add(btnDelete);
             Controls.Add(btnUpdate);
             Controls.Add(btnSave);
-            Controls.Add(txtCurrentStock);
-            Controls.Add(txtStockOut);
-            Controls.Add(txtStockIn);
-            Controls.Add(cbInventoryStatus);
+            Controls.Add(txtWarehouseLocation);
+            Controls.Add(this.txtStockQuantity);
             Controls.Add(cbBatch);
-            Controls.Add(label5);
-            Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
@@ -212,13 +170,9 @@
         private Label label1;
         private Label label2;
         private Label label3;
-        private Label label4;
-        private Label label5;
         private ComboBox cbBatch;
-        private ComboBox cbInventoryStatus;
-        private TextBox txtStockIn;
-        private TextBox txtStockOut;
-        private TextBox txtCurrentStock;
+        private TextBox txtStockQuantity;
+        private TextBox txtWarehouseLocation;
         private Button btnSave;
         private Button btnUpdate;
         private Button btnDelete;

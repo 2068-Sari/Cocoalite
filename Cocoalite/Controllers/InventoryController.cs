@@ -8,7 +8,6 @@ namespace Cocoalite.Controllers
     internal class InventoryController
     {
         private readonly DbConnection db = new DbConnection();
-
         public DataTable GetAllInventory()
         {
             DataTable table = new DataTable();
@@ -18,18 +17,16 @@ namespace Cocoalite.Controllers
                 conn.Open();
 
                 string query = @"
-                    SELECT
-                        i.inventory_id,
-                        b.batch_id,
-                        b.batch_code,
-                        i.stock_in,
-                        i.stock_out,
-                        i.current_stock,
-                        i.inventory_status,
-                        i.created_at
-                    FROM inventory i
-                    JOIN batches b ON i.batch_id = b.batch_id
-                    ORDER BY i.inventory_id";
+            SELECT
+                inventory_id,
+                batch_id,
+                batch_code,
+                stock_quantity,
+                warehouse_location,
+                inventory_status,
+                updated_at
+            FROM vw_inventory_status
+            ORDER BY inventory_id";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
                 using (var adapter = new NpgsqlDataAdapter(cmd))
@@ -68,28 +65,24 @@ namespace Cocoalite.Controllers
 
         public void AddInventory(
             int batchId,
-            decimal stockIn,
-            decimal stockOut,
-            decimal currentStock,
-            string inventoryStatus)
+            decimal stockQuantity,
+            string warehouseLocation)
         {
             using (var conn = db.GetConnection())
             {
                 conn.Open();
 
                 string query = @"
-                    INSERT INTO inventory
-                    (batch_id, stock_in, stock_out, current_stock, inventory_status)
-                    VALUES
-                    (@batchId, @stockIn, @stockOut, @currentStock, @inventoryStatus)";
+                    INSERT INTO inventory 
+                        (batch_id, stock_quantity, warehouse_location)
+                    VALUES 
+                        (@batch_id, @stock_quantity, @warehouse_location)";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@batchId", batchId);
-                    cmd.Parameters.AddWithValue("@stockIn", stockIn);
-                    cmd.Parameters.AddWithValue("@stockOut", stockOut);
-                    cmd.Parameters.AddWithValue("@currentStock", currentStock);
-                    cmd.Parameters.AddWithValue("@inventoryStatus", inventoryStatus);
+                    cmd.Parameters.AddWithValue("@batch_id", batchId);
+                    cmd.Parameters.AddWithValue("@stock_quantity", stockQuantity);
+                    cmd.Parameters.AddWithValue("@warehouse_location", warehouseLocation);
 
                     cmd.ExecuteNonQuery();
                 }
@@ -99,10 +92,8 @@ namespace Cocoalite.Controllers
         public void UpdateInventory(
             int inventoryId,
             int batchId,
-            decimal stockIn,
-            decimal stockOut,
-            decimal currentStock,
-            string inventoryStatus)
+            decimal stockQuantity,
+            string warehouseLocation)
         {
             using (var conn = db.GetConnection())
             {
@@ -111,21 +102,18 @@ namespace Cocoalite.Controllers
                 string query = @"
                     UPDATE inventory
                     SET
-                        batch_id = @batchId,
-                        stock_in = @stockIn,
-                        stock_out = @stockOut,
-                        current_stock = @currentStock,
-                        inventory_status = @inventoryStatus
-                    WHERE inventory_id = @inventoryId";
+                        batch_id = @batch_id,
+                        stock_quantity = @stock_quantity,
+                        warehouse_location = @warehouse_location,
+                        updated_at = CURRENT_TIMESTAMP
+                    WHERE inventory_id = @inventory_id";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@inventoryId", inventoryId);
-                    cmd.Parameters.AddWithValue("@batchId", batchId);
-                    cmd.Parameters.AddWithValue("@stockIn", stockIn);
-                    cmd.Parameters.AddWithValue("@stockOut", stockOut);
-                    cmd.Parameters.AddWithValue("@currentStock", currentStock);
-                    cmd.Parameters.AddWithValue("@inventoryStatus", inventoryStatus);
+                    cmd.Parameters.AddWithValue("@inventory_id", inventoryId);
+                    cmd.Parameters.AddWithValue("@batch_id", batchId);
+                    cmd.Parameters.AddWithValue("@stock_quantity", stockQuantity);
+                    cmd.Parameters.AddWithValue("@warehouse_location", warehouseLocation);
 
                     cmd.ExecuteNonQuery();
                 }
@@ -140,11 +128,11 @@ namespace Cocoalite.Controllers
 
                 string query = @"
                     DELETE FROM inventory
-                    WHERE inventory_id = @inventoryId";
+                    WHERE inventory_id = @inventory_id";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@inventoryId", inventoryId);
+                    cmd.Parameters.AddWithValue("@inventory_id", inventoryId);
                     cmd.ExecuteNonQuery();
                 }
             }

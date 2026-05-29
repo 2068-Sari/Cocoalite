@@ -106,7 +106,7 @@ namespace Cocoalite.Views
 
                 selectedBatchId = Convert.ToInt32(row.Cells["batch_id"].Value);
 
-                cbQc.Text = row.Cells["grade"].Value?.ToString() ?? "";
+                cbQc.SelectedValue = Convert.ToInt32(row.Cells["qc_id"].Value);
                 txtBatchCode.Text = row.Cells["batch_code"].Value?.ToString() ?? "";
 
                 object? dateValue = row.Cells["batch_date"].Value;
@@ -132,29 +132,19 @@ namespace Cocoalite.Views
         }
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            if (selectedBatchId == 0)
-            {
-                MessageBox.Show("Pilih data batch dulu!");
-                return;
-            }
-
-            if (cbQc.SelectedValue == null ||
-                txtBatchCode.Text == "" ||
-                txtBatchWeight.Text == "" ||
-                cbBatchStatus.Text == "")
-            {
-                MessageBox.Show("Semua data harus diisi!");
-                return;
-            }
-
             try
             {
+                if (selectedBatchId == 0)
+                {
+                    MessageBox.Show("Pilih data batch dulu!");
+                    return;
+                }
+
                 BatchController controller = new BatchController();
 
                 int qcId = Convert.ToInt32(cbQc.SelectedValue);
                 string batchCode = txtBatchCode.Text;
                 DateTime batchDate = dtpBatchDate.Value;
-                decimal batchWeight = Convert.ToDecimal(txtBatchWeight.Text);
                 string batchStatus = cbBatchStatus.Text;
 
                 controller.UpdateBatch(
@@ -162,11 +152,10 @@ namespace Cocoalite.Views
                     qcId,
                     batchCode,
                     batchDate,
-                    batchWeight,
                     batchStatus
                 );
 
-                MessageBox.Show("Data batch berhasil diupdate!");
+                MessageBox.Show("Data batch berhasil diupdate");
 
                 LoadBatch();
                 ClearForm();
