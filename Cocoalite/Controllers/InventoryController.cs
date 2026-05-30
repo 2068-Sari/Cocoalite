@@ -63,6 +63,7 @@ namespace Cocoalite.Controllers
             return table;
         }
 
+        //!!!
         public void AddInventory(
             int batchId,
             decimal stockQuantity,
@@ -71,6 +72,23 @@ namespace Cocoalite.Controllers
             using (var conn = db.GetConnection())
             {
                 conn.Open();
+
+                string checkQuery = @"
+                    SELECT COUNT(*)
+                    FROM inventory
+                    WHERE batch_id = @batch_id";
+
+                using (var checkCmd = new NpgsqlCommand(checkQuery, conn))
+                {
+                    checkCmd.Parameters.AddWithValue("@batch_id", batchId);
+
+                    int count = Convert.ToInt32(checkCmd.ExecuteScalar());
+
+                    if (count > 0)
+                    {
+                        throw new Exception("Inventory untuk batch ini sudah ada.");
+                    }
+                }
 
                 string query = @"
                     INSERT INTO inventory 

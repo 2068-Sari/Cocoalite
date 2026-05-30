@@ -56,6 +56,51 @@ namespace Cocoalite.Views
             dgvQc.DataSource = controller.GetAllQualityControl();
         }
 
+        private void PreviewGrade()
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(txtMoisture.Text) ||
+                    string.IsNullOrWhiteSpace(txtFermentation.Text) ||
+                    string.IsNullOrWhiteSpace(txtDefect.Text))
+                {
+                    txtGrade.Clear();
+                    return;
+                }
+
+                QualityControlController controller = new QualityControlController();
+
+                decimal moisture = Convert.ToDecimal(txtMoisture.Text);
+                decimal fermentation = Convert.ToDecimal(txtFermentation.Text);
+                decimal defect = Convert.ToDecimal(txtDefect.Text);
+
+                txtGrade.Text = controller.DetermineGrade(
+                    moisture,
+                    fermentation,
+                    defect
+                );
+            }
+            catch
+            {
+                txtGrade.Clear();
+            }
+        }
+
+        private void txtMoisture_TextChanged(object sender, EventArgs e)
+        {
+            PreviewGrade();
+        }
+
+        private void txtFermentation_TextChanged(object sender, EventArgs e)
+        {
+            PreviewGrade();
+        }
+
+        private void txtDefect_TextChanged(object sender, EventArgs e)
+        {
+            PreviewGrade();
+        }
+
         private void ClearForm()
         {
             selectedQcId = 0;
@@ -63,6 +108,7 @@ namespace Cocoalite.Views
             txtFermentation.Clear();
             txtDefect.Clear();
             txtNotes.Clear();
+            txtGrade.Clear();
 
             if (cbReceiving.Items.Count > 0)
                 cbReceiving.SelectedIndex = 0;
@@ -70,18 +116,10 @@ namespace Cocoalite.Views
             if (cbBeanSize.Items.Count > 0)
                 cbBeanSize.SelectedIndex = 0;
 
-            if (cbGrade.Items.Count > 0)
-                cbGrade.SelectedIndex = 0;
-
             if (cbQcStatus.Items.Count > 0)
                 cbQcStatus.SelectedIndex = 0;
 
             dtpInspectionDate.Value = DateTime.Now;
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -139,8 +177,8 @@ namespace Cocoalite.Views
                 cbBeanSize.Text =
                     row.Cells["bean_size"].Value?.ToString();
 
-                cbGrade.Text =
-                    row.Cells["grade"].Value?.ToString();
+                txtGrade.Text =
+                    row.Cells["grade"].Value?.ToString() ?? "";
 
                 cbQcStatus.Text =
                     row.Cells["qc_status"].Value?.ToString();
@@ -152,6 +190,8 @@ namespace Cocoalite.Views
                     Convert.ToDateTime(row.Cells["inspection_date"].Value);
             }
         }
+
+
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {

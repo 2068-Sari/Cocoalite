@@ -104,6 +104,12 @@ namespace Cocoalite.Views
         {
             try
             {
+                if (selectedInventoryId == 0)
+                {
+                    MessageBox.Show("Pilih data inventory dulu!");
+                    return;
+                }
+
                 InventoryController controller = new InventoryController();
 
                 int inventoryId = selectedInventoryId;
@@ -120,7 +126,7 @@ namespace Cocoalite.Views
 
                 MessageBox.Show("Data inventory berhasil diupdate");
 
-                dgvInventory.DataSource = controller.GetAllInventory();
+                LoadInventory();
                 ClearForm();
             }
             catch (Exception ex)

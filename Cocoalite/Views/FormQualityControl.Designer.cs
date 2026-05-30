@@ -33,7 +33,6 @@
             txtFermentation = new TextBox();
             txtDefect = new TextBox();
             cbBeanSize = new ComboBox();
-            cbGrade = new ComboBox();
             cbQcStatus = new ComboBox();
             txtNotes = new TextBox();
             dtpInspectionDate = new DateTimePicker();
@@ -51,6 +50,7 @@
             lblQcStatus = new Label();
             lblNotes = new Label();
             lblInspectionDate = new Label();
+            txtGrade = new TextBox();
             ((System.ComponentModel.ISupportInitialize)dgvQc).BeginInit();
             SuspendLayout();
             // 
@@ -68,6 +68,7 @@
             txtMoisture.Name = "txtMoisture";
             txtMoisture.Size = new Size(237, 27);
             txtMoisture.TabIndex = 1;
+            txtMoisture.TextChanged += txtMoisture_TextChanged;
             // 
             // txtFermentation
             // 
@@ -75,6 +76,7 @@
             txtFermentation.Name = "txtFermentation";
             txtFermentation.Size = new Size(237, 27);
             txtFermentation.TabIndex = 2;
+            txtFermentation.TextChanged += txtFermentation_TextChanged;
             // 
             // txtDefect
             // 
@@ -82,6 +84,7 @@
             txtDefect.Name = "txtDefect";
             txtDefect.Size = new Size(237, 27);
             txtDefect.TabIndex = 3;
+            txtDefect.TextChanged += txtDefect_TextChanged;
             // 
             // cbBeanSize
             // 
@@ -91,15 +94,6 @@
             cbBeanSize.Name = "cbBeanSize";
             cbBeanSize.Size = new Size(237, 28);
             cbBeanSize.TabIndex = 4;
-            // 
-            // cbGrade
-            // 
-            cbGrade.FormattingEnabled = true;
-            cbGrade.Items.AddRange(new object[] { "Grade A", "Grade B", "Grade C", "Reject" });
-            cbGrade.Location = new Point(320, 203);
-            cbGrade.Name = "cbGrade";
-            cbGrade.Size = new Size(237, 28);
-            cbGrade.TabIndex = 5;
             // 
             // cbQcStatus
             // 
@@ -209,7 +203,6 @@
             lblDefect.Size = new Size(53, 20);
             lblDefect.TabIndex = 17;
             lblDefect.Text = "Defect";
-            lblDefect.Click += label4_Click;
             // 
             // lblBeanSize
             // 
@@ -256,11 +249,20 @@
             lblInspectionDate.TabIndex = 22;
             lblInspectionDate.Text = "Inspection Date";
             // 
+            // txtGrade
+            // 
+            txtGrade.Location = new Point(323, 206);
+            txtGrade.Name = "txtGrade";
+            txtGrade.ReadOnly = true;
+            txtGrade.Size = new Size(234, 27);
+            txtGrade.TabIndex = 23;
+            // 
             // FormQualityControl
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1082, 603);
+            Controls.Add(txtGrade);
             Controls.Add(lblInspectionDate);
             Controls.Add(lblNotes);
             Controls.Add(lblQcStatus);
@@ -278,7 +280,6 @@
             Controls.Add(dtpInspectionDate);
             Controls.Add(txtNotes);
             Controls.Add(cbQcStatus);
-            Controls.Add(cbGrade);
             Controls.Add(cbBeanSize);
             Controls.Add(txtDefect);
             Controls.Add(txtFermentation);
@@ -299,7 +300,6 @@
         private TextBox txtFermentation;
         private TextBox txtDefect;
         private ComboBox cbBeanSize;
-        private ComboBox cbGrade;
         private ComboBox cbQcStatus;
         private TextBox txtNotes;
         private DateTimePicker dtpInspectionDate;
@@ -317,5 +317,6 @@
         private Label lblQcStatus;
         private Label lblNotes;
         private Label lblInspectionDate;
+        private TextBox txtGrade;
     }
 }
