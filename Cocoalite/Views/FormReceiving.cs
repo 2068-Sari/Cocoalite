@@ -123,8 +123,20 @@ namespace Cocoalite.Views
 
                 txtReceivingCode.Text = row.Cells["receiving_code"].Value?.ToString();
                 cbSupplier.Text = row.Cells["supplier_name"].Value?.ToString();
-                DateOnly dateOnly = (DateOnly)row.Cells["receiving_date"].Value;
-                dtpReceivingDate.Value = dateOnly.ToDateTime(TimeOnly.MinValue);
+                object? dateValue = row.Cells["receiving_date"].Value;
+
+                if (dateValue is DateOnly dateOnly)
+                {
+                    dtpReceivingDate.Value = dateOnly.ToDateTime(TimeOnly.MinValue);
+                }
+                else if (dateValue != null)
+                {
+                    dtpReceivingDate.Value = Convert.ToDateTime(dateValue);
+                }
+                else
+                {
+                    dtpReceivingDate.Value = DateTime.Now;
+                }
                 txtCocoaWeight.Text = row.Cells["cocoa_weight"].Value?.ToString();
                 txtVehicleNumber.Text = row.Cells["vehicle_number"].Value?.ToString();
             }

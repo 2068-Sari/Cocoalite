@@ -40,14 +40,44 @@ namespace Cocoalite.Controllers
                 string query = @"
             SELECT 
                 r.receiving_id,
-                r.receiving_code,
+                r.supplier_id,
                 s.supplier_name,
+                r.received_by,
+                u.full_name AS received_by_name,
+                r.receiving_code,
                 r.receiving_date,
                 r.cocoa_weight,
                 r.vehicle_number
             FROM receiving r
             JOIN suppliers s ON r.supplier_id = s.supplier_id
+            JOIN users u ON r.received_by = u.user_id
             ORDER BY r.receiving_id";
+
+                using (var cmd = new NpgsqlCommand(query, conn))
+                using (var adapter = new NpgsqlDataAdapter(cmd))
+                {
+                    adapter.Fill(table);
+                }
+            }
+
+            return table;
+        }
+
+        public DataTable GetAdminUsers()
+        {
+            DataTable table = new DataTable();
+
+            using (var conn = db.GetConnection())
+            {
+                conn.Open();
+
+                string query = @"
+            SELECT
+                user_id,
+                full_name
+            FROM users
+            WHERE role = 'admin'
+            ORDER BY user_id";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
                 using (var adapter = new NpgsqlDataAdapter(cmd))
@@ -81,7 +111,7 @@ namespace Cocoalite.Controllers
                     cmd.Parameters.AddWithValue("@supplierId", supplierId);
                     cmd.Parameters.AddWithValue("@receivedBy", receivedBy);
                     cmd.Parameters.AddWithValue("@receivingCode", receivingCode);
-                    cmd.Parameters.AddWithValue("@receivingDate", receivingDate);
+                    cmd.Parameters.AddWithValue("@receivingDate", DateOnly.FromDateTime(receivingDate));
                     cmd.Parameters.AddWithValue("@cocoaWeight", cocoaWeight);
                     cmd.Parameters.AddWithValue("@vehicleNumber", vehicleNumber);
 
@@ -117,7 +147,7 @@ namespace Cocoalite.Controllers
                     cmd.Parameters.AddWithValue("@receivingId", receivingId);
                     cmd.Parameters.AddWithValue("@supplierId", supplierId);
                     cmd.Parameters.AddWithValue("@receivingCode", receivingCode);
-                    cmd.Parameters.AddWithValue("@receivingDate", receivingDate);
+                    cmd.Parameters.AddWithValue("@receivingDate", DateOnly.FromDateTime(receivingDate));
                     cmd.Parameters.AddWithValue("@cocoaWeight", cocoaWeight);
                     cmd.Parameters.AddWithValue("@vehicleNumber", vehicleNumber);
 
