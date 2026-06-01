@@ -32,7 +32,7 @@ namespace Cocoalite.Views
                 if (success)
                 {
                     MessageBox.Show(
-                        "Login berhasil sebagai " + LoginSession.Role
+                            "Login berhasil sebagai " + LoginSession.CurrentUser?.Role
                     );
 
                     FormMain formMain = new FormMain();

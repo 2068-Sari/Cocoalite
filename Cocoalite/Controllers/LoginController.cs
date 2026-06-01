@@ -1,6 +1,7 @@
-﻿using System.Data;
+﻿using System;
 using Npgsql;
 using Cocoalite.Helpers;
+using Cocoalite.Models;
 
 namespace Cocoalite.Controllers
 {
@@ -33,10 +34,31 @@ namespace Cocoalite.Controllers
                     {
                         if (reader.Read())
                         {
-                            LoginSession.UserId = Convert.ToInt32(reader["user_id"]);
-                            LoginSession.FullName = reader["full_name"].ToString() ?? "";
-                            LoginSession.Username = reader["username"].ToString() ?? "";
-                            LoginSession.Role = reader["role"].ToString() ?? "";
+                            int userId = Convert.ToInt32(reader["user_id"]);
+                            string fullName = reader["full_name"].ToString() ?? "";
+                            string userName = reader["username"].ToString() ?? "";
+                            string role = reader["role"].ToString()?.ToLower() ?? "";
+
+                            AppUser user;
+
+                            if (role == "admin")
+                            {
+                                user = new AdminUser();
+                            }
+                            else if (role == "qc")
+                            {
+                                user = new QualityControllerUser();
+                            }
+                            else
+                            {
+                                throw new Exception("Role user tidak dikenali.");
+                            }
+
+                            user.UserId = userId;
+                            user.FullName = fullName;
+                            user.Username = userName;
+
+                            LoginSession.SetUser(user);
 
                             return true;
                         }

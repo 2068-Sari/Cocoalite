@@ -1,18 +1,33 @@
-﻿namespace Cocoalite.Helpers
+﻿using Cocoalite.Models;
+
+namespace Cocoalite.Helpers
 {
     internal static class LoginSession
     {
-        public static int UserId { get; set; }
-        public static string FullName { get; set; } = "";
-        public static string Username { get; set; } = "";
-        public static string Role { get; set; } = "";
+        public static AppUser? CurrentUser { get; private set; }
+        public static void SetUser(AppUser user)
+        {
+            CurrentUser = user;
+        }
 
         public static void Clear()
         {
-            UserId = 0;
-            FullName = "";
-            Username = "";
-            Role = "";
+            CurrentUser = null;
+        }
+
+        public static bool IsLoggedIn()
+        {
+            return CurrentUser != null;
+        }
+
+        public static bool IsAdmin()
+        {
+            return CurrentUser != null && CurrentUser.Role == "admin";
+        }
+
+        public static bool IsQualityController()
+        {
+            return CurrentUser != null && CurrentUser.Role == "qc";
         }
     }
 }

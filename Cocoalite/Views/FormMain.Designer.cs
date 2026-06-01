@@ -35,6 +35,8 @@
             btnInventory = new Button();
             btnShipment = new Button();
             btnLogout = new Button();
+            btnDashboard = new Button();
+            btnActivityLog = new Button();
             SuspendLayout();
             // 
             // btnSupplier
@@ -100,11 +102,31 @@
             btnLogout.Text = "Logout";
             btnLogout.UseVisualStyleBackColor = true;
             // 
+            // btnDashboard
+            // 
+            btnDashboard.Location = new Point(308, 146);
+            btnDashboard.Name = "btnDashboard";
+            btnDashboard.Size = new Size(94, 29);
+            btnDashboard.TabIndex = 7;
+            btnDashboard.Text = "Dasboard";
+            btnDashboard.UseVisualStyleBackColor = true;
+            // 
+            // btnActivityLog
+            // 
+            btnActivityLog.Location = new Point(260, 310);
+            btnActivityLog.Name = "btnActivityLog";
+            btnActivityLog.Size = new Size(142, 29);
+            btnActivityLog.TabIndex = 8;
+            btnActivityLog.Text = "Activity Log";
+            btnActivityLog.UseVisualStyleBackColor = true;
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnActivityLog);
+            Controls.Add(btnDashboard);
             Controls.Add(btnLogout);
             Controls.Add(btnShipment);
             Controls.Add(btnInventory);
@@ -126,5 +148,7 @@
         private Button btnInventory;
         private Button btnShipment;
         private Button btnLogout;
+        private Button btnDashboard;
+        private Button btnActivityLog;
     }
 }
