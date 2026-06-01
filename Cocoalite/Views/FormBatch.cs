@@ -30,8 +30,17 @@ namespace Cocoalite.Views
 
                 cbQc.DisplayMember = "qc_display";
 
-                cbQc.ValueMember =
-                    "qc_id";
+                cbQc.ValueMember = "qc_id";
+
+                cbBatchStatus.Items.Clear();
+                cbBatchStatus.Items.Add("Available");
+                cbBatchStatus.Items.Add("Partially Distributed");
+                cbBatchStatus.Items.Add("Distributed");
+
+                if (cbBatchStatus.Items.Count > 0)
+                {
+                    cbBatchStatus.SelectedIndex = 0;
+                }
 
                 dgvBatch.DataSource =
                     controller.GetAllBatch();
@@ -149,10 +158,11 @@ namespace Cocoalite.Views
 
                 controller.UpdateBatch(
                     selectedBatchId,
-                    qcId,
-                    batchCode,
-                    batchDate,
-                    batchStatus
+                    Convert.ToInt32(cbQc.SelectedValue),
+                    txtBatchCode.Text,
+                    dtpBatchDate.Value,
+                    Convert.ToDecimal(txtBatchWeight.Text),
+                cbBatchStatus.Text
                 );
 
                 MessageBox.Show("Data batch berhasil diupdate");

@@ -13,4 +13,9 @@
     <PackageReference Include="Npgsql" Version="10.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Admin\" />
+    <Folder Include="Views\QC\" />
+  </ItemGroup>
+
 </Project>

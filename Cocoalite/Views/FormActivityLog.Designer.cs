@@ -28,12 +28,34 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "FormActivityLog";
+            dgvActivityLog = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)dgvActivityLog).BeginInit();
+            SuspendLayout();
+            // 
+            // dgvActivityLog
+            // 
+            dgvActivityLog.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvActivityLog.Location = new Point(242, 207);
+            dgvActivityLog.Name = "dgvActivityLog";
+            dgvActivityLog.RowHeadersWidth = 51;
+            dgvActivityLog.Size = new Size(300, 188);
+            dgvActivityLog.TabIndex = 0;
+            // 
+            // FormActivityLog
+            // 
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 450);
+            Controls.Add(dgvActivityLog);
+            Name = "FormActivityLog";
+            Text = "FormActivityLog";
+            Load += FormActivityLog_Load;
+            ((System.ComponentModel.ISupportInitialize)dgvActivityLog).EndInit();
+            ResumeLayout(false);
         }
 
         #endregion
+
+        private DataGridView dgvActivityLog;
     }
 }

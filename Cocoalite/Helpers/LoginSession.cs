@@ -1,4 +1,4 @@
-﻿using Cocoalite.Models;
+﻿using Cocoalite.Models.Entity;
 
 namespace Cocoalite.Helpers
 {

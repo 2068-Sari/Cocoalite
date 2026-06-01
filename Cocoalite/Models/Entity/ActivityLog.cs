@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Cocoalite.Models
+namespace Cocoalite.Models.Entity
 {
     internal class ActivityLog
     {
@@ -8,6 +8,7 @@ namespace Cocoalite.Models
 
         public int LogId { get; set; }
         public int UserId { get; set; }
+        public string FullName { get; set; } = "";
         public DateTime LogTime { get; set; }
 
         public string Activity
@@ -29,7 +30,7 @@ namespace Cocoalite.Models
 
         public string TampilkanInfoLog()
         {
-            return $"User ID: {UserId} | Aktivitas: {Activity} | Waktu: {LogTime}";
+            return $"User : {FullName} | Aktivitas: {Activity} | Waktu: {LogTime}";
         }
     }
 }

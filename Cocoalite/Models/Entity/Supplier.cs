@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Cocoalite.Models
+namespace Cocoalite.Models.Entity
 {
     internal class Supplier
     {

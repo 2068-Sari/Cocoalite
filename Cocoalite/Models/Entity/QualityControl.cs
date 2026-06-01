@@ -1,7 +1,7 @@
 ﻿using System;
 using Cocoalite.Interfaces;
 
-namespace Cocoalite.Models
+namespace Cocoalite.Models.Entity
 {
     internal class QualityControl : IDapatDilaporkan
     {

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Cocoalite.Models
+namespace Cocoalite.Models.Entity
 {
     internal abstract class AppUser : IPengguna
     {

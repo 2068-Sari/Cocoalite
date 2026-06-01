@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Cocoalite.Controllers;
+using Cocoalite.Models.Entity;
+using System;
 using System.Windows.Forms;
-using Cocoalite.Controllers;
 
 namespace Cocoalite.Views
 {
@@ -90,27 +91,33 @@ namespace Cocoalite.Views
             {
                 ShipmentController controller = new ShipmentController();
 
-                int batchId = Convert.ToInt32(cbBatch.SelectedValue);
-                int createdBy = Convert.ToInt32(cbCreatedBy.SelectedValue);
-                string shipmentCode = txtShipmentCode.Text;
-                string destination = txtDestination.Text;
-                DateTime shipmentDate = dtpShipmentDate.Value;
-                decimal shipmentWeight = Convert.ToDecimal(txtShipmentWeight.Text);
-                string shipmentStatus = cbShipmentStatus.Text;
-                string vehicleNumber = txtVehicleNumber.Text;
-                string driverName = txtDriverName.Text;
+                Shipment shipment = new Shipment();
 
-                controller.AddShipment(
-                    batchId,
-                    createdBy,
-                    shipmentCode,
-                    destination,
-                    shipmentDate,
-                    shipmentWeight,
-                    shipmentStatus,
-                    vehicleNumber,
-                    driverName
-                );
+                shipment.BatchId = Convert.ToInt32(cbBatch.SelectedValue);
+                shipment.CreatedBy = Convert.ToInt32(cbCreatedBy.SelectedValue);
+                shipment.ShipmentCode = txtShipmentCode.Text;
+                shipment.Destination = txtDestination.Text;
+                shipment.ShipmentDate = dtpShipmentDate.Value;
+                shipment.ShipmentWeight = Convert.ToDecimal(txtShipmentWeight.Text);
+                shipment.VehicleNumber = txtVehicleNumber.Text;
+                shipment.DriverName = txtDriverName.Text;
+
+                string shipmentStatus = cbShipmentStatus.Text;
+
+                if (shipmentStatus == "Shipped")
+                {
+                    shipment.TandaiDikirim();
+                }
+                else if (shipmentStatus == "Delivered")
+                {
+                    shipment.TandaiDiterima();
+                }
+                else if (shipmentStatus == "Cancelled")
+                {
+                    shipment.BatalkanPengiriman();
+                }
+
+                controller.AddShipment(shipment);
 
                 MessageBox.Show("Data shipment berhasil ditambahkan");
 
@@ -122,7 +129,6 @@ namespace Cocoalite.Views
                 MessageBox.Show(ex.Message);
             }
         }
-
         private void dgvShipment_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)

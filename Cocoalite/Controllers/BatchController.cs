@@ -1,75 +1,38 @@
-﻿using System.Data;
-using Npgsql;
-using Cocoalite.Helpers;
+﻿using System;
+using System.Data;
+using Cocoalite.Models.Context;
+using Cocoalite.Models.Entity;
 
 namespace Cocoalite.Controllers
 {
     internal class BatchController
     {
-        private readonly DbConnection db =
-            new DbConnection();
+        private readonly BatchContext _context = new BatchContext();
 
         public DataTable GetApprovedQc()
         {
-            DataTable table = new DataTable();
+            DataTable data = _context.GetApprovedQc();
 
-            using (var conn = db.GetConnection())
+            if (data != null)
             {
-                conn.Open();
-
-                string query = @"
-                    SELECT
-                        qc.qc_id,
-                        CONCAT(r.receiving_code, ' | ', qc.grade) AS qc_display
-                    FROM quality_control qc
-                    JOIN receiving r ON qc.receiving_id = r.receiving_id
-                    WHERE qc.qc_status = 'Approved'
-                    ORDER BY qc.qc_id";
-
-                using (var cmd = new NpgsqlCommand(query, conn))
-                using (var adapter = new NpgsqlDataAdapter(cmd))
-                {
-                    adapter.Fill(table);
-                }
+                return data;
             }
 
-            return table;
+            return new DataTable();
         }
 
         public DataTable GetAllBatch()
         {
-            DataTable table = new DataTable();
+            DataTable data = _context.GetAllBatch();
 
-            using (var conn = db.GetConnection())
+            if (data != null)
             {
-                conn.Open();
-
-                string query = @"
-            SELECT
-                b.batch_id,
-                qc.qc_id,
-                CONCAT(r.receiving_code, ' | ', qc.grade) AS qc_display,
-                qc.grade,
-                b.batch_code,
-                b.batch_date,
-                b.batch_weight,
-                b.batch_status
-            FROM batches b
-            JOIN quality_control qc
-                ON b.qc_id = qc.qc_id
-            JOIN receiving r
-                ON qc.receiving_id = r.receiving_id
-            ORDER BY b.batch_id";
-
-                using (var cmd = new NpgsqlCommand(query, conn))
-                using (var adapter = new NpgsqlDataAdapter(cmd))
-                {
-                    adapter.Fill(table);
-                }
+                return data;
             }
 
-            return table;
+            return new DataTable();
         }
+
         public void AddBatch(
             int qcId,
             string batchCode,
@@ -77,79 +40,50 @@ namespace Cocoalite.Controllers
             decimal batchWeight,
             string batchStatus)
         {
-            using (var conn = db.GetConnection())
-            {
-                conn.Open();
+            Batch batch = new Batch();
 
-                string query = @"
-                    INSERT INTO batches
-                    (qc_id, batch_code, batch_date, batch_weight, batch_status)
-                    VALUES
-                    (@qcId, @batchCode, @batchDate, @batchWeight, @batchStatus)";
+            batch.QcId = qcId;
+            batch.BatchCode = batchCode;
+            batch.BatchDate = batchDate;
+            batch.BatchWeight = batchWeight;
+            batch.BatchStatus = "Available";
 
-                using (var cmd = new NpgsqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@qcId", qcId);
-                    cmd.Parameters.AddWithValue("@batchCode", batchCode);
-                    cmd.Parameters.AddWithValue("@batchDate", DateOnly.FromDateTime(batchDate));
-                    cmd.Parameters.AddWithValue("@batchWeight", batchWeight);
-                    cmd.Parameters.AddWithValue("@batchStatus", batchStatus);
-
-                    cmd.ExecuteNonQuery();
-                }
-            }
+            _context.InsertBatch(batch);
         }
+
         public void UpdateBatch(
             int batchId,
             int qcId,
             string batchCode,
             DateTime batchDate,
+            decimal batchWeight,
             string batchStatus)
         {
-            using (var conn = db.GetConnection())
+            if (batchId <= 0)
             {
-                conn.Open();
-
-                string query = @"
-            UPDATE batches
-            SET
-                qc_id = @qcId,
-                batch_code = @batchCode,
-                batch_date = @batchDate,
-                batch_status = @batchStatus
-            WHERE batch_id = @batchId";
-
-                using (var cmd = new NpgsqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@batchId", batchId);
-                    cmd.Parameters.AddWithValue("@qcId", qcId);
-                    cmd.Parameters.AddWithValue("@batchCode", batchCode);
-                    cmd.Parameters.AddWithValue("@batchDate", DateOnly.FromDateTime(batchDate));
-                    //cmd.Parameters.AddWithValue("@batchWeight", batchWeight);
-                    cmd.Parameters.AddWithValue("@batchStatus", batchStatus);
-
-                    cmd.ExecuteNonQuery();
-                }
+                throw new ArgumentException("ID batch tidak valid.");
             }
+
+            Batch batch = new Batch();
+
+            batch.BatchId = batchId;
+            batch.QcId = qcId;
+            batch.BatchCode = batchCode;
+            batch.BatchDate = batchDate;
+            batch.BatchWeight = batchWeight;
+            batch.BatchStatus = batchStatus;
+
+            _context.UpdateBatch(batch);
         }
+
         public void DeleteBatch(int batchId)
         {
-            using (var conn = db.GetConnection())
+            if (batchId <= 0)
             {
-                conn.Open();
-
-                string query = @"
-                    DELETE FROM batches
-                    WHERE batch_id = @batch_id
-                ";
-
-                using (var cmd = new NpgsqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@batch_id", batchId);
-
-                    cmd.ExecuteNonQuery();
-                }
+                throw new ArgumentException("ID batch tidak valid.");
             }
+
+            _context.DeleteBatch(batchId);
         }
     }
 }

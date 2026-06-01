@@ -1,93 +1,38 @@
-﻿using System.Data;
-using Npgsql;
-using Cocoalite.Helpers;
+﻿using System;
+using System.Data;
+using Cocoalite.Models.Context;
 
 namespace Cocoalite.Controllers
 {
     internal class ReceivingController
     {
-        private readonly DbConnection db = new DbConnection();
+        private readonly ReceivingContext _context =
+            new ReceivingContext();
 
         public DataTable GetSuppliers()
         {
-            DataTable table = new DataTable();
+            DataTable data = _context.GetSuppliers();
 
-            using (var conn = db.GetConnection())
+            if (data != null)
             {
-                conn.Open();
-
-                string query =
-                    "SELECT supplier_id, supplier_name FROM suppliers ORDER BY supplier_name";
-
-                using (var cmd = new NpgsqlCommand(query, conn))
-                using (var adapter = new NpgsqlDataAdapter(cmd))
-                {
-                    adapter.Fill(table);
-                }
+                return data;
             }
 
-            return table;
+            return new DataTable();
         }
 
         public DataTable GetAllReceiving()
         {
-            DataTable table = new DataTable();
+            DataTable data = _context.GetAllReceiving();
 
-            using (var conn = db.GetConnection())
+            if (data != null)
             {
-                conn.Open();
-
-                string query = @"
-            SELECT 
-                r.receiving_id,
-                r.supplier_id,
-                s.supplier_name,
-                r.received_by,
-                u.full_name AS received_by_name,
-                r.receiving_code,
-                r.receiving_date,
-                r.cocoa_weight,
-                r.vehicle_number
-            FROM receiving r
-            JOIN suppliers s ON r.supplier_id = s.supplier_id
-            JOIN users u ON r.received_by = u.user_id
-            ORDER BY r.receiving_id";
-
-                using (var cmd = new NpgsqlCommand(query, conn))
-                using (var adapter = new NpgsqlDataAdapter(cmd))
-                {
-                    adapter.Fill(table);
-                }
+                return data;
             }
 
-            return table;
+            return new DataTable();
         }
 
-        public DataTable GetAdminUsers()
-        {
-            DataTable table = new DataTable();
-
-            using (var conn = db.GetConnection())
-            {
-                conn.Open();
-
-                string query = @"
-            SELECT
-                user_id,
-                full_name
-            FROM users
-            WHERE role = 'admin'
-            ORDER BY user_id";
-
-                using (var cmd = new NpgsqlCommand(query, conn))
-                using (var adapter = new NpgsqlDataAdapter(cmd))
-                {
-                    adapter.Fill(table);
-                }
-            }
-
-            return table;
-        }
         public void AddReceiving(
             int supplierId,
             int receivedBy,
@@ -96,28 +41,34 @@ namespace Cocoalite.Controllers
             decimal cocoaWeight,
             string vehicleNumber)
         {
-            using (var conn = db.GetConnection())
+            if (supplierId <= 0)
             {
-                conn.Open();
-
-                string query = @"
-            INSERT INTO receiving
-            (supplier_id, received_by, receiving_code, receiving_date, cocoa_weight, vehicle_number)
-            VALUES
-            (@supplierId, @receivedBy, @receivingCode, @receivingDate, @cocoaWeight, @vehicleNumber)";
-
-                using (var cmd = new NpgsqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@supplierId", supplierId);
-                    cmd.Parameters.AddWithValue("@receivedBy", receivedBy);
-                    cmd.Parameters.AddWithValue("@receivingCode", receivingCode);
-                    cmd.Parameters.AddWithValue("@receivingDate", DateOnly.FromDateTime(receivingDate));
-                    cmd.Parameters.AddWithValue("@cocoaWeight", cocoaWeight);
-                    cmd.Parameters.AddWithValue("@vehicleNumber", vehicleNumber);
-
-                    cmd.ExecuteNonQuery();
-                }
+                throw new ArgumentException("Supplier tidak valid.");
             }
+
+            if (receivedBy <= 0)
+            {
+                throw new ArgumentException("User penerima tidak valid.");
+            }
+
+            if (string.IsNullOrWhiteSpace(receivingCode))
+            {
+                throw new ArgumentException("Kode receiving tidak boleh kosong.");
+            }
+
+            if (cocoaWeight <= 0)
+            {
+                throw new ArgumentException("Berat kakao harus lebih dari 0.");
+            }
+
+            _context.InsertReceiving(
+                supplierId,
+                receivedBy,
+                receivingCode,
+                receivingDate,
+                cocoaWeight,
+                vehicleNumber
+            );
         }
 
         public void UpdateReceiving(
@@ -128,49 +79,44 @@ namespace Cocoalite.Controllers
             decimal cocoaWeight,
             string vehicleNumber)
         {
-            using (var conn = db.GetConnection())
+            if (receivingId <= 0)
             {
-                conn.Open();
-
-                string query = @"
-                    UPDATE receiving
-                    SET
-                        supplier_id = @supplierId,
-                        receiving_code = @receivingCode,
-                        receiving_date = @receivingDate,
-                        cocoa_weight = @cocoaWeight,
-                        vehicle_number = @vehicleNumber
-                    WHERE receiving_id = @receivingId";
-
-                using (var cmd = new NpgsqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@receivingId", receivingId);
-                    cmd.Parameters.AddWithValue("@supplierId", supplierId);
-                    cmd.Parameters.AddWithValue("@receivingCode", receivingCode);
-                    cmd.Parameters.AddWithValue("@receivingDate", DateOnly.FromDateTime(receivingDate));
-                    cmd.Parameters.AddWithValue("@cocoaWeight", cocoaWeight);
-                    cmd.Parameters.AddWithValue("@vehicleNumber", vehicleNumber);
-
-                    cmd.ExecuteNonQuery();
-                }
+                throw new ArgumentException("ID receiving tidak valid.");
             }
+
+            if (supplierId <= 0)
+            {
+                throw new ArgumentException("Supplier tidak valid.");
+            }
+
+            if (string.IsNullOrWhiteSpace(receivingCode))
+            {
+                throw new ArgumentException("Kode receiving tidak boleh kosong.");
+            }
+
+            if (cocoaWeight <= 0)
+            {
+                throw new ArgumentException("Berat kakao harus lebih dari 0.");
+            }
+
+            _context.UpdateReceiving(
+                receivingId,
+                supplierId,
+                receivingCode,
+                receivingDate,
+                cocoaWeight,
+                vehicleNumber
+            );
         }
+
         public void DeleteReceiving(int receivingId)
         {
-            using (var conn = db.GetConnection())
+            if (receivingId <= 0)
             {
-                conn.Open();
-
-                string query =
-                    "DELETE FROM receiving WHERE receiving_id = @receivingId";
-
-                using (var cmd = new NpgsqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@receivingId", receivingId);
-
-                    cmd.ExecuteNonQuery();
-                }
+                throw new ArgumentException("ID receiving tidak valid.");
             }
+
+            _context.DeleteReceiving(receivingId);
         }
     }
 }

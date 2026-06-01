@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Cocoalite.Controllers;
+using Cocoalite.Models.Entity;
 
 namespace Cocoalite.Views
 {
@@ -25,7 +26,7 @@ namespace Cocoalite.Views
                     new QualityControlController();
 
                 cbReceiving.DataSource =
-                    controller.GetReceiving();
+                    controller.GetAllReceiving();
 
                 cbReceiving.DisplayMember =
                     "receiving_code";
@@ -128,18 +129,29 @@ namespace Cocoalite.Views
             {
                 QualityControlController controller = new QualityControlController();
 
-                controller.AddQualityControl(
-                    Convert.ToInt32(cbReceiving.SelectedValue),
-                    2, //angka sementarsa untuk inspected_by = QC
+                QualityControl qc = new QualityControl();
+
+                qc.ReceivingId = Convert.ToInt32(cbReceiving.SelectedValue);
+                qc.InspectedBy = 2; // sementara, nanti bisa diganti LoginSession.CurrentUser.UserId
+
+                qc.IsiParameter(
                     Convert.ToDecimal(txtMoisture.Text),
                     Convert.ToDecimal(txtFermentation.Text),
                     Convert.ToDecimal(txtDefect.Text),
-                    cbBeanSize.Text,
-                    //cbGrade.Text,
-                    cbQcStatus.Text,
-                    txtNotes.Text,
-                    dtpInspectionDate.Value
+                    cbBeanSize.Text
                 );
+
+                qc.Grade = controller.DetermineGrade(
+                    qc.Parameter.MoistureLevel,
+                    qc.Parameter.FermentationLevel,
+                    qc.Parameter.DefectLevel
+                );
+
+                qc.QcStatus = cbQcStatus.Text;
+                qc.InspectionNotes = txtNotes.Text;
+                qc.InspectionDate = dtpInspectionDate.Value;
+
+                controller.AddQualityControl(qc);
 
                 MessageBox.Show("Data quality control berhasil ditambahkan!");
 
@@ -205,18 +217,30 @@ namespace Cocoalite.Views
             {
                 QualityControlController controller = new QualityControlController();
 
-                controller.UpdateQualityControl(
-                    selectedQcId,
-                    Convert.ToInt32(cbReceiving.SelectedValue),
+                QualityControl qc = new QualityControl();
+
+                qc.QcId = selectedQcId;
+                qc.ReceivingId = Convert.ToInt32(cbReceiving.SelectedValue);
+                qc.InspectedBy = 2; // sementara, nanti bisa diganti LoginSession.CurrentUser.UserId
+
+                qc.IsiParameter(
                     Convert.ToDecimal(txtMoisture.Text),
                     Convert.ToDecimal(txtFermentation.Text),
                     Convert.ToDecimal(txtDefect.Text),
-                    cbBeanSize.Text,
-                    //cbGrade.Text,
-                    cbQcStatus.Text,
-                    txtNotes.Text,
-                    dtpInspectionDate.Value
+                    cbBeanSize.Text
                 );
+
+                qc.Grade = controller.DetermineGrade(
+                    qc.Parameter.MoistureLevel,
+                    qc.Parameter.FermentationLevel,
+                    qc.Parameter.DefectLevel
+                );
+
+                qc.QcStatus = cbQcStatus.Text;
+                qc.InspectionNotes = txtNotes.Text;
+                qc.InspectionDate = dtpInspectionDate.Value;
+
+                controller.UpdateQualityControl(qc);
 
                 MessageBox.Show("Data quality control berhasil diupdate!");
 

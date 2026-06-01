@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Cocoalite.Models
+namespace Cocoalite.Models.Entity
 {
     internal class Batch
     {
@@ -30,10 +30,7 @@ namespace Cocoalite.Models
 
         public string BatchCode
         {
-            get
-            {
-                return batchCode;
-            }
+            get { return batchCode; }
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
@@ -47,10 +44,7 @@ namespace Cocoalite.Models
 
         public decimal BatchWeight
         {
-            get
-            {
-                return batchWeight;
-            }
+            get { return batchWeight;}
             set
             {
                 if (value <= 0)
@@ -65,9 +59,7 @@ namespace Cocoalite.Models
         public string BatchStatus
         {
             get
-            {
-                return batchStatus;
-            }
+            { return batchStatus;}
             set
             {
                 if (string.IsNullOrWhiteSpace(value))

@@ -1,4 +1,4 @@
-﻿namespace Cocoalite.Models
+﻿namespace Cocoalite.Models.Entity
 {
     internal class DashboardSummary
     {

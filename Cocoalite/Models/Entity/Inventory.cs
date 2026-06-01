@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Cocoalite.Interfaces;
 
-namespace Cocoalite.Models
+namespace Cocoalite.Models.Entity
 {
     internal class Inventory : IDapatDilaporkan
     {

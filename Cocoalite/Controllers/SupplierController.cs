@@ -1,101 +1,74 @@
-﻿using System.Data;
-using Npgsql;
-using Cocoalite.Helpers;
+﻿using System;
+using System.Data;
+using Cocoalite.Models.Context;
+using Cocoalite.Models.Entity;
 
 namespace Cocoalite.Controllers
 {
     internal class SupplierController
     {
-        private readonly DbConnection db = new DbConnection();
+        private readonly SupplierContext _context =
+            new SupplierContext();
 
         public DataTable GetAllSuppliers()
         {
-            DataTable table = new DataTable();
+            DataTable data = _context.GetAllSuppliers();
 
-            using (var conn = db.GetConnection())
+            if (data != null)
             {
-                conn.Open();
-
-                string query = "SELECT * FROM suppliers ORDER BY supplier_id";
-
-                using (var cmd = new NpgsqlCommand(query, conn))
-                using (var adapter = new NpgsqlDataAdapter(cmd))
-                {
-                    adapter.Fill(table);
-                }
+                return data;
             }
 
-            return table;
+            return new DataTable();
         }
 
-        public void AddSupplier(string name, string address, string phone, string email)
+        public void AddSupplier(
+            string name,
+            string address,
+            string phone,
+            string email)
         {
-            using (var conn = db.GetConnection())
-            {
-                conn.Open();
+            Supplier supplier = new Supplier();
 
-                string query = @"
-                    INSERT INTO suppliers
-                    (supplier_name, address, phone_number, email)
-                    VALUES
-                    (@name, @address, @phone, @email)";
+            supplier.SupplierName = name;
+            supplier.Address = address;
+            supplier.PhoneNumber = phone;
+            supplier.Email = email;
 
-                using (var cmd = new NpgsqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@name", name);
-                    cmd.Parameters.AddWithValue("@address", address);
-                    cmd.Parameters.AddWithValue("@phone", phone);
-                    cmd.Parameters.AddWithValue("@email", email);
-
-                    cmd.ExecuteNonQuery();
-                }
-            }
+            _context.InsertSupplier(supplier);
         }
-        public void UpdateSupplier(int id, string name, string address, string phone, string email)
+
+        public void UpdateSupplier(
+            int id,
+            string name,
+            string address,
+            string phone,
+            string email)
         {
-            using (var conn = db.GetConnection())
+            if (id <= 0)
             {
-                conn.Open();
-
-                string query = @"
-            UPDATE suppliers
-            SET
-                supplier_name = @name,
-                address = @address,
-                phone_number = @phone,
-                email = @email
-            WHERE supplier_id = @id";
-
-                using (var cmd = new NpgsqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@id", id);
-                    cmd.Parameters.AddWithValue("@name", name);
-                    cmd.Parameters.AddWithValue("@address", address);
-                    cmd.Parameters.AddWithValue("@phone", phone);
-                    cmd.Parameters.AddWithValue("@email", email);
-
-                    cmd.ExecuteNonQuery();
-                }
+                throw new ArgumentException("ID supplier tidak valid.");
             }
+
+            Supplier supplier = new Supplier();
+
+            supplier.SupplierId = id;
+            supplier.SupplierName = name;
+            supplier.Address = address;
+            supplier.PhoneNumber = phone;
+            supplier.Email = email;
+
+            _context.UpdateSupplier(supplier);
         }
+
         public void DeleteSupplier(int id)
         {
-            using (var conn = db.GetConnection())
+            if (id <= 0)
             {
-                conn.Open();
-
-                string query =
-                    "DELETE FROM suppliers WHERE supplier_id = @id";
-
-                using (var cmd = new NpgsqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@id", id);
-
-                    cmd.ExecuteNonQuery();
-                }
+                throw new ArgumentException("ID supplier tidak valid.");
             }
+
+            _context.DeleteSupplier(id);
         }
-
-
     }
 }
