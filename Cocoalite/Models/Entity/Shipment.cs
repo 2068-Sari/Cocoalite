@@ -16,7 +16,7 @@ namespace Cocoalite.Models.Entity
         public int ShipmentId { get; set; }
         public int BatchId { get; set; }
         public int CreatedBy { get; set; }
-        public DateTime ShipmentDate { get; set; }
+        public DateOnly ShipmentDate { get; set; }
         public string VehicleNumber { get; set; } = "";
         public string DriverName { get; set; } = "";
 

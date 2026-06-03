@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             dgvActivityLog = new DataGridView();
+            panel1 = new Panel();
             ((System.ComponentModel.ISupportInitialize)dgvActivityLog).BeginInit();
             SuspendLayout();
             // 
@@ -41,11 +42,21 @@
             dgvActivityLog.Size = new Size(300, 188);
             dgvActivityLog.TabIndex = 0;
             // 
+            // panel1
+            // 
+            panel1.BackgroundImage = Properties.Resources.V1;
+            panel1.BackgroundImageLayout = ImageLayout.Zoom;
+            panel1.Location = new Point(186, 80);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(422, 318);
+            panel1.TabIndex = 1;
+            // 
             // FormActivityLog
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(panel1);
             Controls.Add(dgvActivityLog);
             Name = "FormActivityLog";
             Text = "FormActivityLog";
@@ -57,5 +68,6 @@
         #endregion
 
         private DataGridView dgvActivityLog;
+        private Panel panel1;
     }
 }

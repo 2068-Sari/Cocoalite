@@ -97,7 +97,7 @@ namespace Cocoalite.Views
                 shipment.CreatedBy = Convert.ToInt32(cbCreatedBy.SelectedValue);
                 shipment.ShipmentCode = txtShipmentCode.Text;
                 shipment.Destination = txtDestination.Text;
-                shipment.ShipmentDate = dtpShipmentDate.Value;
+                shipment.ShipmentDate = DateOnly.FromDateTime(dtpShipmentDate.Value);
                 shipment.ShipmentWeight = Convert.ToDecimal(txtShipmentWeight.Text);
                 shipment.VehicleNumber = txtVehicleNumber.Text;
                 shipment.DriverName = txtDriverName.Text;
