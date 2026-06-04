@@ -65,8 +65,9 @@ namespace Cocoalite.Models.Context
             {
                 conn.Open();
 
+                // 1. Tambahkan parameter @batch_status di dalam CALL
                 string query = @"
-                    CALL add_batch(
+            CALL add_batch(
                 @qc_id, @batch_code, @batch_date, @batch_weight
             )";
 
@@ -76,6 +77,8 @@ namespace Cocoalite.Models.Context
                     cmd.Parameters.AddWithValue("@batch_code", batch.BatchCode);
                     cmd.Parameters.AddWithValue("@batch_date", batch.BatchDate);
                     cmd.Parameters.AddWithValue("@batch_weight", batch.BatchWeight);
+                    // 2. Daftarkan value statusnya di sini
+                    //cmd.Parameters.AddWithValue("@batch_status", batch.BatchStatus);
 
                     cmd.ExecuteNonQuery();
                 }

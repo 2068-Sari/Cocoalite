@@ -113,8 +113,9 @@ namespace Cocoalite.Models.Context
                 conn.Open();
 
                 string query = @"
-                    DELETE FROM inventory
-                    WHERE inventory_id = @inventory_id";
+            UPDATE inventory 
+            SET is_delete = TRUE 
+            WHERE inventory_id = @inventory_id";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
                 {

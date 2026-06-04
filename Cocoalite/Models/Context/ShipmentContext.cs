@@ -82,7 +82,7 @@ namespace Cocoalite.Models.Context
                         driver_name,
                         created_at
                     FROM shipments
-                    WHERE is_deleted = false
+                    WHERE is_delete = false
                     ORDER BY shipment_id
 ";
 
@@ -167,8 +167,8 @@ namespace Cocoalite.Models.Context
 
                 string query = @"
                     UPDATE shipments
-                    SET is_deleted = true
-                    WHERE shipment_id = @shipment_id AND is_deleted = false";
+                    SET is_delete = true
+                    WHERE shipment_id = @shipment_id AND is_delete = false";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
                 {

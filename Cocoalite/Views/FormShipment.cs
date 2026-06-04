@@ -90,12 +90,12 @@ namespace Cocoalite.Views
             try
             {
                 ShipmentController controller = new ShipmentController();
-
                 Shipment shipment = new Shipment();
 
                 shipment.BatchId = Convert.ToInt32(cbBatch.SelectedValue);
                 shipment.CreatedBy = Convert.ToInt32(cbCreatedBy.SelectedValue);
-                shipment.ShipmentCode = txtShipmentCode.Text;
+
+
                 shipment.Destination = txtDestination.Text;
                 shipment.ShipmentDate = DateOnly.FromDateTime(dtpShipmentDate.Value);
                 shipment.ShipmentWeight = Convert.ToDecimal(txtShipmentWeight.Text);
@@ -119,7 +119,8 @@ namespace Cocoalite.Views
 
                 controller.AddShipment(shipment);
 
-                MessageBox.Show("Data shipment berhasil ditambahkan");
+                MessageBox.Show($"Data shipment berhasil ditambahkan!\n" +
+                                $"✨ KODE OTOMATIS: {shipment.ShipmentCode}");
 
                 LoadShipment();
                 ClearForm();

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Cocoalite.Models.Entity
 {
-    internal class Batch
+    public class Batch
     {
         private string batchCode = "";
         private decimal batchWeight;
@@ -13,7 +13,7 @@ namespace Cocoalite.Models.Entity
 
         public int BatchId { get; set; }
         public int QcId { get; set; }
-        public DateTime BatchDate { get; set; }
+        public DateOnly BatchDate { get; set; }
 
         public Batch()
         {

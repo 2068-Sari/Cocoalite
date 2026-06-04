@@ -5,7 +5,7 @@ using Cocoalite.Models.Entity;
 
 namespace Cocoalite.Controllers
 {
-    internal class ShipmentController
+    public class ShipmentController
     {
         private readonly ShipmentContext context = new ShipmentContext();
 
@@ -39,6 +39,10 @@ namespace Cocoalite.Controllers
             {
                 throw new ArgumentNullException(nameof(shipment), "Objek shipment kosong.");
             }
+
+            Random random = new Random();
+            int randomNumber = random.Next(1000, 99999);
+            shipment.ShipmentCode = $"SHP-{randomNumber}";
 
             context.InsertShipment(shipment);
         }

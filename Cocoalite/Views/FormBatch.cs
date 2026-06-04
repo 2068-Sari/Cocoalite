@@ -68,7 +68,8 @@ namespace Cocoalite.Views
         {
             selectedBatchId = 0;
 
-            txtBatchCode.Clear();
+            // Tulis teks indikator bahwa kode akan digenerate otomatis
+            txtBatchCode.Text = "[ OTOMATIS ]";
             txtBatchWeight.Clear();
 
             if (cbQc.Items.Count > 0)
@@ -84,19 +85,25 @@ namespace Cocoalite.Views
         {
             try
             {
-                BatchController controller =
-                    new BatchController();
+                BatchController controller = new BatchController();
 
+                // 🎲 1. GENERATE KODE BATCH RANDOM OTOMATIS
+                Random random = new Random();
+                int randomNumber = random.Next(10000, 99999); // Memakai 5 digit angka acak
+                string randomBatchCode = $"BTC-{randomNumber}"; // Hasil format: BTC-XXXXX
+
+                // 2. Kirim kode acak tersebut langsung ke parameter database controller
                 controller.AddBatch(
                     Convert.ToInt32(cbQc.SelectedValue),
-                    txtBatchCode.Text,
+                    randomBatchCode,                     // <-- Menggunakan variabel kode random, bukan txtBatchCode.Text
                     dtpBatchDate.Value,
                     Convert.ToDecimal(txtBatchWeight.Text),
                     cbBatchStatus.Text
                 );
 
-                MessageBox.Show(
-                    "Data batch berhasil ditambahkan!");
+                // 3. Tampilkan output cantik ke layar user
+                MessageBox.Show($"Data batch berhasil ditambahkan!\n" +
+                                $"✨ KODE BATCH OTOMATIS: {randomBatchCode}");
 
                 LoadBatch();
                 ClearForm();

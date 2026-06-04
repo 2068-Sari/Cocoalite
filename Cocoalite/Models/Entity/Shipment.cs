@@ -6,7 +6,7 @@ using Cocoalite.Interfaces;
 
 namespace Cocoalite.Models.Entity
 {
-    internal class Shipment : IDapatDilaporkan
+    public class Shipment : IDapatDilaporkan
     {
         private string shipmentCode = "";
         private string destination = "";

@@ -86,17 +86,24 @@ namespace Cocoalite.Views
             {
                 DataGridViewRow row = dgvInventory.Rows[e.RowIndex];
 
-                selectedInventoryId =
-                    Convert.ToInt32(row.Cells["inventory_id"].Value);
+                if (row.Cells["inventory_id"].Value != null && row.Cells["inventory_id"].Value != DBNull.Value)
+                {
+                    selectedInventoryId = Convert.ToInt32(row.Cells["inventory_id"].Value);
+                }
+                else
+                {
+                    selectedInventoryId = 0; 
+                }
 
-                cbBatch.SelectedValue =
-                    Convert.ToInt32(row.Cells["batch_id"].Value);
+                
+                if (row.Cells["batch_id"].Value != null && row.Cells["batch_id"].Value != DBNull.Value)
+                {
+                    cbBatch.SelectedValue = Convert.ToInt32(row.Cells["batch_id"].Value);
+                }
 
-                txtStockQuantity.Text =
-                    row.Cells["stock_quantity"].Value?.ToString() ?? "";
-
-                txtWarehouseLocation.Text =
-                    row.Cells["warehouse_location"].Value?.ToString() ?? "";
+              
+                txtStockQuantity.Text = row.Cells["stock_quantity"].Value?.ToString() ?? "";
+                txtWarehouseLocation.Text = row.Cells["warehouse_location"].Value?.ToString() ?? "";
             }
         }
 
