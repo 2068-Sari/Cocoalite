@@ -13,7 +13,7 @@ namespace Cocoalite.Models.Entity
 
         public override string TampilkanHakAkses()
         {
-            return "Quality Controller melakukan pemeriksaan kualitas kakao, menentukan grade, dan approval atau reject batch.";
+            return "Quality Controller melakukan pemeriksaan kualitas kakao, menentukan grade, serta memberikan status Approved atau Rejected pada hasil QC.";
         }
 
         public override string TampilkanInfoUser()

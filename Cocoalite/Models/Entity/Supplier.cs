@@ -56,6 +56,11 @@ namespace Cocoalite.Models.Entity
             }
             set
             {
+                if (!string.IsNullOrWhiteSpace(value) && !value.Contains("@"))
+                {
+                    throw new ArgumentException("Format email supplier tidak valid.");
+                }
+
                 email = value ?? "";
             }
         }

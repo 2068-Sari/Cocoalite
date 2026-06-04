@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using Cocoalite.Models.Context;
+using Cocoalite.Models.Entity;
 
 namespace Cocoalite.Controllers
 {
@@ -51,23 +52,22 @@ namespace Cocoalite.Controllers
                 throw new ArgumentException("User penerima tidak valid.");
             }
 
-            if (string.IsNullOrWhiteSpace(receivingCode))
-            {
-                throw new ArgumentException("Kode receiving tidak boleh kosong.");
-            }
+            Receiving receiving = new Receiving();
 
-            if (cocoaWeight <= 0)
-            {
-                throw new ArgumentException("Berat kakao harus lebih dari 0.");
-            }
+            receiving.Supplier.SupplierId = supplierId;
+            receiving.ReceivedBy = receivedBy;
+            receiving.ReceivingCode = receivingCode;
+            receiving.ReceivingDate = receivingDate;
+            receiving.CocoaWeight = cocoaWeight;
+            receiving.VehicleNumber = vehicleNumber;
 
             _context.InsertReceiving(
-                supplierId,
-                receivedBy,
-                receivingCode,
-                receivingDate,
-                cocoaWeight,
-                vehicleNumber
+                receiving.Supplier.SupplierId,
+                receiving.ReceivedBy,
+                receiving.ReceivingCode,
+                receiving.ReceivingDate,
+                receiving.CocoaWeight,
+                receiving.VehicleNumber
             );
         }
 
@@ -89,23 +89,22 @@ namespace Cocoalite.Controllers
                 throw new ArgumentException("Supplier tidak valid.");
             }
 
-            if (string.IsNullOrWhiteSpace(receivingCode))
-            {
-                throw new ArgumentException("Kode receiving tidak boleh kosong.");
-            }
+            Receiving receiving = new Receiving();
 
-            if (cocoaWeight <= 0)
-            {
-                throw new ArgumentException("Berat kakao harus lebih dari 0.");
-            }
+            receiving.ReceivingId = receivingId;
+            receiving.Supplier.SupplierId = supplierId;
+            receiving.ReceivingCode = receivingCode;
+            receiving.ReceivingDate = receivingDate;
+            receiving.CocoaWeight = cocoaWeight;
+            receiving.VehicleNumber = vehicleNumber;
 
             _context.UpdateReceiving(
-                receivingId,
-                supplierId,
-                receivingCode,
-                receivingDate,
-                cocoaWeight,
-                vehicleNumber
+                receiving.ReceivingId,
+                receiving.Supplier.SupplierId,
+                receiving.ReceivingCode,
+                receiving.ReceivingDate,
+                receiving.CocoaWeight,
+                receiving.VehicleNumber
             );
         }
 
