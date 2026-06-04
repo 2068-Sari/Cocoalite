@@ -62,19 +62,32 @@ namespace Cocoalite.Models.Context
             {
                 conn.Open();
 
-                string query = @"
+                using (var transaction = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        string query = @"
                     INSERT INTO inventory
                         (batch_id, stock_quantity, warehouse_location)
                     VALUES
                         (@batch_id, @stock_quantity, @warehouse_location)";
 
-                using (var cmd = new NpgsqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@batch_id", inventory.BatchId);
-                    cmd.Parameters.AddWithValue("@stock_quantity", inventory.StockQuantity);
-                    cmd.Parameters.AddWithValue("@warehouse_location", inventory.WarehouseLocation);
+                        using (var cmd = new NpgsqlCommand(query, conn, transaction))
+                        {
+                            cmd.Parameters.AddWithValue("@batch_id", inventory.BatchId);
+                            cmd.Parameters.AddWithValue("@stock_quantity", inventory.StockQuantity);
+                            cmd.Parameters.AddWithValue("@warehouse_location", inventory.WarehouseLocation);
 
-                    cmd.ExecuteNonQuery();
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
                 }
             }
         }

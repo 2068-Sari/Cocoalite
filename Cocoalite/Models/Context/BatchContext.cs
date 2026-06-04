@@ -47,6 +47,7 @@ namespace Cocoalite.Models.Context
                 string query = @"
                     SELECT batch_id, qc_id, batch_code, batch_date, batch_weight, batch_status
                     FROM batches
+                    WHERE is_delete = FALSE
                     ORDER BY batch_id";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
@@ -65,22 +66,32 @@ namespace Cocoalite.Models.Context
             {
                 conn.Open();
 
-                // 1. Tambahkan parameter @batch_status di dalam CALL
-                string query = @"
-            CALL add_batch(
-                @qc_id, @batch_code, @batch_date, @batch_weight
-            )";
-
-                using (var cmd = new NpgsqlCommand(query, conn))
+                using (var transaction = conn.BeginTransaction())
                 {
-                    cmd.Parameters.AddWithValue("@qc_id", batch.QcId);
-                    cmd.Parameters.AddWithValue("@batch_code", batch.BatchCode);
-                    cmd.Parameters.AddWithValue("@batch_date", batch.BatchDate);
-                    cmd.Parameters.AddWithValue("@batch_weight", batch.BatchWeight);
-                    // 2. Daftarkan value statusnya di sini
-                    //cmd.Parameters.AddWithValue("@batch_status", batch.BatchStatus);
+                    try
+                    {
+                        string query = @"
+                    CALL add_batch(
+                        @qc_id, @batch_code, @batch_date, @batch_weight
+                    )";
 
-                    cmd.ExecuteNonQuery();
+                        using (var cmd = new NpgsqlCommand(query, conn, transaction))
+                        {
+                            cmd.Parameters.AddWithValue("@qc_id", batch.QcId);
+                            cmd.Parameters.AddWithValue("@batch_code", batch.BatchCode);
+                            cmd.Parameters.AddWithValue("@batch_date", batch.BatchDate);
+                            cmd.Parameters.AddWithValue("@batch_weight", batch.BatchWeight);
+
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
                 }
             }
         }
@@ -122,7 +133,8 @@ namespace Cocoalite.Models.Context
                 conn.Open();
 
                 string query = @"
-                    DELETE FROM batches
+                    UPDATE batches
+                    SET is_delete = TRUE
                     WHERE batch_id = @batch_id";
 
                 using (var cmd = new NpgsqlCommand(query, conn))

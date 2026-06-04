@@ -88,7 +88,11 @@ namespace Cocoalite.Models.Context
             {
                 conn.Open();
 
-                string query = @"
+                using (var transaction = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        string query = @"
                     INSERT INTO quality_control
                     ( receiving_id, moisture_level, fermentation_level, defect_level, bean_size,
                         grade, qc_status, inspection_notes, inspected_by, inspected_at
@@ -98,20 +102,29 @@ namespace Cocoalite.Models.Context
                         @grade,@qc_status, @inspection_notes, @inspected_by, @inspected_at
                     )";
 
-                using (var cmd = new NpgsqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@receiving_id", qc.ReceivingId);
-                    cmd.Parameters.AddWithValue("@moisture_level", qc.Parameter.MoistureLevel);
-                    cmd.Parameters.AddWithValue("@fermentation_level", qc.Parameter.FermentationLevel);
-                    cmd.Parameters.AddWithValue("@defect_level", qc.Parameter.DefectLevel);
-                    cmd.Parameters.AddWithValue("@bean_size", qc.Parameter.BeanSize);
-                    cmd.Parameters.AddWithValue("@grade", qc.Grade);
-                    cmd.Parameters.AddWithValue("@qc_status", qc.QcStatus);
-                    cmd.Parameters.AddWithValue("@inspection_notes", qc.InspectionNotes);
-                    cmd.Parameters.AddWithValue("@inspected_by", qc.InspectedBy);
-                    cmd.Parameters.AddWithValue("@inspected_at", qc.InspectionDate);
+                        using (var cmd = new NpgsqlCommand(query, conn, transaction))
+                        {
+                            cmd.Parameters.AddWithValue("@receiving_id", qc.ReceivingId);
+                            cmd.Parameters.AddWithValue("@moisture_level", qc.Parameter.MoistureLevel);
+                            cmd.Parameters.AddWithValue("@fermentation_level", qc.Parameter.FermentationLevel);
+                            cmd.Parameters.AddWithValue("@defect_level", qc.Parameter.DefectLevel);
+                            cmd.Parameters.AddWithValue("@bean_size", qc.Parameter.BeanSize);
+                            cmd.Parameters.AddWithValue("@grade", qc.Grade);
+                            cmd.Parameters.AddWithValue("@qc_status", qc.QcStatus);
+                            cmd.Parameters.AddWithValue("@inspection_notes", qc.InspectionNotes);
+                            cmd.Parameters.AddWithValue("@inspected_by", qc.InspectedBy);
+                            cmd.Parameters.AddWithValue("@inspected_at", qc.InspectionDate);
 
-                    cmd.ExecuteNonQuery();
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
                 }
             }
         }

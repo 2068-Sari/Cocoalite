@@ -102,23 +102,36 @@ namespace Cocoalite.Models.Context
             {
                 conn.Open();
 
-                string query = @"
+                using (var transaction = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        string query = @"
                     CALL create_shipment( @batch_id, @created_by,  @shipment_code,
                         @destination, @shipment_date, @shipment_weight, @vehicle_number, @driver_name
                     )";
 
-                using (var cmd = new NpgsqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@batch_id", shipment.BatchId);
-                    cmd.Parameters.AddWithValue("@created_by", shipment.CreatedBy);
-                    cmd.Parameters.AddWithValue("@shipment_code", shipment.ShipmentCode);
-                    cmd.Parameters.AddWithValue("@destination", shipment.Destination);
-                    cmd.Parameters.AddWithValue("@shipment_date", shipment.ShipmentDate);
-                    cmd.Parameters.AddWithValue("@shipment_weight", shipment.ShipmentWeight);
-                    cmd.Parameters.AddWithValue("@vehicle_number", shipment.VehicleNumber);
-                    cmd.Parameters.AddWithValue("@driver_name", shipment.DriverName);
+                        using (var cmd = new NpgsqlCommand(query, conn, transaction))
+                        {
+                            cmd.Parameters.AddWithValue("@batch_id", shipment.BatchId);
+                            cmd.Parameters.AddWithValue("@created_by", shipment.CreatedBy);
+                            cmd.Parameters.AddWithValue("@shipment_code", shipment.ShipmentCode);
+                            cmd.Parameters.AddWithValue("@destination", shipment.Destination);
+                            cmd.Parameters.AddWithValue("@shipment_date", shipment.ShipmentDate);
+                            cmd.Parameters.AddWithValue("@shipment_weight", shipment.ShipmentWeight);
+                            cmd.Parameters.AddWithValue("@vehicle_number", shipment.VehicleNumber);
+                            cmd.Parameters.AddWithValue("@driver_name", shipment.DriverName);
 
-                    cmd.ExecuteNonQuery();
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
                 }
             }
         }

@@ -21,6 +21,7 @@ namespace Cocoalite.Models.Context
                 string query = @"
                     SELECT supplier_id, supplier_name, address, phone_number, email, created_at
                     FROM suppliers
+                    WHERE is_delete = FALSE
                     ORDER BY supplier_id";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
@@ -39,20 +40,33 @@ namespace Cocoalite.Models.Context
             {
                 conn.Open();
 
-                string query = @"
+                using (var transaction = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        string query = @"
                     INSERT INTO suppliers
                     ( supplier_name, address, phone_number, email )
                     VALUES
                     ( @supplier_name, @address, @phone_number, @email )";
 
-                using (var cmd = new NpgsqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@supplier_name", supplier.SupplierName);
-                    cmd.Parameters.AddWithValue("@address", supplier.Address);
-                    cmd.Parameters.AddWithValue("@phone_number", supplier.PhoneNumber);
-                    cmd.Parameters.AddWithValue("@email", supplier.Email);
+                        using (var cmd = new NpgsqlCommand(query, conn, transaction))
+                        {
+                            cmd.Parameters.AddWithValue("@supplier_name", supplier.SupplierName);
+                            cmd.Parameters.AddWithValue("@address", supplier.Address);
+                            cmd.Parameters.AddWithValue("@phone_number", supplier.PhoneNumber);
+                            cmd.Parameters.AddWithValue("@email", supplier.Email);
 
-                    cmd.ExecuteNonQuery();
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
                 }
             }
         }
@@ -92,7 +106,8 @@ namespace Cocoalite.Models.Context
                 conn.Open();
 
                 string query = @"
-                    DELETE FROM suppliers
+                    UPDATE suppliers
+                    SET is_delete = TRUE
                     WHERE supplier_id = @supplier_id";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
