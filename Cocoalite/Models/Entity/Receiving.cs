@@ -16,6 +16,11 @@ namespace Cocoalite.Models.Entity
 
         public Supplier Supplier { get; set; }
 
+        public Receiving()
+        {
+            Supplier = new Supplier();
+        }
+
         public Receiving(Supplier supplier)
         {
             Supplier = supplier ?? throw new ArgumentException("Supplier tidak boleh kosong.");
