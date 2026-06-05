@@ -12,29 +12,38 @@ namespace Cocoalite.Views
             InitializeComponent();
         }
 
+        private void FormLogin_Load(object sender, EventArgs e)
+        {
+            txtUsername.Focus();
+        }
+
         private void btnLogin_Click(object sender, EventArgs e)
         {
             try
             {
-                if (txtUsername.Text == "" || txtPassword.Text == "")
+                if (string.IsNullOrWhiteSpace(txtUsername.Text))
                 {
-                    MessageBox.Show("Username dan password harus diisi!");
+                    MessageBox.Show("Username harus diisi!");
+                    txtUsername.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(txtPassword.Text))
+                {
+                    MessageBox.Show("Password harus diisi!");
+                    txtPassword.Focus();
                     return;
                 }
 
                 LoginController controller = new LoginController();
 
                 bool success = controller.Login(
-                    txtUsername.Text,
-                    txtPassword.Text
+                    txtUsername.Text.Trim(),
+                    txtPassword.Text.Trim()
                 );
 
                 if (success)
                 {
-                    MessageBox.Show(
-                            "Login berhasil sebagai " + LoginSession.CurrentUser?.Role
-                    );
-
                     FormMain formMain = new FormMain();
                     formMain.Show();
 
@@ -43,11 +52,49 @@ namespace Cocoalite.Views
                 else
                 {
                     MessageBox.Show("Username atau password salah!");
+                    txtPassword.Clear();
+                    txtPassword.Focus();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show(
+                "Apakah Anda yakin ingin keluar dari aplikasi?",
+                "Konfirmasi Keluar",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (result == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+        }
+
+        private void chkShowPassword_CheckedChanged(object sender, EventArgs e)
+        {
+            txtPassword.UseSystemPasswordChar = !chkShowPassword.Checked;
+        }
+
+        private void txtPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnLogin.PerformClick();
+            }
+        }
+
+        private void txtUsername_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                txtPassword.Focus();
             }
         }
     }
