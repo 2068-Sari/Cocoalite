@@ -97,5 +97,35 @@ namespace Cocoalite.Views
                 txtPassword.Focus();
             }
         }
+
+        private void panelLogo_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+            Pen goldPen = new Pen(Color.FromArgb(230, 180, 120), 4);
+            Brush goldBrush = new SolidBrush(Color.FromArgb(230, 180, 120));
+
+            // badan biji kakao
+            Rectangle pod = new Rectangle(45, 25, 50, 75);
+            g.DrawEllipse(goldPen, pod);
+
+            // garis tengah
+            g.DrawLine(goldPen, 70, 30, 70, 95);
+
+            // biji-biji kecil
+            for (int i = 0; i < 5; i++)
+            {
+                g.FillEllipse(goldBrush, 60, 38 + (i * 11), 8, 8);
+                g.FillEllipse(goldBrush, 73, 38 + (i * 11), 8, 8);
+            }
+
+            // daun kiri dan kanan
+            g.DrawEllipse(goldPen, new Rectangle(35, 5, 35, 25));
+            g.DrawEllipse(goldPen, new Rectangle(70, 5, 35, 25));
+
+            goldPen.Dispose();
+            goldBrush.Dispose();
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Cocoalite.Views
+﻿using Cocoalite.Helpers;
+
+namespace Cocoalite.Views
 {
     partial class FormLogin
     {
@@ -48,8 +50,22 @@
             panelLeft.Dock = DockStyle.Left;
             panelLeft.Location = new Point(0, 0);
             panelLeft.Name = "panelLeft";
-            panelLeft.Size = new Size(360, 560);
+            panelLeft.Size = new Size(380, 560);
             panelLeft.TabIndex = 0;
+
+
+
+            lblLogo = new Label();
+            lblLogo.AutoSize = false;
+            lblLogo.Location = new Point(115, 35);
+            lblLogo.Name = "lblLogo";
+            lblLogo.Size = new Size(150, 70);
+            lblLogo.Font = new Font("Segoe UI Emoji", 36F, FontStyle.Regular);
+            lblLogo.ForeColor = Color.FromArgb(230, 180, 120);
+            lblLogo.Text = "🌱";
+            lblLogo.TextAlign = ContentAlignment.MiddleCenter;
+            panelLeft.Controls.Add(lblLogo);
+
             // 
             // lblAppName
             // 
@@ -58,7 +74,7 @@
             lblAppName.ForeColor = Color.White;
             lblAppName.Location = new Point(45, 95);
             lblAppName.Name = "lblAppName";
-            lblAppName.Size = new Size(249, 62);
+            lblAppName.Size = new Size(260, 60);
             lblAppName.TabIndex = 0;
             lblAppName.Text = "CocoaLite";
             // 
@@ -268,5 +284,6 @@
         private Button btnLogin;
         private Button btnExit;
         private Label lblFooter;
+        private Label lblLogo;
     }
 }
