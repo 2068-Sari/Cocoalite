@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Cocoalite.Models.Entity
 {
@@ -33,7 +34,7 @@ namespace Cocoalite.Models.Entity
         public string Address
         {
             get { return address; }
-            set {  address = value ?? "";}
+            set { address = value ?? ""; }
         }
 
         public string PhoneNumber
@@ -44,9 +45,16 @@ namespace Cocoalite.Models.Entity
             }
             set
             {
-                phoneNumber = value ?? "";
+                if (!string.IsNullOrWhiteSpace(value) &&
+                    !Regex.IsMatch(value.Trim(), @"^[0-9\s\+\-\(\)]{7,20}$"))
+                {
+                    throw new ArgumentException("Format nomor telepon tidak valid.");
+                }
+
+                phoneNumber = value?.Trim() ?? "";
             }
         }
+
 
         public string Email
         {

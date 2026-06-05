@@ -5,7 +5,7 @@ namespace Cocoalite.Helpers
     public class DbConnection
     {
         private readonly string connectionString =
-            "Host=localhost;Port=5432;Username=postgres;Password=icha2006@;Database=ProjectCacaoLite";
+            "Host=localhost;Port=2809;Username=postgres;Password=saripane*28;Database=cacaolite_db";
 
         public NpgsqlConnection GetConnection()
         {

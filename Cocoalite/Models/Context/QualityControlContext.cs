@@ -20,7 +20,7 @@ namespace Cocoalite.Models.Context
 
                 string query = @"
                     SELECT qc.qc_id,  r.receiving_code, qc.receiving_id, qc.moisture_level, qc.fermentation_level, qc.defect_level,
-                        qc.bean_size, qc.grade,  qc.qc_status, qc.inspection_notes, qc.inspected_by, qc.inspected_at
+                        qc.bean_size, qc.grade,  qc.qc_status, qc.inspection_notes, qc.inspected_by, qc.inspection_date
                     FROM quality_control qc
                     JOIN receiving r ON qc.receiving_id = r.receiving_id
                     ORDER BY qc.qc_id";

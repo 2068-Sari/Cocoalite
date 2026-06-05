@@ -46,7 +46,7 @@ namespace Cocoalite.Models.Context
                         r.receiving_code, r.receiving_date, r.cocoa_weight, r.vehicle_number, r.created_at
                     FROM receiving r
                     JOIN suppliers s ON r.supplier_id = s.supplier_id
-                    WHERE is_delete = FALSE
+                    WHERE r.is_delete = FALSE
                     ORDER BY r.receiving_id";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
