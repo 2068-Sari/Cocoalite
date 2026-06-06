@@ -35,7 +35,7 @@
             lblTitle.ForeColor = Color.FromArgb(74, 44, 30);
             lblTitle.Location = new Point(35, 25);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(206, 46);
+            lblTitle.Size = new Size(210, 46);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Activity Log";
             // 
@@ -46,7 +46,7 @@
             lblSubtitle.ForeColor = Color.FromArgb(120, 86, 60);
             lblSubtitle.Location = new Point(40, 72);
             lblSubtitle.Name = "lblSubtitle";
-            lblSubtitle.Size = new Size(507, 23);
+            lblSubtitle.Size = new Size(501, 23);
             lblSubtitle.TabIndex = 1;
             lblSubtitle.Text = "Riwayat aktivitas pengguna dalam sistem manajemen CocoaLite.";
             // 
@@ -69,7 +69,7 @@
             lblTableTitle.ForeColor = Color.FromArgb(74, 44, 30);
             lblTableTitle.Location = new Point(20, 18);
             lblTableTitle.Name = "lblTableTitle";
-            lblTableTitle.Size = new Size(185, 25);
+            lblTableTitle.Size = new Size(178, 25);
             lblTableTitle.TabIndex = 0;
             lblTableTitle.Text = "Daftar Activity Log";
             // 
@@ -96,20 +96,19 @@
             dgvActivityLog.Location = new Point(20, 65);
             dgvActivityLog.Name = "dgvActivityLog";
             dgvActivityLog.RowHeadersWidth = 51;
-            dgvActivityLog.Size = new Size(735, 285);
+            dgvActivityLog.Size = new Size(987, 406);
             dgvActivityLog.TabIndex = 2;
             // 
-            // FormActivityLog
+            // ActivityLogControl
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(250, 246, 240);
-            ClientSize = new Size(860, 520);
             Controls.Add(lblTitle);
             Controls.Add(lblSubtitle);
             Controls.Add(panelTable);
-            Name = "FormActivityLog";
-            Text = "FormActivityLog";
+            Name = "ActivityLogControl";
+            Size = new Size(1159, 675);
             Load += ActivityLogControl_Load;
             panelTable.ResumeLayout(false);
             panelTable.PerformLayout();

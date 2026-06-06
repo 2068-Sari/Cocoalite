@@ -56,7 +56,7 @@
             lblTitle.ForeColor = Color.FromArgb(74, 44, 30);
             lblTitle.Location = new Point(35, 18);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(365, 46);
+            lblTitle.Size = new Size(370, 46);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Manajemen Shipment";
             // 
@@ -67,7 +67,7 @@
             lblSubtitle.ForeColor = Color.FromArgb(120, 86, 60);
             lblSubtitle.Location = new Point(40, 64);
             lblSubtitle.Name = "lblSubtitle";
-            lblSubtitle.Size = new Size(520, 23);
+            lblSubtitle.Size = new Size(512, 23);
             lblSubtitle.TabIndex = 1;
             lblSubtitle.Text = "Kelola data pengiriman kakao dari batch menuju tujuan distribusi.";
             // 
@@ -97,7 +97,7 @@
             panelForm.Controls.Add(btnClear);
             panelForm.Location = new Point(40, 100);
             panelForm.Name = "panelForm";
-            panelForm.Size = new Size(780, 250);
+            panelForm.Size = new Size(799, 229);
             panelForm.TabIndex = 2;
             // 
             // lblBatch
@@ -107,7 +107,7 @@
             lblBatch.ForeColor = Color.FromArgb(74, 44, 30);
             lblBatch.Location = new Point(25, 18);
             lblBatch.Name = "lblBatch";
-            lblBatch.Size = new Size(47, 20);
+            lblBatch.Size = new Size(49, 20);
             lblBatch.TabIndex = 0;
             lblBatch.Text = "Batch";
             // 
@@ -127,7 +127,7 @@
             lblShipmentCode.ForeColor = Color.FromArgb(74, 44, 30);
             lblShipmentCode.Location = new Point(25, 58);
             lblShipmentCode.Name = "lblShipmentCode";
-            lblShipmentCode.Size = new Size(121, 20);
+            lblShipmentCode.Size = new Size(115, 20);
             lblShipmentCode.TabIndex = 2;
             lblShipmentCode.Text = "Shipment Code";
             // 
@@ -145,7 +145,7 @@
             lblDestination.ForeColor = Color.FromArgb(74, 44, 30);
             lblDestination.Location = new Point(25, 98);
             lblDestination.Name = "lblDestination";
-            lblDestination.Size = new Size(89, 20);
+            lblDestination.Size = new Size(90, 20);
             lblDestination.TabIndex = 4;
             lblDestination.Text = "Destination";
             // 
@@ -182,7 +182,7 @@
             lblShipmentWeight.ForeColor = Color.FromArgb(74, 44, 30);
             lblShipmentWeight.Location = new Point(420, 58);
             lblShipmentWeight.Name = "lblShipmentWeight";
-            lblShipmentWeight.Size = new Size(135, 20);
+            lblShipmentWeight.Size = new Size(131, 20);
             lblShipmentWeight.TabIndex = 8;
             lblShipmentWeight.Text = "Shipment Weight";
             // 
@@ -200,7 +200,7 @@
             lblShipmentStatus.ForeColor = Color.FromArgb(74, 44, 30);
             lblShipmentStatus.Location = new Point(420, 98);
             lblShipmentStatus.Name = "lblShipmentStatus";
-            lblShipmentStatus.Size = new Size(126, 20);
+            lblShipmentStatus.Size = new Size(124, 20);
             lblShipmentStatus.TabIndex = 10;
             lblShipmentStatus.Text = "Shipment Status";
             // 
@@ -220,7 +220,7 @@
             lblVehicleNumber.ForeColor = Color.FromArgb(74, 44, 30);
             lblVehicleNumber.Location = new Point(25, 138);
             lblVehicleNumber.Name = "lblVehicleNumber";
-            lblVehicleNumber.Size = new Size(126, 20);
+            lblVehicleNumber.Size = new Size(120, 20);
             lblVehicleNumber.TabIndex = 12;
             lblVehicleNumber.Text = "Vehicle Number";
             // 
@@ -238,7 +238,7 @@
             lblDriverName.ForeColor = Color.FromArgb(74, 44, 30);
             lblDriverName.Location = new Point(420, 138);
             lblDriverName.Name = "lblDriverName";
-            lblDriverName.Size = new Size(96, 20);
+            lblDriverName.Size = new Size(98, 20);
             lblDriverName.TabIndex = 14;
             lblDriverName.Text = "Driver Name";
             // 
@@ -317,7 +317,7 @@
             panelTable.Controls.Add(dgvShipment);
             panelTable.Location = new Point(40, 370);
             panelTable.Name = "panelTable";
-            panelTable.Size = new Size(780, 125);
+            panelTable.Size = new Size(957, 293);
             panelTable.TabIndex = 3;
             // 
             // lblTableTitle
@@ -327,7 +327,7 @@
             lblTableTitle.ForeColor = Color.FromArgb(74, 44, 30);
             lblTableTitle.Location = new Point(20, 10);
             lblTableTitle.Name = "lblTableTitle";
-            lblTableTitle.Size = new Size(133, 23);
+            lblTableTitle.Size = new Size(145, 23);
             lblTableTitle.TabIndex = 0;
             lblTableTitle.Text = "Daftar Shipment";
             // 
@@ -336,25 +336,24 @@
             dgvShipment.BackgroundColor = Color.White;
             dgvShipment.BorderStyle = BorderStyle.None;
             dgvShipment.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvShipment.Location = new Point(20, 38);
+            dgvShipment.Location = new Point(10, 50);
             dgvShipment.Name = "dgvShipment";
             dgvShipment.RowHeadersWidth = 51;
             dgvShipment.Size = new Size(735, 70);
             dgvShipment.TabIndex = 1;
             dgvShipment.CellClick += dgvShipment_CellClick;
             // 
-            // FormShipment
+            // ShipmentControl
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(250, 246, 240);
-            ClientSize = new Size(860, 520);
             Controls.Add(lblTitle);
             Controls.Add(lblSubtitle);
             Controls.Add(panelForm);
             Controls.Add(panelTable);
-            Name = "FormShipment";
-            Text = "FormShipment";
+            Name = "ShipmentControl";
+            Size = new Size(1156, 694);
             Load += ShipmentControl_Load;
             panelForm.ResumeLayout(false);
             panelForm.PerformLayout();

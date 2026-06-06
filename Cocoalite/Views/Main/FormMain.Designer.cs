@@ -62,18 +62,16 @@
             panelSidebar.Dock = DockStyle.Left;
             panelSidebar.Location = new Point(0, 0);
             panelSidebar.Name = "panelSidebar";
-            panelSidebar.Size = new Size(240, 620);
+            panelSidebar.Size = new Size(250, 700);
             panelSidebar.TabIndex = 0;
             // 
             // lblMenuTitle
             // 
             lblMenuTitle.AutoSize = true;
-            lblMenuTitle.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+            lblMenuTitle.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
             lblMenuTitle.ForeColor = Color.White;
-            lblMenuTitle.Location = new Point(28, 28);
+            lblMenuTitle.Location = new Point(35, 38);
             lblMenuTitle.Name = "lblMenuTitle";
-            lblMenuTitle.Size = new Size(164, 46);
-            lblMenuTitle.TabIndex = 0;
             lblMenuTitle.Text = "CocoaLite";
             // 
             // lblMenuSubtitle
@@ -81,10 +79,8 @@
             lblMenuSubtitle.AutoSize = true;
             lblMenuSubtitle.Font = new Font("Segoe UI", 10F);
             lblMenuSubtitle.ForeColor = Color.FromArgb(255, 226, 198);
-            lblMenuSubtitle.Location = new Point(32, 73);
+            lblMenuSubtitle.Location = new Point(38, 88);
             lblMenuSubtitle.Name = "lblMenuSubtitle";
-            lblMenuSubtitle.Size = new Size(154, 23);
-            lblMenuSubtitle.TabIndex = 1;
             lblMenuSubtitle.Text = "Cacao Management";
             // 
             // btnDashboard
@@ -209,18 +205,16 @@
             // 
             // btnLogout
             // 
-            btnLogout.BackColor = Color.FromArgb(165, 80, 35);
+            btnLogout.Name = "btnLogout";
+            btnLogout.Location = new Point(30, 575);
+            btnLogout.Size = new Size(190, 40);
+            btnLogout.Anchor = AnchorStyles.Left | AnchorStyles.Bottom;
+            btnLogout.BackColor = Color.FromArgb(180, 85, 35);
             btnLogout.FlatAppearance.BorderSize = 0;
             btnLogout.FlatStyle = FlatStyle.Flat;
             btnLogout.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnLogout.ForeColor = Color.White;
-            btnLogout.Location = new Point(30, 548);
-            btnLogout.Name = "btnLogout";
-            btnLogout.Size = new Size(180, 38);
-            btnLogout.TabIndex = 10;
             btnLogout.Text = "Logout";
-            btnLogout.UseVisualStyleBackColor = false;
-            btnLogout.Click += btnLogout_Click;
             // 
             // panelHeader
             // 
@@ -230,9 +224,9 @@
             panelHeader.Controls.Add(lblUserName);
             panelHeader.Controls.Add(lblRole);
             panelHeader.Dock = DockStyle.Top;
-            panelHeader.Location = new Point(240, 0);
+            panelHeader.Location = new Point(250, 0);
             panelHeader.Name = "panelHeader";
-            panelHeader.Size = new Size(860, 100);
+            panelHeader.Size = new Size(850, 110);
             panelHeader.TabIndex = 1;
             // 
             // lblHeaderTitle
@@ -240,10 +234,8 @@
             lblHeaderTitle.AutoSize = true;
             lblHeaderTitle.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             lblHeaderTitle.ForeColor = Color.FromArgb(74, 44, 30);
-            lblHeaderTitle.Location = new Point(32, 22);
+            lblHeaderTitle.Location = new Point(32, 24);
             lblHeaderTitle.Name = "lblHeaderTitle";
-            lblHeaderTitle.Size = new Size(470, 41);
-            lblHeaderTitle.TabIndex = 0;
             lblHeaderTitle.Text = "Sistem Informasi Manajemen Kakao";
             // 
             // lblHeaderSubtitle
@@ -251,10 +243,8 @@
             lblHeaderSubtitle.AutoSize = true;
             lblHeaderSubtitle.Font = new Font("Segoe UI", 10F);
             lblHeaderSubtitle.ForeColor = Color.FromArgb(120, 86, 60);
-            lblHeaderSubtitle.Location = new Point(35, 63);
+            lblHeaderSubtitle.Location = new Point(35, 68);
             lblHeaderSubtitle.Name = "lblHeaderSubtitle";
-            lblHeaderSubtitle.Size = new Size(333, 23);
-            lblHeaderSubtitle.TabIndex = 1;
             lblHeaderSubtitle.Text = "PT Cacao Prima Nusantara - CocoaLite App";
             // 
             // lblUserName
@@ -265,7 +255,6 @@
             lblUserName.Location = new Point(560, 25);
             lblUserName.Name = "lblUserName";
             lblUserName.Size = new Size(270, 25);
-            lblUserName.TabIndex = 2;
             lblUserName.Text = "User";
             lblUserName.TextAlign = ContentAlignment.MiddleRight;
             // 
@@ -286,10 +275,10 @@
             panelContent.BackColor = Color.FromArgb(250, 246, 240);
             panelContent.Controls.Add(panelWelcome);
             panelContent.Dock = DockStyle.Fill;
-            panelContent.Location = new Point(240, 100);
+            panelContent.Location = new Point(250, 110);
             panelContent.Name = "panelContent";
-            panelContent.Padding = new Padding(25);
-            panelContent.Size = new Size(860, 520);
+            panelContent.Padding = new Padding(0);
+            panelContent.Size = new Size(850, 510);
             panelContent.TabIndex = 2;
             // 
             // panelWelcome
@@ -328,15 +317,18 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(250, 246, 240);
-            ClientSize = new Size(1100, 620);
+            ClientSize = new Size(1200, 700);
+            MinimumSize = new Size(1200, 700);
+            WindowState = FormWindowState.Maximized;
+            StartPosition = FormStartPosition.CenterScreen;
             Controls.Add(panelContent);
             Controls.Add(panelHeader);
             Controls.Add(panelSidebar);
-            MinimumSize = new Size(1050, 620);
             Name = "FormMain";
-            StartPosition = FormStartPosition.CenterScreen;
             Text = "CocoaLite";
             Load += FormMain_Load;
+
+
             panelSidebar.ResumeLayout(false);
             panelSidebar.PerformLayout();
             panelHeader.ResumeLayout(false);

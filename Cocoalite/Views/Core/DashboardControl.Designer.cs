@@ -53,7 +53,7 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(250, 246, 240);
-            ClientSize = new Size(860, 520);
+            Size = new Size(1250, 700);
             Controls.Add(lblTitle);
             Controls.Add(lblSubtitle);
             Controls.Add(panelSupplier);
@@ -72,7 +72,7 @@
             lblTitle.AutoSize = true;
             lblTitle.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
             lblTitle.ForeColor = Color.FromArgb(74, 44, 30);
-            lblTitle.Location = new Point(35, 30);
+            lblTitle.Location = new Point(120, 60);
             lblTitle.Name = "lblTitle";
             lblTitle.Size = new Size(344, 46);
             lblTitle.Text = "Dashboard Overview";
@@ -83,34 +83,29 @@
             lblSubtitle.AutoSize = true;
             lblSubtitle.Font = new Font("Segoe UI", 10F);
             lblSubtitle.ForeColor = Color.FromArgb(120, 86, 60);
-            lblSubtitle.Location = new Point(40, 78);
+            lblSubtitle.Location = new Point(123, 110);
             lblSubtitle.Name = "lblSubtitle";
             lblSubtitle.Size = new Size(418, 23);
             lblSubtitle.Text = "Ringkasan data operasional sistem CocoaLite.";
 
             // Card Supplier
             CreateCard(panelSupplier, lblSupplierTitle, lblTotalSupplier,
-                "Total Supplier", "0", 40, 135);
+                "Total Supplier", "0", 150, 175);
 
-            // Card Receiving
             CreateCard(panelReceiving, lblReceivingTitle, lblTotalReceiving,
-                "Total Receiving", "0", 305, 135);
+                "Total Receiving", "0", 500, 175);
 
-            // Card QC
             CreateCard(panelQc, lblQcTitle, lblTotalQc,
-                "Total QC", "0", 570, 135);
+                "Total QC", "0", 850, 175);
 
-            // Card Batch
             CreateCard(panelBatch, lblBatchTitle, lblTotalBatch,
-                "Total Batch", "0", 40, 285);
+                "Total Batch", "0", 150, 350);
 
-            // Card Stok
             CreateCard(panelStok, lblStokTitle, lblTotalStok,
-                "Total Stok", "0 kg", 305, 285);
+                "Total Stok", "0 kg", 500, 350);
 
-            // Card Shipment
             CreateCard(panelShipment, lblShipmentTitle, lblTotalShipment,
-                "Total Shipment", "0", 570, 285);
+                "Total Shipment", "0", 850, 350);
 
             ResumeLayout(false);
             PerformLayout();
@@ -129,21 +124,22 @@
             panel.BorderStyle = BorderStyle.FixedSingle;
             panel.Location = new Point(x, y);
             panel.Name = "panel" + titleText.Replace(" ", "");
-            panel.Size = new Size(220, 115);
+            panel.Size = new Size(330, 130);
+            panel.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             panel.TabIndex = 0;
 
             title.AutoSize = true;
             title.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             title.ForeColor = Color.FromArgb(120, 86, 60);
-            title.Location = new Point(18, 18);
+            title.Location = new Point(25, 22);
             title.Name = "lbl" + titleText.Replace(" ", "") + "Title";
             title.Text = titleText;
 
-            value.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
+            value.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
             value.ForeColor = Color.FromArgb(74, 44, 30);
-            value.Location = new Point(18, 52);
+            value.Location = new Point(25, 62);
             value.Name = "lbl" + titleText.Replace(" ", "");
-            value.Size = new Size(180, 45);
+            value.Size = new Size(260, 52);
             value.Text = valueText;
             value.TextAlign = ContentAlignment.MiddleLeft;
 

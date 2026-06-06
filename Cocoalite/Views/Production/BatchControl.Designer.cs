@@ -46,11 +46,11 @@
             // lblTitle
             // 
             lblTitle.AutoSize = true;
-            lblTitle.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+            lblTitle.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
+            lblTitle.Location = new Point(55, 35);
             lblTitle.ForeColor = Color.FromArgb(74, 44, 30);
-            lblTitle.Location = new Point(35, 25);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(325, 46);
+            lblTitle.Size = new Size(306, 46);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Manajemen Batch";
             // 
@@ -59,9 +59,9 @@
             lblSubtitle.AutoSize = true;
             lblSubtitle.Font = new Font("Segoe UI", 10F);
             lblSubtitle.ForeColor = Color.FromArgb(120, 86, 60);
-            lblSubtitle.Location = new Point(40, 72);
+            lblSubtitle.Location = new Point(58, 88);
             lblSubtitle.Name = "lblSubtitle";
-            lblSubtitle.Size = new Size(548, 23);
+            lblSubtitle.Size = new Size(536, 23);
             lblSubtitle.TabIndex = 1;
             lblSubtitle.Text = "Kelola batch kakao berdasarkan hasil Quality Control yang Approved.";
             // 
@@ -83,9 +83,11 @@
             panelForm.Controls.Add(btnUpdate);
             panelForm.Controls.Add(btnDelete);
             panelForm.Controls.Add(btnClear);
-            panelForm.Location = new Point(40, 120);
+            panelForm.Location = new Point(55, 135);
+            panelForm.Size = new Size(1050, 210);
+            panelForm.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            panelForm.BorderStyle = BorderStyle.None;
             panelForm.Name = "panelForm";
-            panelForm.Size = new Size(780, 200);
             panelForm.TabIndex = 2;
             // 
             // lblQc
@@ -95,7 +97,7 @@
             lblQc.ForeColor = Color.FromArgb(74, 44, 30);
             lblQc.Location = new Point(25, 22);
             lblQc.Name = "lblQc";
-            lblQc.Size = new Size(101, 20);
+            lblQc.Size = new Size(102, 20);
             lblQc.TabIndex = 0;
             lblQc.Text = "QC Approved";
             // 
@@ -115,7 +117,7 @@
             lblBatchCode.ForeColor = Color.FromArgb(74, 44, 30);
             lblBatchCode.Location = new Point(25, 62);
             lblBatchCode.Name = "lblBatchCode";
-            lblBatchCode.Size = new Size(91, 20);
+            lblBatchCode.Size = new Size(88, 20);
             lblBatchCode.TabIndex = 2;
             lblBatchCode.Text = "Batch Code";
             // 
@@ -152,7 +154,7 @@
             lblBatchWeight.ForeColor = Color.FromArgb(74, 44, 30);
             lblBatchWeight.Location = new Point(420, 62);
             lblBatchWeight.Name = "lblBatchWeight";
-            lblBatchWeight.Size = new Size(103, 20);
+            lblBatchWeight.Size = new Size(104, 20);
             lblBatchWeight.TabIndex = 6;
             lblBatchWeight.Text = "Batch Weight";
             // 
@@ -170,7 +172,7 @@
             lblBatchStatus.ForeColor = Color.FromArgb(74, 44, 30);
             lblBatchStatus.Location = new Point(25, 102);
             lblBatchStatus.Name = "lblBatchStatus";
-            lblBatchStatus.Size = new Size(95, 20);
+            lblBatchStatus.Size = new Size(97, 20);
             lblBatchStatus.TabIndex = 8;
             lblBatchStatus.Text = "Batch Status";
             // 
@@ -190,9 +192,9 @@
             btnSave.FlatStyle = FlatStyle.Flat;
             btnSave.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnSave.ForeColor = Color.White;
-            btnSave.Location = new Point(160, 145);
+            btnSave.Location = new Point(175, 155);
+            btnSave.Size = new Size(140, 40);
             btnSave.Name = "btnSave";
-            btnSave.Size = new Size(120, 35);
             btnSave.TabIndex = 10;
             btnSave.Text = "Save";
             btnSave.UseVisualStyleBackColor = false;
@@ -205,9 +207,9 @@
             btnUpdate.FlatStyle = FlatStyle.Flat;
             btnUpdate.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnUpdate.ForeColor = Color.White;
-            btnUpdate.Location = new Point(300, 145);
+            btnUpdate.Location = new Point(390, 155);
+            btnUpdate.Size = new Size(140, 40);
             btnUpdate.Name = "btnUpdate";
-            btnUpdate.Size = new Size(120, 35);
             btnUpdate.TabIndex = 11;
             btnUpdate.Text = "Update";
             btnUpdate.UseVisualStyleBackColor = false;
@@ -220,9 +222,9 @@
             btnDelete.FlatStyle = FlatStyle.Flat;
             btnDelete.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnDelete.ForeColor = Color.White;
-            btnDelete.Location = new Point(440, 145);
+            btnDelete.Location = new Point(605, 155);
+            btnDelete.Size = new Size(140, 40);
             btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(120, 35);
             btnDelete.TabIndex = 12;
             btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = false;
@@ -235,9 +237,9 @@
             btnClear.FlatStyle = FlatStyle.Flat;
             btnClear.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnClear.ForeColor = Color.FromArgb(74, 44, 30);
-            btnClear.Location = new Point(580, 145);
+            btnClear.Location = new Point(820, 155);
+            btnClear.Size = new Size(140, 40);
             btnClear.Name = "btnClear";
-            btnClear.Size = new Size(120, 35);
             btnClear.TabIndex = 13;
             btnClear.Text = "Clear";
             btnClear.UseVisualStyleBackColor = false;
@@ -249,9 +251,11 @@
             panelTable.BorderStyle = BorderStyle.FixedSingle;
             panelTable.Controls.Add(lblTableTitle);
             panelTable.Controls.Add(dgvBatch);
-            panelTable.Location = new Point(40, 340);
+            panelTable.Location = new Point(55, 385);
+            panelTable.Size = new Size(1050, 300);
+            panelTable.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panelTable.BorderStyle = BorderStyle.None;
             panelTable.Name = "panelTable";
-            panelTable.Size = new Size(780, 155);
             panelTable.TabIndex = 3;
             // 
             // lblTableTitle
@@ -261,7 +265,7 @@
             lblTableTitle.ForeColor = Color.FromArgb(74, 44, 30);
             lblTableTitle.Location = new Point(20, 12);
             lblTableTitle.Name = "lblTableTitle";
-            lblTableTitle.Size = new Size(102, 23);
+            lblTableTitle.Size = new Size(112, 23);
             lblTableTitle.TabIndex = 0;
             lblTableTitle.Text = "Daftar Batch";
             // 
@@ -270,25 +274,27 @@
             dgvBatch.BackgroundColor = Color.White;
             dgvBatch.BorderStyle = BorderStyle.None;
             dgvBatch.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvBatch.Location = new Point(20, 42);
+            dgvBatch.Location = new Point(25, 60);
+            dgvBatch.Size = new Size(1000, 215);
+            dgvBatch.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvBatch.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvBatch.RowHeadersVisible = false;
             dgvBatch.Name = "dgvBatch";
             dgvBatch.RowHeadersWidth = 51;
-            dgvBatch.Size = new Size(735, 95);
             dgvBatch.TabIndex = 1;
             dgvBatch.CellClick += dgvBatch_CellClick;
             // 
-            // FormBatch
+            // BatchControl
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(250, 246, 240);
-            ClientSize = new Size(860, 520);
             Controls.Add(lblTitle);
             Controls.Add(lblSubtitle);
             Controls.Add(panelForm);
             Controls.Add(panelTable);
-            Name = "FormBatch";
-            Text = "FormBatch";
+            Name = "BatchControl";
+            Size = new Size(1161, 690);
             Load += BatchControl_Load;
             panelForm.ResumeLayout(false);
             panelForm.PerformLayout();

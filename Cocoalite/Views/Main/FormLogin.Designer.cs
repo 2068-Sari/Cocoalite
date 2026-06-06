@@ -25,6 +25,7 @@ namespace Cocoalite.Views
             lblAppSubtitle = new Label();
             lblDescription = new Label();
             lblCompany = new Label();
+            lblLogo = new Label();
             panelLogin = new Panel();
             lblLoginTitle = new Label();
             lblLoginSubtitle = new Label();
@@ -47,25 +48,12 @@ namespace Cocoalite.Views
             panelLeft.Controls.Add(lblAppSubtitle);
             panelLeft.Controls.Add(lblDescription);
             panelLeft.Controls.Add(lblCompany);
+            panelLeft.Controls.Add(lblLogo);
             panelLeft.Dock = DockStyle.Left;
             panelLeft.Location = new Point(0, 0);
             panelLeft.Name = "panelLeft";
-            panelLeft.Size = new Size(380, 560);
+            panelLeft.Size = new Size(380, 648);
             panelLeft.TabIndex = 0;
-
-
-
-            lblLogo = new Label();
-            lblLogo.AutoSize = false;
-            lblLogo.Location = new Point(115, 35);
-            lblLogo.Name = "lblLogo";
-            lblLogo.Size = new Size(150, 70);
-            lblLogo.Font = new Font("Segoe UI Emoji", 36F, FontStyle.Regular);
-            lblLogo.ForeColor = Color.FromArgb(230, 180, 120);
-            lblLogo.Text = "🌱";
-            lblLogo.TextAlign = ContentAlignment.MiddleCenter;
-            panelLeft.Controls.Add(lblLogo);
-
             // 
             // lblAppName
             // 
@@ -74,7 +62,7 @@ namespace Cocoalite.Views
             lblAppName.ForeColor = Color.White;
             lblAppName.Location = new Point(45, 95);
             lblAppName.Name = "lblAppName";
-            lblAppName.Size = new Size(260, 60);
+            lblAppName.Size = new Size(242, 62);
             lblAppName.TabIndex = 0;
             lblAppName.Text = "CocoaLite";
             // 
@@ -85,7 +73,7 @@ namespace Cocoalite.Views
             lblAppSubtitle.ForeColor = Color.FromArgb(255, 226, 198);
             lblAppSubtitle.Location = new Point(52, 155);
             lblAppSubtitle.Name = "lblAppSubtitle";
-            lblAppSubtitle.Size = new Size(206, 30);
+            lblAppSubtitle.Size = new Size(207, 30);
             lblAppSubtitle.TabIndex = 1;
             lblAppSubtitle.Text = "Cacao Management";
             // 
@@ -106,9 +94,20 @@ namespace Cocoalite.Views
             lblCompany.ForeColor = Color.White;
             lblCompany.Location = new Point(52, 475);
             lblCompany.Name = "lblCompany";
-            lblCompany.Size = new Size(219, 23);
+            lblCompany.Size = new Size(220, 23);
             lblCompany.TabIndex = 3;
             lblCompany.Text = "PT Cacao Prima Nusantara";
+            // 
+            // lblLogo
+            // 
+            lblLogo.Font = new Font("Segoe UI Emoji", 36F);
+            lblLogo.ForeColor = Color.FromArgb(230, 180, 120);
+            lblLogo.Location = new Point(115, 35);
+            lblLogo.Name = "lblLogo";
+            lblLogo.Size = new Size(150, 70);
+            lblLogo.TabIndex = 4;
+            lblLogo.Text = "🌱";
+            lblLogo.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // panelLogin
             // 
@@ -135,7 +134,7 @@ namespace Cocoalite.Views
             lblLoginTitle.ForeColor = Color.FromArgb(74, 44, 30);
             lblLoginTitle.Location = new Point(35, 35);
             lblLoginTitle.Name = "lblLoginTitle";
-            lblLoginTitle.Size = new Size(125, 50);
+            lblLoginTitle.Size = new Size(120, 50);
             lblLoginTitle.TabIndex = 0;
             lblLoginTitle.Text = "Login";
             // 
@@ -146,7 +145,7 @@ namespace Cocoalite.Views
             lblLoginSubtitle.ForeColor = Color.FromArgb(120, 86, 60);
             lblLoginSubtitle.Location = new Point(40, 85);
             lblLoginSubtitle.Name = "lblLoginSubtitle";
-            lblLoginSubtitle.Size = new Size(285, 23);
+            lblLoginSubtitle.Size = new Size(281, 23);
             lblLoginSubtitle.TabIndex = 1;
             lblLoginSubtitle.Text = "Masuk untuk mengakses CocoaLite.";
             // 
@@ -198,7 +197,7 @@ namespace Cocoalite.Views
             chkShowPassword.ForeColor = Color.FromArgb(74, 44, 30);
             chkShowPassword.Location = new Point(40, 270);
             chkShowPassword.Name = "chkShowPassword";
-            chkShowPassword.Size = new Size(137, 24);
+            chkShowPassword.Size = new Size(134, 24);
             chkShowPassword.TabIndex = 6;
             chkShowPassword.Text = "Show password";
             chkShowPassword.UseVisualStyleBackColor = true;
@@ -250,7 +249,7 @@ namespace Cocoalite.Views
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(250, 246, 240);
-            ClientSize = new Size(900, 560);
+            ClientSize = new Size(1142, 648);
             Controls.Add(panelLogin);
             Controls.Add(panelLeft);
             FormBorderStyle = FormBorderStyle.FixedSingle;

@@ -55,11 +55,11 @@
             // lblTitle
             // 
             lblTitle.AutoSize = true;
-            lblTitle.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
             lblTitle.ForeColor = Color.FromArgb(74, 44, 30);
-            lblTitle.Location = new Point(35, 20);
+            lblTitle.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
+            lblTitle.Location = new Point(55, 35);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(269, 46);
+            lblTitle.Size = new Size(266, 46);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Quality Control";
             // 
@@ -68,9 +68,9 @@
             lblSubtitle.AutoSize = true;
             lblSubtitle.Font = new Font("Segoe UI", 10F);
             lblSubtitle.ForeColor = Color.FromArgb(120, 86, 60);
-            lblSubtitle.Location = new Point(40, 66);
+            lblSubtitle.Location = new Point(58, 88);
             lblSubtitle.Name = "lblSubtitle";
-            lblSubtitle.Size = new Size(560, 23);
+            lblSubtitle.Size = new Size(588, 23);
             lblSubtitle.TabIndex = 1;
             lblSubtitle.Text = "Pemeriksaan kualitas kakao berdasarkan moisture, fermentation, dan defect.";
             // 
@@ -101,10 +101,11 @@
             panelForm.Controls.Add(btnUpdate);
             panelForm.Controls.Add(btnDelete);
             panelForm.Controls.Add(btnClear);
-            panelForm.Location = new Point(40, 105);
             panelForm.Name = "panelForm";
-            panelForm.Size = new Size(780, 250);
-            panelForm.TabIndex = 2;
+            panelForm.Location = new Point(55, 135);
+            panelForm.Size = new Size(1050, 260);
+            panelForm.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            panelForm.BorderStyle = BorderStyle.None;
             // 
             // lblReceiving
             // 
@@ -113,7 +114,7 @@
             lblReceiving.ForeColor = Color.FromArgb(74, 44, 30);
             lblReceiving.Location = new Point(20, 18);
             lblReceiving.Name = "lblReceiving";
-            lblReceiving.Size = new Size(77, 20);
+            lblReceiving.Size = new Size(76, 20);
             lblReceiving.TabIndex = 0;
             lblReceiving.Text = "Receiving";
             // 
@@ -133,7 +134,7 @@
             lblMoisture.ForeColor = Color.FromArgb(74, 44, 30);
             lblMoisture.Location = new Point(20, 58);
             lblMoisture.Name = "lblMoisture";
-            lblMoisture.Size = new Size(91, 20);
+            lblMoisture.Size = new Size(89, 20);
             lblMoisture.TabIndex = 2;
             lblMoisture.Text = "Moisture %";
             // 
@@ -151,7 +152,7 @@
             lblFermentation.ForeColor = Color.FromArgb(74, 44, 30);
             lblFermentation.Location = new Point(20, 98);
             lblFermentation.Name = "lblFermentation";
-            lblFermentation.Size = new Size(124, 20);
+            lblFermentation.Size = new Size(121, 20);
             lblFermentation.TabIndex = 4;
             lblFermentation.Text = "Fermentation %";
             // 
@@ -169,7 +170,7 @@
             lblDefect.ForeColor = Color.FromArgb(74, 44, 30);
             lblDefect.Location = new Point(20, 138);
             lblDefect.Name = "lblDefect";
-            lblDefect.Size = new Size(70, 20);
+            lblDefect.Size = new Size(72, 20);
             lblDefect.TabIndex = 6;
             lblDefect.Text = "Defect %";
             // 
@@ -187,7 +188,7 @@
             lblBeanSize.ForeColor = Color.FromArgb(74, 44, 30);
             lblBeanSize.Location = new Point(405, 18);
             lblBeanSize.Name = "lblBeanSize";
-            lblBeanSize.Size = new Size(76, 20);
+            lblBeanSize.Size = new Size(75, 20);
             lblBeanSize.TabIndex = 8;
             lblBeanSize.Text = "Bean Size";
             // 
@@ -239,7 +240,7 @@
             lblQcStatus.ForeColor = Color.FromArgb(74, 44, 30);
             lblQcStatus.Location = new Point(405, 98);
             lblQcStatus.Name = "lblQcStatus";
-            lblQcStatus.Size = new Size(78, 20);
+            lblQcStatus.Size = new Size(77, 20);
             lblQcStatus.TabIndex = 13;
             lblQcStatus.Text = "QC Status";
             // 
@@ -259,7 +260,7 @@
             lblInspectionDate.ForeColor = Color.FromArgb(74, 44, 30);
             lblInspectionDate.Location = new Point(405, 138);
             lblInspectionDate.Name = "lblInspectionDate";
-            lblInspectionDate.Size = new Size(121, 20);
+            lblInspectionDate.Size = new Size(119, 20);
             lblInspectionDate.TabIndex = 15;
             lblInspectionDate.Text = "Inspection Date";
             // 
@@ -278,7 +279,7 @@
             lblNotes.ForeColor = Color.FromArgb(74, 44, 30);
             lblNotes.Location = new Point(20, 178);
             lblNotes.Name = "lblNotes";
-            lblNotes.Size = new Size(49, 20);
+            lblNotes.Size = new Size(51, 20);
             lblNotes.TabIndex = 17;
             lblNotes.Text = "Notes";
             // 
@@ -296,9 +297,9 @@
             btnSave.FlatStyle = FlatStyle.Flat;
             btnSave.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnSave.ForeColor = Color.White;
-            btnSave.Location = new Point(150, 215);
+            btnSave.Location = new Point(175, 205);
+            btnSave.Size = new Size(140, 40);
             btnSave.Name = "btnSave";
-            btnSave.Size = new Size(120, 30);
             btnSave.TabIndex = 19;
             btnSave.Text = "Save";
             btnSave.UseVisualStyleBackColor = false;
@@ -311,9 +312,9 @@
             btnUpdate.FlatStyle = FlatStyle.Flat;
             btnUpdate.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnUpdate.ForeColor = Color.White;
-            btnUpdate.Location = new Point(290, 215);
+            btnUpdate.Location = new Point(390, 205);
+            btnUpdate.Size = new Size(140, 40);
             btnUpdate.Name = "btnUpdate";
-            btnUpdate.Size = new Size(120, 30);
             btnUpdate.TabIndex = 20;
             btnUpdate.Text = "Update";
             btnUpdate.UseVisualStyleBackColor = false;
@@ -326,9 +327,9 @@
             btnDelete.FlatStyle = FlatStyle.Flat;
             btnDelete.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnDelete.ForeColor = Color.White;
-            btnDelete.Location = new Point(430, 215);
+            btnDelete.Location = new Point(605, 205);
+            btnDelete.Size = new Size(140, 40);
             btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(120, 30);
             btnDelete.TabIndex = 21;
             btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = false;
@@ -341,9 +342,9 @@
             btnClear.FlatStyle = FlatStyle.Flat;
             btnClear.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnClear.ForeColor = Color.FromArgb(74, 44, 30);
-            btnClear.Location = new Point(570, 215);
+            btnClear.Location = new Point(820, 205);
+            btnClear.Size = new Size(140, 40);
             btnClear.Name = "btnClear";
-            btnClear.Size = new Size(120, 30);
             btnClear.TabIndex = 22;
             btnClear.Text = "Clear";
             btnClear.UseVisualStyleBackColor = false;
@@ -365,9 +366,11 @@
             lblTableTitle.AutoSize = true;
             lblTableTitle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             lblTableTitle.ForeColor = Color.FromArgb(74, 44, 30);
-            lblTableTitle.Location = new Point(20, 10);
+            panelTable.Location = new Point(55, 435);
+            panelTable.Size = new Size(1050, 250);
+            panelTable.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panelTable.BorderStyle = BorderStyle.None;
             lblTableTitle.Name = "lblTableTitle";
-            lblTableTitle.Size = new Size(214, 23);
             lblTableTitle.TabIndex = 0;
             lblTableTitle.Text = "Daftar Quality Control";
             // 
@@ -376,25 +379,27 @@
             dgvQualityControl.BackgroundColor = Color.White;
             dgvQualityControl.BorderStyle = BorderStyle.None;
             dgvQualityControl.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvQualityControl.Location = new Point(20, 38);
+            dgvQualityControl.Location = new Point(25, 60);
+            dgvQualityControl.Size = new Size(1000, 165);
+            dgvQualityControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvQualityControl.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvQualityControl.RowHeadersVisible = false;
             dgvQualityControl.Name = "dgvQualityControl";
             dgvQualityControl.RowHeadersWidth = 51;
-            dgvQualityControl.Size = new Size(735, 70);
             dgvQualityControl.TabIndex = 1;
             dgvQualityControl.CellClick += dgvQualityControl_CellClick;
             // 
-            // FormQualityControl
+            // QualityControlControl
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(250, 246, 240);
-            ClientSize = new Size(860, 520);
             Controls.Add(lblTitle);
             Controls.Add(lblSubtitle);
             Controls.Add(panelForm);
             Controls.Add(panelTable);
-            Name = "FormQualityControl";
-            Text = "FormQualityControl";
+            Name = "QualityControlControl";
+            Size = new Size(1154, 705);
             Load += QualityControlControl_Load;
             panelForm.ResumeLayout(false);
             panelForm.PerformLayout();

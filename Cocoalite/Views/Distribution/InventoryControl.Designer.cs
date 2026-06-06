@@ -44,11 +44,11 @@
             // lblTitle
             // 
             lblTitle.AutoSize = true;
-            lblTitle.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+            lblTitle.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
+            lblTitle.Location = new Point(55, 35);
             lblTitle.ForeColor = Color.FromArgb(74, 44, 30);
-            lblTitle.Location = new Point(35, 25);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(365, 46);
+            lblTitle.Size = new Size(373, 46);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Manajemen Inventory";
             // 
@@ -57,9 +57,9 @@
             lblSubtitle.AutoSize = true;
             lblSubtitle.Font = new Font("Segoe UI", 10F);
             lblSubtitle.ForeColor = Color.FromArgb(120, 86, 60);
-            lblSubtitle.Location = new Point(40, 72);
+            lblSubtitle.Location = new Point(58, 88);
             lblSubtitle.Name = "lblSubtitle";
-            lblSubtitle.Size = new Size(520, 23);
+            lblSubtitle.Size = new Size(466, 23);
             lblSubtitle.TabIndex = 1;
             lblSubtitle.Text = "Kelola stok batch kakao dan lokasi penyimpanan di gudang.";
             // 
@@ -79,9 +79,11 @@
             panelForm.Controls.Add(btnUpdate);
             panelForm.Controls.Add(btnDelete);
             panelForm.Controls.Add(btnClear);
-            panelForm.Location = new Point(40, 120);
+            panelForm.Location = new Point(55, 135);
+            panelForm.Size = new Size(1050, 200);
+            panelForm.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            panelForm.BorderStyle = BorderStyle.None;
             panelForm.Name = "panelForm";
-            panelForm.Size = new Size(780, 190);
             panelForm.TabIndex = 2;
             // 
             // lblBatch
@@ -91,7 +93,7 @@
             lblBatch.ForeColor = Color.FromArgb(74, 44, 30);
             lblBatch.Location = new Point(25, 22);
             lblBatch.Name = "lblBatch";
-            lblBatch.Size = new Size(47, 20);
+            lblBatch.Size = new Size(49, 20);
             lblBatch.TabIndex = 0;
             lblBatch.Text = "Batch";
             // 
@@ -111,7 +113,7 @@
             lblStockQuantity.ForeColor = Color.FromArgb(74, 44, 30);
             lblStockQuantity.Location = new Point(25, 62);
             lblStockQuantity.Name = "lblStockQuantity";
-            lblStockQuantity.Size = new Size(114, 20);
+            lblStockQuantity.Size = new Size(112, 20);
             lblStockQuantity.TabIndex = 2;
             lblStockQuantity.Text = "Stock Quantity";
             // 
@@ -129,7 +131,7 @@
             lblWarehouseLocation.ForeColor = Color.FromArgb(74, 44, 30);
             lblWarehouseLocation.Location = new Point(430, 22);
             lblWarehouseLocation.Name = "lblWarehouseLocation";
-            lblWarehouseLocation.Size = new Size(148, 20);
+            lblWarehouseLocation.Size = new Size(151, 20);
             lblWarehouseLocation.TabIndex = 4;
             lblWarehouseLocation.Text = "Warehouse Location";
             // 
@@ -147,7 +149,7 @@
             lblInventoryStatus.ForeColor = Color.FromArgb(74, 44, 30);
             lblInventoryStatus.Location = new Point(430, 62);
             lblInventoryStatus.Name = "lblInventoryStatus";
-            lblInventoryStatus.Size = new Size(125, 20);
+            lblInventoryStatus.Size = new Size(126, 20);
             lblInventoryStatus.TabIndex = 6;
             lblInventoryStatus.Text = "Inventory Status";
             // 
@@ -166,9 +168,9 @@
             btnSave.FlatStyle = FlatStyle.Flat;
             btnSave.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnSave.ForeColor = Color.White;
-            btnSave.Location = new Point(180, 120);
+            btnSave.Location = new Point(175, 145);
+            btnSave.Size = new Size(140, 40);
             btnSave.Name = "btnSave";
-            btnSave.Size = new Size(120, 35);
             btnSave.TabIndex = 8;
             btnSave.Text = "Save";
             btnSave.UseVisualStyleBackColor = false;
@@ -181,9 +183,9 @@
             btnUpdate.FlatStyle = FlatStyle.Flat;
             btnUpdate.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnUpdate.ForeColor = Color.White;
-            btnUpdate.Location = new Point(320, 120);
+            btnUpdate.Location = new Point(390, 145);
+            btnUpdate.Size = new Size(140, 40);
             btnUpdate.Name = "btnUpdate";
-            btnUpdate.Size = new Size(120, 35);
             btnUpdate.TabIndex = 9;
             btnUpdate.Text = "Update";
             btnUpdate.UseVisualStyleBackColor = false;
@@ -196,9 +198,9 @@
             btnDelete.FlatStyle = FlatStyle.Flat;
             btnDelete.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnDelete.ForeColor = Color.White;
-            btnDelete.Location = new Point(460, 120);
+            btnDelete.Location = new Point(605, 145);
+            btnDelete.Size = new Size(140, 40);
             btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(120, 35);
             btnDelete.TabIndex = 10;
             btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = false;
@@ -211,9 +213,9 @@
             btnClear.FlatStyle = FlatStyle.Flat;
             btnClear.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnClear.ForeColor = Color.FromArgb(74, 44, 30);
-            btnClear.Location = new Point(600, 120);
+            btnClear.Location = new Point(820, 145);
+            btnClear.Size = new Size(140, 40);
             btnClear.Name = "btnClear";
-            btnClear.Size = new Size(120, 35);
             btnClear.TabIndex = 11;
             btnClear.Text = "Clear";
             btnClear.UseVisualStyleBackColor = false;
@@ -225,9 +227,11 @@
             panelTable.BorderStyle = BorderStyle.FixedSingle;
             panelTable.Controls.Add(lblTableTitle);
             panelTable.Controls.Add(dgvInventory);
-            panelTable.Location = new Point(40, 335);
+            panelTable.Location = new Point(55, 375);
+            panelTable.Size = new Size(1050, 310);
+            panelTable.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panelTable.BorderStyle = BorderStyle.None; ;
             panelTable.Name = "panelTable";
-            panelTable.Size = new Size(780, 160);
             panelTable.TabIndex = 3;
             // 
             // lblTableTitle
@@ -237,7 +241,7 @@
             lblTableTitle.ForeColor = Color.FromArgb(74, 44, 30);
             lblTableTitle.Location = new Point(20, 12);
             lblTableTitle.Name = "lblTableTitle";
-            lblTableTitle.Size = new Size(135, 23);
+            lblTableTitle.Size = new Size(144, 23);
             lblTableTitle.TabIndex = 0;
             lblTableTitle.Text = "Daftar Inventory";
             // 
@@ -246,25 +250,27 @@
             dgvInventory.BackgroundColor = Color.White;
             dgvInventory.BorderStyle = BorderStyle.None;
             dgvInventory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvInventory.Location = new Point(20, 42);
+            dgvInventory.Location = new Point(25, 60);
+            dgvInventory.Size = new Size(1000, 225);
+            dgvInventory.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvInventory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvInventory.RowHeadersVisible = false;
             dgvInventory.Name = "dgvInventory";
             dgvInventory.RowHeadersWidth = 51;
-            dgvInventory.Size = new Size(735, 100);
             dgvInventory.TabIndex = 1;
             dgvInventory.CellClick += dgvInventory_CellClick;
             // 
-            // FormInventory
+            // InventoryControl
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(250, 246, 240);
-            ClientSize = new Size(860, 520);
             Controls.Add(lblTitle);
             Controls.Add(lblSubtitle);
             Controls.Add(panelForm);
             Controls.Add(panelTable);
-            Name = "FormInventory";
-            Text = "FormInventory";
+            Name = "InventoryControl";
+            Size = new Size(1152, 694);
             Load += InventoryControl_Load;
             panelForm.ResumeLayout(false);
             panelForm.PerformLayout();
