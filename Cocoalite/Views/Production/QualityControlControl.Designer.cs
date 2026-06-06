@@ -30,7 +30,7 @@
             lblDefect = new Label();
             txtDefect = new TextBox();
             lblBeanSize = new Label();
-            txtBeanSize = new TextBox();
+            cbBeanSize = new ComboBox();
             lblGrade = new Label();
             txtGrade = new TextBox();
             btnDetermineGrade = new Button();
@@ -77,7 +77,7 @@
             // panelForm
             // 
             panelForm.BackColor = Color.White;
-            panelForm.BorderStyle = BorderStyle.FixedSingle;
+            panelForm.BorderStyle = BorderStyle.None;
             panelForm.Controls.Add(lblReceiving);
             panelForm.Controls.Add(cbReceiving);
             panelForm.Controls.Add(lblMoisture);
@@ -87,7 +87,7 @@
             panelForm.Controls.Add(lblDefect);
             panelForm.Controls.Add(txtDefect);
             panelForm.Controls.Add(lblBeanSize);
-            panelForm.Controls.Add(txtBeanSize);
+            panelForm.Controls.Add(cbBeanSize);
             panelForm.Controls.Add(lblGrade);
             panelForm.Controls.Add(txtGrade);
             panelForm.Controls.Add(btnDetermineGrade);
@@ -103,192 +103,174 @@
             panelForm.Controls.Add(btnClear);
             panelForm.Name = "panelForm";
             panelForm.Location = new Point(55, 135);
-            panelForm.Size = new Size(1050, 260);
+            panelForm.Size = new Size(1050, 285);
             panelForm.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             panelForm.BorderStyle = BorderStyle.None;
-            // 
             // lblReceiving
-            // 
-            lblReceiving.AutoSize = true;
+            lblReceiving.AutoSize = false;
             lblReceiving.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblReceiving.ForeColor = Color.FromArgb(74, 44, 30);
-            lblReceiving.Location = new Point(20, 18);
+            lblReceiving.Location = new Point(45, 35);
             lblReceiving.Name = "lblReceiving";
-            lblReceiving.Size = new Size(76, 20);
-            lblReceiving.TabIndex = 0;
+            lblReceiving.Size = new Size(150, 27);
             lblReceiving.Text = "Receiving";
-            // 
+            lblReceiving.TextAlign = ContentAlignment.MiddleLeft;
+
             // cbReceiving
-            // 
             cbReceiving.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbReceiving.FormattingEnabled = true;
-            cbReceiving.Location = new Point(150, 15);
-            cbReceiving.Name = "cbReceiving";
-            cbReceiving.Size = new Size(220, 28);
-            cbReceiving.TabIndex = 1;
-            // 
+            cbReceiving.Font = new Font("Segoe UI", 9F);
+            cbReceiving.Location = new Point(220, 35);
+            cbReceiving.Size = new Size(310, 28);
+
             // lblMoisture
-            // 
-            lblMoisture.AutoSize = true;
+            lblMoisture.AutoSize = false;
             lblMoisture.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblMoisture.ForeColor = Color.FromArgb(74, 44, 30);
-            lblMoisture.Location = new Point(20, 58);
-            lblMoisture.Name = "lblMoisture";
-            lblMoisture.Size = new Size(89, 20);
-            lblMoisture.TabIndex = 2;
+            lblMoisture.Location = new Point(45, 78);
+            lblMoisture.Size = new Size(150, 27);
             lblMoisture.Text = "Moisture %";
-            // 
+            lblMoisture.TextAlign = ContentAlignment.MiddleLeft;
+
             // txtMoisture
-            // 
-            txtMoisture.Location = new Point(150, 55);
-            txtMoisture.Name = "txtMoisture";
-            txtMoisture.Size = new Size(220, 27);
-            txtMoisture.TabIndex = 3;
-            // 
+            txtMoisture.Font = new Font("Segoe UI", 9F);
+            txtMoisture.Location = new Point(220, 78);
+            txtMoisture.Size = new Size(310, 27);
+
             // lblFermentation
-            // 
-            lblFermentation.AutoSize = true;
+            lblFermentation.AutoSize = false;
             lblFermentation.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblFermentation.ForeColor = Color.FromArgb(74, 44, 30);
-            lblFermentation.Location = new Point(20, 98);
-            lblFermentation.Name = "lblFermentation";
-            lblFermentation.Size = new Size(121, 20);
-            lblFermentation.TabIndex = 4;
+            lblFermentation.Location = new Point(45, 121);
+            lblFermentation.Size = new Size(150, 27);
             lblFermentation.Text = "Fermentation %";
-            // 
+            lblFermentation.TextAlign = ContentAlignment.MiddleLeft;
+
             // txtFermentation
-            // 
-            txtFermentation.Location = new Point(150, 95);
-            txtFermentation.Name = "txtFermentation";
-            txtFermentation.Size = new Size(220, 27);
-            txtFermentation.TabIndex = 5;
-            // 
+            txtFermentation.Font = new Font("Segoe UI", 9F);
+            txtFermentation.Location = new Point(220, 121);
+            txtFermentation.Size = new Size(310, 27);
+
             // lblDefect
-            // 
-            lblDefect.AutoSize = true;
+            lblDefect.AutoSize = false;
             lblDefect.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblDefect.ForeColor = Color.FromArgb(74, 44, 30);
-            lblDefect.Location = new Point(20, 138);
-            lblDefect.Name = "lblDefect";
-            lblDefect.Size = new Size(72, 20);
-            lblDefect.TabIndex = 6;
+            lblDefect.Location = new Point(45, 164);
+            lblDefect.Size = new Size(150, 27);
             lblDefect.Text = "Defect %";
-            // 
+            lblDefect.TextAlign = ContentAlignment.MiddleLeft;
+
             // txtDefect
-            // 
-            txtDefect.Location = new Point(150, 135);
-            txtDefect.Name = "txtDefect";
-            txtDefect.Size = new Size(220, 27);
-            txtDefect.TabIndex = 7;
-            // 
+            txtDefect.Font = new Font("Segoe UI", 9F);
+            txtDefect.Location = new Point(220, 164);
+            txtDefect.Size = new Size(310, 27);
+
+            // lblNotes
+            lblNotes.AutoSize = false;
+            lblNotes.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblNotes.ForeColor = Color.FromArgb(74, 44, 30);
+            lblNotes.Location = new Point(45, 207);
+            lblNotes.Size = new Size(150, 27);
+            lblNotes.Text = "Notes";
+            lblNotes.TextAlign = ContentAlignment.MiddleLeft;
+
+            // txtNotes
+            txtNotes.Font = new Font("Segoe UI", 9F);
+            txtNotes.Location = new Point(220, 207);
+            txtNotes.Size = new Size(310, 27);
+
             // lblBeanSize
-            // 
-            lblBeanSize.AutoSize = true;
+            lblBeanSize.AutoSize = false;
             lblBeanSize.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblBeanSize.ForeColor = Color.FromArgb(74, 44, 30);
-            lblBeanSize.Location = new Point(405, 18);
-            lblBeanSize.Name = "lblBeanSize";
-            lblBeanSize.Size = new Size(75, 20);
-            lblBeanSize.TabIndex = 8;
+            lblBeanSize.Location = new Point(610, 35);
+            lblBeanSize.Size = new Size(150, 27);
             lblBeanSize.Text = "Bean Size";
-            // 
-            // txtBeanSize
-            // 
-            txtBeanSize.Location = new Point(535, 15);
-            txtBeanSize.Name = "txtBeanSize";
-            txtBeanSize.Size = new Size(205, 27);
-            txtBeanSize.TabIndex = 9;
-            // 
+            lblBeanSize.TextAlign = ContentAlignment.MiddleLeft;
+
+            // cbBeanSize
+            cbBeanSize.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbBeanSize.Font = new Font("Segoe UI", 9F);
+            cbBeanSize.FormattingEnabled = true;
+            cbBeanSize.Items.AddRange(new object[]
+            {
+                 "Small",
+                 "Medium",
+                 "Large"
+            });
+            cbBeanSize.Location = new Point(790, 35);
+            cbBeanSize.Name = "cbBeanSize";
+            cbBeanSize.Size = new Size(260, 28);
+            cbBeanSize.TabIndex = 10;
+
             // lblGrade
-            // 
-            lblGrade.AutoSize = true;
+            lblGrade.AutoSize = false;
             lblGrade.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblGrade.ForeColor = Color.FromArgb(74, 44, 30);
-            lblGrade.Location = new Point(405, 58);
-            lblGrade.Name = "lblGrade";
-            lblGrade.Size = new Size(51, 20);
-            lblGrade.TabIndex = 10;
+            lblGrade.Location = new Point(610, 78);
+            lblGrade.Size = new Size(150, 27);
             lblGrade.Text = "Grade";
-            // 
+            lblGrade.TextAlign = ContentAlignment.MiddleLeft;
+
             // txtGrade
-            // 
-            txtGrade.Location = new Point(535, 55);
+            txtGrade.Font = new Font("Segoe UI", 9F);
+            txtGrade.Location = new Point(790, 78);
             txtGrade.Name = "txtGrade";
             txtGrade.ReadOnly = true;
-            txtGrade.Size = new Size(120, 27);
-            txtGrade.TabIndex = 11;
-            // 
+            txtGrade.Size = new Size(155, 27);
+            txtGrade.TabIndex = 12;
+
             // btnDetermineGrade
-            // 
             btnDetermineGrade.BackColor = Color.FromArgb(92, 49, 13);
             btnDetermineGrade.FlatAppearance.BorderSize = 0;
             btnDetermineGrade.FlatStyle = FlatStyle.Flat;
             btnDetermineGrade.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
             btnDetermineGrade.ForeColor = Color.White;
-            btnDetermineGrade.Location = new Point(665, 55);
+            btnDetermineGrade.Location = new Point(960, 78);
             btnDetermineGrade.Name = "btnDetermineGrade";
-            btnDetermineGrade.Size = new Size(75, 28);
-            btnDetermineGrade.TabIndex = 12;
+            btnDetermineGrade.Size = new Size(90, 27);
+            btnDetermineGrade.TabIndex = 13;
             btnDetermineGrade.Text = "Grade";
             btnDetermineGrade.UseVisualStyleBackColor = false;
             btnDetermineGrade.Click += btnDetermineGrade_Click;
-            // 
+
             // lblQcStatus
-            // 
-            lblQcStatus.AutoSize = true;
+            lblQcStatus.AutoSize = false;
             lblQcStatus.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblQcStatus.ForeColor = Color.FromArgb(74, 44, 30);
-            lblQcStatus.Location = new Point(405, 98);
-            lblQcStatus.Name = "lblQcStatus";
-            lblQcStatus.Size = new Size(77, 20);
-            lblQcStatus.TabIndex = 13;
+            lblQcStatus.Location = new Point(610, 121);
+            lblQcStatus.Size = new Size(150, 27);
             lblQcStatus.Text = "QC Status";
-            // 
+            lblQcStatus.TextAlign = ContentAlignment.MiddleLeft;
+
             // cbQcStatus
-            // 
             cbQcStatus.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbQcStatus.Font = new Font("Segoe UI", 9F);
             cbQcStatus.FormattingEnabled = true;
-            cbQcStatus.Location = new Point(535, 95);
+            cbQcStatus.Items.AddRange(new object[]
+            {
+                "Approved",
+                "Rejected"
+            });
+            cbQcStatus.Location = new Point(790, 121);
             cbQcStatus.Name = "cbQcStatus";
-            cbQcStatus.Size = new Size(205, 28);
-            cbQcStatus.TabIndex = 14;
-            // 
+            cbQcStatus.Size = new Size(260, 28);
+            cbQcStatus.TabIndex = 15;
+
             // lblInspectionDate
-            // 
-            lblInspectionDate.AutoSize = true;
+            lblInspectionDate.AutoSize = false;
             lblInspectionDate.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblInspectionDate.ForeColor = Color.FromArgb(74, 44, 30);
-            lblInspectionDate.Location = new Point(405, 138);
-            lblInspectionDate.Name = "lblInspectionDate";
-            lblInspectionDate.Size = new Size(119, 20);
-            lblInspectionDate.TabIndex = 15;
+            lblInspectionDate.Location = new Point(610, 164);
+            lblInspectionDate.Size = new Size(150, 27);
             lblInspectionDate.Text = "Inspection Date";
-            // 
+            lblInspectionDate.TextAlign = ContentAlignment.MiddleLeft;
+
             // dtpInspectionDate
-            // 
+            dtpInspectionDate.Font = new Font("Segoe UI", 9F);
             dtpInspectionDate.Format = DateTimePickerFormat.Short;
-            dtpInspectionDate.Location = new Point(535, 135);
-            dtpInspectionDate.Name = "dtpInspectionDate";
-            dtpInspectionDate.Size = new Size(205, 27);
-            dtpInspectionDate.TabIndex = 16;
-            // 
-            // lblNotes
-            // 
-            lblNotes.AutoSize = true;
-            lblNotes.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblNotes.ForeColor = Color.FromArgb(74, 44, 30);
-            lblNotes.Location = new Point(20, 178);
-            lblNotes.Name = "lblNotes";
-            lblNotes.Size = new Size(51, 20);
-            lblNotes.TabIndex = 17;
-            lblNotes.Text = "Notes";
-            // 
-            // txtNotes
-            // 
-            txtNotes.Location = new Point(150, 175);
-            txtNotes.Name = "txtNotes";
-            txtNotes.Size = new Size(590, 27);
-            txtNotes.TabIndex = 18;
+            dtpInspectionDate.Location = new Point(790, 164);
+            dtpInspectionDate.Size = new Size(260, 27);
+
             // 
             // btnSave
             // 
@@ -297,7 +279,7 @@
             btnSave.FlatStyle = FlatStyle.Flat;
             btnSave.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnSave.ForeColor = Color.White;
-            btnSave.Location = new Point(175, 205);
+            btnSave.Location = new Point(220, 245);
             btnSave.Size = new Size(140, 40);
             btnSave.Name = "btnSave";
             btnSave.TabIndex = 19;
@@ -312,7 +294,7 @@
             btnUpdate.FlatStyle = FlatStyle.Flat;
             btnUpdate.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnUpdate.ForeColor = Color.White;
-            btnUpdate.Location = new Point(390, 205);
+            btnUpdate.Location = new Point(430, 245);
             btnUpdate.Size = new Size(140, 40);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.TabIndex = 20;
@@ -327,7 +309,7 @@
             btnDelete.FlatStyle = FlatStyle.Flat;
             btnDelete.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnDelete.ForeColor = Color.White;
-            btnDelete.Location = new Point(605, 205);
+            btnDelete.Location = new Point(640, 245);
             btnDelete.Size = new Size(140, 40);
             btnDelete.Name = "btnDelete";
             btnDelete.TabIndex = 21;
@@ -342,7 +324,7 @@
             btnClear.FlatStyle = FlatStyle.Flat;
             btnClear.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnClear.ForeColor = Color.FromArgb(74, 44, 30);
-            btnClear.Location = new Point(820, 205);
+            btnClear.Location = new Point(850, 245);
             btnClear.Size = new Size(140, 40);
             btnClear.Name = "btnClear";
             btnClear.TabIndex = 22;
@@ -353,26 +335,27 @@
             // panelTable
             // 
             panelTable.BackColor = Color.White;
-            panelTable.BorderStyle = BorderStyle.FixedSingle;
+            panelTable.BorderStyle = BorderStyle.None;
             panelTable.Controls.Add(lblTableTitle);
             panelTable.Controls.Add(dgvQualityControl);
-            panelTable.Location = new Point(40, 370);
+            panelTable.Location = new Point(55, 465);
             panelTable.Name = "panelTable";
-            panelTable.Size = new Size(780, 125);
+            panelTable.Size = new Size(1050, 270);
+            panelTable.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panelTable.TabIndex = 3;
+
             // 
             // lblTableTitle
             // 
             lblTableTitle.AutoSize = true;
-            lblTableTitle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblTableTitle.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             lblTableTitle.ForeColor = Color.FromArgb(74, 44, 30);
-            panelTable.Location = new Point(55, 435);
-            panelTable.Size = new Size(1050, 250);
-            panelTable.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            panelTable.BorderStyle = BorderStyle.None;
+            lblTableTitle.Location = new Point(25, 20);
             lblTableTitle.Name = "lblTableTitle";
+            lblTableTitle.Size = new Size(220, 25);
             lblTableTitle.TabIndex = 0;
             lblTableTitle.Text = "Daftar Quality Control";
+
             // 
             // dgvQualityControl
             // 
@@ -380,14 +363,20 @@
             dgvQualityControl.BorderStyle = BorderStyle.None;
             dgvQualityControl.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvQualityControl.Location = new Point(25, 60);
-            dgvQualityControl.Size = new Size(1000, 165);
+            dgvQualityControl.Name = "dgvQualityControl";
+            dgvQualityControl.RowHeadersVisible = false;
+            dgvQualityControl.RowHeadersWidth = 51;
+            dgvQualityControl.Size = new Size(1000, 185);
             dgvQualityControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvQualityControl.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvQualityControl.RowHeadersVisible = false;
-            dgvQualityControl.Name = "dgvQualityControl";
-            dgvQualityControl.RowHeadersWidth = 51;
+            dgvQualityControl.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvQualityControl.MultiSelect = false;
+            dgvQualityControl.ReadOnly = true;
+            dgvQualityControl.AllowUserToAddRows = false;
+            dgvQualityControl.AllowUserToDeleteRows = false;
             dgvQualityControl.TabIndex = 1;
             dgvQualityControl.CellClick += dgvQualityControl_CellClick;
+           
             // 
             // QualityControlControl
             // 
@@ -424,7 +413,7 @@
         private Label lblDefect;
         private TextBox txtDefect;
         private Label lblBeanSize;
-        private TextBox txtBeanSize;
+        private ComboBox cbBeanSize;
         private Label lblGrade;
         private TextBox txtGrade;
         private Button btnDetermineGrade;

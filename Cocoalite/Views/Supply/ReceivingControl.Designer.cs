@@ -91,21 +91,22 @@
             panelForm.Controls.Add(btnClear);
             panelForm.Location = new Point(55, 135);
             panelForm.Name = "panelForm";
-            panelForm.Size = new Size(1050, 210);
+            panelForm.Size = new Size(1050, 230);
             panelForm.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             panelForm.TabIndex = 2;
 
             // 
             // lblSupplier
             // 
-            lblSupplier.AutoSize = true;
+            lblSupplier.AutoSize = false;
             lblSupplier.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblSupplier.ForeColor = Color.FromArgb(74, 44, 30);
-            lblSupplier.Location = new Point(35, 35);
+            lblSupplier.Location = new Point(45, 35);
             lblSupplier.Name = "lblSupplier";
-            lblSupplier.Size = new Size(66, 20);
+            lblSupplier.Size = new Size(150, 27);
             lblSupplier.TabIndex = 0;
             lblSupplier.Text = "Supplier";
+            lblSupplier.TextAlign = ContentAlignment.MiddleLeft;
 
             // 
             // cbSupplier
@@ -113,95 +114,99 @@
             cbSupplier.DropDownStyle = ComboBoxStyle.DropDownList;
             cbSupplier.Font = new Font("Segoe UI", 9F);
             cbSupplier.FormattingEnabled = true;
-            cbSupplier.Location = new Point(175, 32);
+            cbSupplier.Location = new Point(220, 35);
             cbSupplier.Name = "cbSupplier";
-            cbSupplier.Size = new Size(300, 28);
+            cbSupplier.Size = new Size(310, 28);
             cbSupplier.TabIndex = 1;
 
             // 
             // lblReceivingCode
             // 
-            lblReceivingCode.AutoSize = true;
+            lblReceivingCode.AutoSize = false;
             lblReceivingCode.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblReceivingCode.ForeColor = Color.FromArgb(74, 44, 30);
-            lblReceivingCode.Location = new Point(35, 75);
+            lblReceivingCode.Location = new Point(45, 78);
             lblReceivingCode.Name = "lblReceivingCode";
-            lblReceivingCode.Size = new Size(115, 20);
+            lblReceivingCode.Size = new Size(150, 27);
             lblReceivingCode.TabIndex = 2;
             lblReceivingCode.Text = "Receiving Code";
+            lblReceivingCode.TextAlign = ContentAlignment.MiddleLeft;
 
             // 
             // txtReceivingCode
             // 
             txtReceivingCode.Font = new Font("Segoe UI", 9F);
-            txtReceivingCode.Location = new Point(175, 72);
+            txtReceivingCode.Location = new Point(220, 78);
             txtReceivingCode.Name = "txtReceivingCode";
-            txtReceivingCode.Size = new Size(300, 27);
+            txtReceivingCode.Size = new Size(310, 27);
             txtReceivingCode.TabIndex = 3;
 
             // 
             // lblVehicleNumber
             // 
-            lblVehicleNumber.AutoSize = true;
+            lblVehicleNumber.AutoSize = false;
             lblVehicleNumber.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblVehicleNumber.ForeColor = Color.FromArgb(74, 44, 30);
-            lblVehicleNumber.Location = new Point(35, 115);
+            lblVehicleNumber.Location = new Point(45, 121);
             lblVehicleNumber.Name = "lblVehicleNumber";
-            lblVehicleNumber.Size = new Size(120, 20);
-            lblVehicleNumber.TabIndex = 8;
+            lblVehicleNumber.Size = new Size(150, 27);
+            lblVehicleNumber.TabIndex = 4;
             lblVehicleNumber.Text = "Vehicle Number";
+            lblVehicleNumber.TextAlign = ContentAlignment.MiddleLeft;
 
             // 
             // txtVehicleNumber
             // 
             txtVehicleNumber.Font = new Font("Segoe UI", 9F);
-            txtVehicleNumber.Location = new Point(175, 112);
+            txtVehicleNumber.Location = new Point(220, 121);
             txtVehicleNumber.Name = "txtVehicleNumber";
-            txtVehicleNumber.Size = new Size(300, 27);
-            txtVehicleNumber.TabIndex = 9;
+            txtVehicleNumber.Size = new Size(310, 27);
+            txtVehicleNumber.TabIndex = 5;
 
             // 
             // lblReceivingDate
             // 
-            lblReceivingDate.AutoSize = true;
+            lblReceivingDate.AutoSize = false;
             lblReceivingDate.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblReceivingDate.ForeColor = Color.FromArgb(74, 44, 30);
-            lblReceivingDate.Location = new Point(560, 35);
+            lblReceivingDate.Location = new Point(610, 35);
             lblReceivingDate.Name = "lblReceivingDate";
-            lblReceivingDate.Size = new Size(113, 20);
-            lblReceivingDate.TabIndex = 4;
+            lblReceivingDate.Size = new Size(150, 27);
+            lblReceivingDate.TabIndex = 6;
             lblReceivingDate.Text = "Receiving Date";
+            lblReceivingDate.TextAlign = ContentAlignment.MiddleLeft;
 
             // 
             // dtpReceivingDate
             // 
             dtpReceivingDate.Font = new Font("Segoe UI", 9F);
             dtpReceivingDate.Format = DateTimePickerFormat.Short;
-            dtpReceivingDate.Location = new Point(700, 32);
+            dtpReceivingDate.Location = new Point(790, 35);
             dtpReceivingDate.Name = "dtpReceivingDate";
             dtpReceivingDate.Size = new Size(260, 27);
-            dtpReceivingDate.TabIndex = 5;
+            dtpReceivingDate.TabIndex = 7;
 
             // 
             // lblCocoaWeight
             // 
-            lblCocoaWeight.AutoSize = true;
+            lblCocoaWeight.AutoSize = false;
             lblCocoaWeight.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblCocoaWeight.ForeColor = Color.FromArgb(74, 44, 30);
-            lblCocoaWeight.Location = new Point(560, 75);
+            lblCocoaWeight.Location = new Point(610, 78);
             lblCocoaWeight.Name = "lblCocoaWeight";
-            lblCocoaWeight.Size = new Size(106, 20);
-            lblCocoaWeight.TabIndex = 6;
+            lblCocoaWeight.Size = new Size(150, 27);
+            lblCocoaWeight.TabIndex = 8;
             lblCocoaWeight.Text = "Cocoa Weight";
+            lblCocoaWeight.TextAlign = ContentAlignment.MiddleLeft;
 
             // 
             // txtCocoaWeight
             // 
             txtCocoaWeight.Font = new Font("Segoe UI", 9F);
-            txtCocoaWeight.Location = new Point(700, 72);
+            txtCocoaWeight.Location = new Point(790, 78);
             txtCocoaWeight.Name = "txtCocoaWeight";
             txtCocoaWeight.Size = new Size(260, 27);
-            txtCocoaWeight.TabIndex = 7;
+            txtCocoaWeight.TabIndex = 9;
 
             // 
             // btnSave
@@ -211,7 +216,7 @@
             btnSave.FlatStyle = FlatStyle.Flat;
             btnSave.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnSave.ForeColor = Color.White;
-            btnSave.Location = new Point(175, 155);
+            btnSave.Location = new Point(220, 170);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(140, 40);
             btnSave.TabIndex = 10;
@@ -227,7 +232,7 @@
             btnUpdate.FlatStyle = FlatStyle.Flat;
             btnUpdate.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnUpdate.ForeColor = Color.White;
-            btnUpdate.Location = new Point(390, 155);
+            btnUpdate.Location = new Point(430, 170);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(140, 40);
             btnUpdate.TabIndex = 11;
@@ -243,7 +248,7 @@
             btnDelete.FlatStyle = FlatStyle.Flat;
             btnDelete.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnDelete.ForeColor = Color.White;
-            btnDelete.Location = new Point(605, 155);
+            btnDelete.Location = new Point(640, 170);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(140, 40);
             btnDelete.TabIndex = 12;
@@ -259,7 +264,7 @@
             btnClear.FlatStyle = FlatStyle.Flat;
             btnClear.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnClear.ForeColor = Color.FromArgb(74, 44, 30);
-            btnClear.Location = new Point(820, 155);
+            btnClear.Location = new Point(850, 170);
             btnClear.Name = "btnClear";
             btnClear.Size = new Size(140, 40);
             btnClear.TabIndex = 13;
@@ -274,9 +279,9 @@
             panelTable.BorderStyle = BorderStyle.None;
             panelTable.Controls.Add(lblTableTitle);
             panelTable.Controls.Add(dgvReceiving);
-            panelTable.Location = new Point(55, 385);
+            panelTable.Location = new Point(55, 405);
             panelTable.Name = "panelTable";
-            panelTable.Size = new Size(1050, 300);
+            panelTable.Size = new Size(1050, 310);
             panelTable.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panelTable.TabIndex = 3;
 
@@ -302,7 +307,7 @@
             dgvReceiving.Name = "dgvReceiving";
             dgvReceiving.RowHeadersVisible = false;
             dgvReceiving.RowHeadersWidth = 51;
-            dgvReceiving.Size = new Size(1000, 215);
+            dgvReceiving.Size = new Size(1000, 225);
             dgvReceiving.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvReceiving.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvReceiving.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
