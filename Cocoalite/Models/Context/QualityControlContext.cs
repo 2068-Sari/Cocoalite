@@ -2,6 +2,7 @@
 using System.Data;
 using Npgsql;
 using Cocoalite.Helpers;
+using System.Collections.Generic;
 using Cocoalite.Models.Entity;
 
 namespace Cocoalite.Models.Context
@@ -33,6 +34,61 @@ namespace Cocoalite.Models.Context
             }
 
             return table;
+        }
+
+        public List<QualityControl> GetReportQualityControl()
+        {
+            List<QualityControl> list = new List<QualityControl>();
+
+            using (var conn = db.GetConnection())
+            {
+                conn.Open();
+
+                string query = @"
+            SELECT
+                qc.qc_id,
+                qc.receiving_id,
+                qc.inspected_by,
+                qc.moisture_level,
+                qc.fermentation_level,
+                qc.defect_level,
+                qc.bean_size,
+                qc.grade,
+                qc.qc_status,
+                qc.inspection_notes,
+                qc.inspection_date
+            FROM quality_control qc
+            ORDER BY qc.qc_id";
+
+                using (var cmd = new Npgsql.NpgsqlCommand(query, conn))
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        QualityControl qc = new QualityControl();
+
+                        qc.QcId = Convert.ToInt32(reader["qc_id"]);
+                        qc.ReceivingId = Convert.ToInt32(reader["receiving_id"]);
+                        qc.InspectedBy = Convert.ToInt32(reader["inspected_by"]);
+
+                        qc.IsiParameter(
+                            Convert.ToDecimal(reader["moisture_level"]),
+                            Convert.ToDecimal(reader["fermentation_level"]),
+                            Convert.ToDecimal(reader["defect_level"]),
+                            reader["bean_size"].ToString() ?? ""
+                        );
+
+                        qc.Grade = reader["grade"].ToString() ?? "";
+                        qc.QcStatus = reader["qc_status"].ToString() ?? "";
+                        qc.InspectionNotes = reader["inspection_notes"].ToString() ?? "";
+                        qc.InspectionDate = Convert.ToDateTime(reader["inspection_date"]);
+
+                        list.Add(qc);
+                    }
+                }
+            }
+
+            return list;
         }
 
         public DataTable GetAllReceiving()

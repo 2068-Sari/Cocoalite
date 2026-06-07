@@ -87,7 +87,7 @@
             panelForm.Controls.Add(btnClear);
             panelForm.Location = new Point(55, 135);
             panelForm.Name = "panelForm";
-            panelForm.Size = new Size(1050, 200);
+            panelForm.Size = new Size(1050, 230);
             panelForm.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             panelForm.TabIndex = 2;
             // lblBatch
@@ -156,9 +156,9 @@
             btnSave.FlatStyle = FlatStyle.Flat;
             btnSave.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnSave.ForeColor = Color.White;
-            btnSave.Location = new Point(220, 170);
+            btnSave.Location = new Point(220, 155);
             btnSave.Name = "btnSave";
-            btnSave.Size = new Size(140, 40);
+            btnSave.Size = new Size(140, 38);
             btnSave.TabIndex = 8;
             btnSave.Text = "Save";
             btnSave.UseVisualStyleBackColor = false;
@@ -172,9 +172,9 @@
             btnUpdate.FlatStyle = FlatStyle.Flat;
             btnUpdate.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnUpdate.ForeColor = Color.White;
-            btnUpdate.Location = new Point(430, 170);
+            btnUpdate.Location = new Point(430, 155);
             btnUpdate.Name = "btnUpdate";
-            btnUpdate.Size = new Size(140, 40);
+            btnUpdate.Size = new Size(140, 38);
             btnUpdate.TabIndex = 9;
             btnUpdate.Text = "Update";
             btnUpdate.UseVisualStyleBackColor = false;
@@ -188,9 +188,9 @@
             btnDelete.FlatStyle = FlatStyle.Flat;
             btnDelete.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnDelete.ForeColor = Color.White;
-            btnDelete.Location = new Point(640, 170);
+            btnDelete.Location = new Point(640, 155);
             btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(140, 40);
+            btnDelete.Size = new Size(140, 38);
             btnDelete.TabIndex = 10;
             btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = false;
@@ -204,9 +204,9 @@
             btnClear.FlatStyle = FlatStyle.Flat;
             btnClear.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnClear.ForeColor = Color.FromArgb(74, 44, 30);
-            btnClear.Location = new Point(850, 170);
+            btnClear.Location = new Point(850, 155);
             btnClear.Name = "btnClear";
-            btnClear.Size = new Size(140, 40);
+            btnClear.Size = new Size(140, 38);
             btnClear.TabIndex = 11;
             btnClear.Text = "Clear";
             btnClear.UseVisualStyleBackColor = false;
@@ -221,7 +221,7 @@
             panelTable.Controls.Add(dgvInventory);
             panelTable.Location = new Point(55, 405);
             panelTable.Name = "panelTable";
-            panelTable.Size = new Size(1050, 310);
+            panelTable.Size = new Size(1050, 330);
             panelTable.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panelTable.TabIndex = 3;
 

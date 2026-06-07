@@ -2,6 +2,7 @@
 using System.Data;
 using Npgsql;
 using Cocoalite.Helpers;
+using System.Collections.Generic;
 using Cocoalite.Models.Entity;
 
 namespace Cocoalite.Models.Context
@@ -10,6 +11,100 @@ namespace Cocoalite.Models.Context
     {
         private readonly DbConnection db = new DbConnection();
 
+        public List<Shipment> GetReportShipment()
+        {
+            List<Shipment> list = new List<Shipment>();
+
+            using (var conn = db.GetConnection())
+            {
+                conn.Open();
+
+                string query = @"
+            SELECT
+                shipment_id,
+                batch_id,
+                created_by,
+                shipment_code,
+                destination,
+                shipment_date,
+                shipment_weight,
+                shipment_status,
+                vehicle_number,
+                driver_name
+            FROM shipments
+            WHERE is_deleted = false
+            ORDER BY shipment_id";
+
+                using (var cmd = new Npgsql.NpgsqlCommand(query, conn))
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Shipment shipment = new Shipment();
+
+                        shipment.ShipmentId =
+                            Convert.ToInt32(reader["shipment_id"]);
+
+                        shipment.BatchId =
+                            Convert.ToInt32(reader["batch_id"]);
+
+                        shipment.CreatedBy =
+                            Convert.ToInt32(reader["created_by"]);
+
+                        shipment.ShipmentCode =
+                            reader["shipment_code"].ToString() ?? "";
+
+                        shipment.Destination =
+                            reader["destination"].ToString() ?? "";
+
+                        object shipmentDateValue = reader["shipment_date"];
+
+                        if (shipmentDateValue is DateOnly dateOnly)
+                        {
+                            shipment.ShipmentDate = dateOnly;
+                        }
+                        else if (shipmentDateValue is DateTime dateTime)
+                        {
+                            shipment.ShipmentDate = DateOnly.FromDateTime(dateTime);
+                        }
+                        else
+                        {
+                            shipment.ShipmentDate =
+                                DateOnly.FromDateTime(Convert.ToDateTime(shipmentDateValue));
+                        }
+
+                        shipment.ShipmentWeight =
+                            Convert.ToDecimal(reader["shipment_weight"]);
+
+                        string status =
+                            reader["shipment_status"].ToString() ?? "";
+
+                        if (status == "Shipped")
+                        {
+                            shipment.TandaiDikirim();
+                        }
+                        else if (status == "Delivered")
+                        {
+                            shipment.TandaiDiterima();
+                        }
+                        else if (status == "Cancelled")
+                        {
+                            shipment.BatalkanPengiriman();
+                        }
+
+                        shipment.VehicleNumber =
+                            reader["vehicle_number"].ToString() ?? "";
+
+                        shipment.DriverName =
+                            reader["driver_name"].ToString() ?? "";
+
+                        list.Add(shipment);
+                    }
+                }
+            }
+
+            return list;
+        }
         public DataTable GetAllBatch()
         {
             DataTable table = new DataTable();

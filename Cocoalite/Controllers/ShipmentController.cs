@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using Cocoalite.Models.Context;
+using System.Collections.Generic;
 using Cocoalite.Models.Entity;
 
 namespace Cocoalite.Controllers
@@ -8,7 +9,10 @@ namespace Cocoalite.Controllers
     public class ShipmentController
     {
         private readonly ShipmentContext context = new ShipmentContext();
-
+        public List<Shipment> GetReportShipment()
+        {
+            return context.GetReportShipment();
+        }
         public DataTable GetAllBatch()
         {
             return context.GetAllBatch();

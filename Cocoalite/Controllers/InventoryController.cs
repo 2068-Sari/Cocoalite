@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using Cocoalite.Models.Context;
+using System.Collections.Generic;
 using Cocoalite.Models.Entity;
 
 namespace Cocoalite.Controllers
@@ -9,6 +10,10 @@ namespace Cocoalite.Controllers
     {
         private readonly InventoryContext _context = new InventoryContext();
 
+        public List<Inventory> GetReportInventory()
+        {
+            return _context.GetReportInventory();
+        }
         public DataTable GetAllInventory()
         {
             DataTable data = _context.GetAllInventory();

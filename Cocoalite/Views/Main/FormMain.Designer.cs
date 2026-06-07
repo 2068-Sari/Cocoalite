@@ -29,6 +29,7 @@
             btnInventory = new Button();
             btnShipment = new Button();
             btnActivityLog = new Button();
+            btnReport = new Button();
             btnLogout = new Button();
             panelHeader = new Panel();
             lblHeaderTitle = new Label();
@@ -58,6 +59,7 @@
             panelSidebar.Controls.Add(btnInventory);
             panelSidebar.Controls.Add(btnShipment);
             panelSidebar.Controls.Add(btnActivityLog);
+            panelSidebar.Controls.Add(btnReport);
             panelSidebar.Controls.Add(btnLogout);
             panelSidebar.Dock = DockStyle.Left;
             panelSidebar.Location = new Point(0, 0);
@@ -206,6 +208,23 @@
             btnActivityLog.Text = "Activity Log";
             btnActivityLog.UseVisualStyleBackColor = false;
             btnActivityLog.Click += btnActivityLog_Click;
+
+            // 
+            // btnReport
+            // 
+            btnReport.BackColor = Color.FromArgb(255, 248, 240);
+            btnReport.FlatAppearance.BorderSize = 0;
+            btnReport.FlatStyle = FlatStyle.Flat;
+            btnReport.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnReport.ForeColor = Color.FromArgb(74, 44, 30);
+            btnReport.Location = new Point(30, 514);
+            btnReport.Name = "btnReport";
+            btnReport.Size = new Size(180, 38);
+            btnReport.TabIndex = 10;
+            btnReport.Text = "Report";
+            btnReport.UseVisualStyleBackColor = false;
+            btnReport.Click += btnReport_Click;
+
             // 
             // btnLogout
             // 
@@ -215,10 +234,10 @@
             btnLogout.FlatStyle = FlatStyle.Flat;
             btnLogout.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnLogout.ForeColor = Color.White;
-            btnLogout.Location = new Point(30, 575);
+            btnLogout.Location = new Point(30, 620);
             btnLogout.Name = "btnLogout";
             btnLogout.Size = new Size(190, 40);
-            btnLogout.TabIndex = 10;
+            btnLogout.TabIndex = 11;
             btnLogout.Text = "Logout";
             btnLogout.UseVisualStyleBackColor = false;
             btnLogout.Click += btnLogout_Click;
@@ -361,6 +380,7 @@
         private Button btnInventory;
         private Button btnShipment;
         private Button btnActivityLog;
+        private Button btnReport;
         private Button btnLogout;
         private Panel panelHeader;
         private Label lblHeaderTitle;

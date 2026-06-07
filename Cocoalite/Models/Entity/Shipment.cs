@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using Cocoalite.Interfaces;
-
 
 namespace Cocoalite.Models.Entity
 {
@@ -96,12 +94,32 @@ namespace Cocoalite.Models.Entity
 
         public string TampilkanInfoShipment()
         {
-            return $"Kode: {ShipmentCode} | Tujuan: {Destination} | Berat: {ShipmentWeight} kg | Status: {ShipmentStatus}";
+            return
+                $"Kode: {ShipmentCode} | " +
+                $"Tujuan: {Destination} | " +
+                $"Berat: {ShipmentWeight} kg | " +
+                $"Status: {ShipmentStatus}";
         }
 
         public string BuatLaporan()
         {
-            return $"Laporan Pengiriman - {ShipmentCode}, Tujuan: {Destination}, Berat: {ShipmentWeight} kg, Status: {ShipmentStatus}";
+            StringBuilder laporan = new StringBuilder();
+
+            laporan.AppendLine("LAPORAN SHIPMENT");
+            laporan.AppendLine("==============================");
+            laporan.AppendLine($"Shipment ID      : {ShipmentId}");
+            laporan.AppendLine($"Batch ID         : {BatchId}");
+            laporan.AppendLine($"Created By       : {CreatedBy}");
+            laporan.AppendLine($"Shipment Code    : {ShipmentCode}");
+            laporan.AppendLine($"Destination      : {Destination}");
+            laporan.AppendLine($"Shipment Date    : {ShipmentDate:dd-MM-yyyy}");
+            laporan.AppendLine($"Shipment Weight  : {ShipmentWeight} kg");
+            laporan.AppendLine($"Shipment Status  : {ShipmentStatus}");
+            laporan.AppendLine($"Vehicle Number   : {VehicleNumber}");
+            laporan.AppendLine($"Driver Name      : {DriverName}");
+            laporan.AppendLine("==============================");
+
+            return laporan.ToString();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Cocoalite.Interfaces;
 
 namespace Cocoalite.Models.Entity
@@ -82,12 +83,33 @@ namespace Cocoalite.Models.Entity
 
         public string TampilkanInfoQualityControl()
         {
-            return $"QC ID: {QcId} | Receiving ID: {ReceivingId} | Grade: {Grade} | Status: {QcStatus}";
+            return
+                $"QC ID: {QcId} | " +
+                $"Receiving ID: {ReceivingId} | " +
+                $"Grade: {Grade} | " +
+                $"Status: {QcStatus}";
         }
 
         public string BuatLaporan()
         {
-            return $"Laporan QC - Receiving ID: {ReceivingId}, Grade: {Grade}, Status: {QcStatus}, Parameter: {Parameter.TampilkanInfoParameter()}";
+            StringBuilder laporan = new StringBuilder();
+
+            laporan.AppendLine("LAPORAN QUALITY CONTROL");
+            laporan.AppendLine("==============================");
+            laporan.AppendLine($"QC ID              : {QcId}");
+            laporan.AppendLine($"Receiving ID       : {ReceivingId}");
+            laporan.AppendLine($"Inspected By       : {InspectedBy}");
+            laporan.AppendLine($"Moisture Level     : {Parameter.MoistureLevel}%");
+            laporan.AppendLine($"Fermentation Level : {Parameter.FermentationLevel}%");
+            laporan.AppendLine($"Defect Level       : {Parameter.DefectLevel}%");
+            laporan.AppendLine($"Bean Size          : {Parameter.BeanSize}");
+            laporan.AppendLine($"Grade              : {Grade}");
+            laporan.AppendLine($"QC Status          : {QcStatus}");
+            laporan.AppendLine($"Inspection Notes   : {InspectionNotes}");
+            laporan.AppendLine($"Inspection Date    : {InspectionDate:dd-MM-yyyy}");
+            laporan.AppendLine("==============================");
+
+            return laporan.ToString();
         }
     }
 }

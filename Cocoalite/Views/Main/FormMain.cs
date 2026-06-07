@@ -46,6 +46,7 @@ namespace Cocoalite.Views
                 btnInventory.Visible = true;
                 btnShipment.Visible = true;
                 btnActivityLog.Visible = true;
+                btnReport.Visible = true;
             }
             else if (LoginSession.IsQualityController())
             {
@@ -57,6 +58,7 @@ namespace Cocoalite.Views
                 btnInventory.Visible = false;
                 btnShipment.Visible = false;
                 btnActivityLog.Visible = false;
+                btnReport.Visible = true;
             }
             else
             {
@@ -113,7 +115,9 @@ namespace Cocoalite.Views
                 btnBatch,
                 btnInventory,
                 btnShipment,
-                btnActivityLog
+                btnActivityLog,
+                btnReport
+
             };
 
             foreach (Button button in menuButtons)
@@ -169,6 +173,12 @@ namespace Cocoalite.Views
         {
             TampilkanControl(new ActivityLogControl());
             SetActiveMenu(btnActivityLog);
+        }
+
+        private void btnReport_Click(object sender, EventArgs e)
+        {
+            TampilkanControl(new ReportControl());
+            SetActiveMenu(btnReport);
         }
 
         private void btnLogout_Click(object sender, EventArgs e)

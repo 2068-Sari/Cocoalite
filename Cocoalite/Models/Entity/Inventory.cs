@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using Cocoalite.Interfaces;
 
@@ -76,12 +75,28 @@ namespace Cocoalite.Models.Entity
 
         public string TampilkanInfoInventory()
         {
-            return $"Batch ID: {BatchId} | Stok: {StockQuantity} kg | Lokasi: {WarehouseLocation} | Status: {InventoryStatus}";
+            return
+                $"Batch ID: {BatchId} | " +
+                $"Stok: {StockQuantity} kg | " +
+                $"Lokasi: {WarehouseLocation} | " +
+                $"Status: {InventoryStatus}";
         }
 
         public string BuatLaporan()
         {
-            return $"Laporan Inventory - Batch ID: {BatchId}, Stok: {StockQuantity} kg, Lokasi: {WarehouseLocation}, Status: {InventoryStatus}";
+            StringBuilder laporan = new StringBuilder();
+
+            laporan.AppendLine("LAPORAN INVENTORY");
+            laporan.AppendLine("==============================");
+            laporan.AppendLine($"Inventory ID      : {InventoryId}");
+            laporan.AppendLine($"Batch ID          : {BatchId}");
+            laporan.AppendLine($"Stock Quantity    : {StockQuantity} kg");
+            laporan.AppendLine($"Warehouse Location: {WarehouseLocation}");
+            laporan.AppendLine($"Inventory Status  : {InventoryStatus}");
+            laporan.AppendLine($"Updated At        : {UpdatedAt:dd-MM-yyyy HH:mm}");
+            laporan.AppendLine("==============================");
+
+            return laporan.ToString();
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Data;
 using Npgsql;
 using Cocoalite.Helpers;
+using System.Collections.Generic;
 using Cocoalite.Models.Entity;
 
 namespace Cocoalite.Models.Context
@@ -31,6 +32,53 @@ namespace Cocoalite.Models.Context
             }
 
             return table;
+        }
+        public List<Inventory> GetReportInventory()
+        {
+            List<Inventory> list = new List<Inventory>();
+
+            using (var conn = db.GetConnection())
+            {
+                conn.Open();
+
+                string query = @"
+                     SELECT
+                          inventory_id,
+                          batch_id,
+                          stock_quantity,
+                          warehouse_location,
+                          updated_at
+                      FROM inventory
+                      ORDER BY inventory_id";
+
+                using (var cmd = new Npgsql.NpgsqlCommand(query, conn))
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Inventory inventory = new Inventory();
+
+                        inventory.InventoryId =
+                            Convert.ToInt32(reader["inventory_id"]);
+
+                        inventory.BatchId =
+                            Convert.ToInt32(reader["batch_id"]);
+
+                        inventory.StockQuantity =
+                            Convert.ToDecimal(reader["stock_quantity"]);
+
+                        inventory.WarehouseLocation =
+                            reader["warehouse_location"].ToString() ?? "";
+
+                        inventory.UpdatedAt =
+                            Convert.ToDateTime(reader["updated_at"]);
+
+                        list.Add(inventory);
+                    }
+                }
+            }
+
+            return list;
         }
 
         public DataTable GetAllBatch()

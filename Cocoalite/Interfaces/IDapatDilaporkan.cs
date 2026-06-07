@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace Cocoalite.Interfaces
+﻿namespace Cocoalite.Interfaces
 {
-    internal interface IDapatDilaporkan
+    public interface IDapatDilaporkan
     {
         string BuatLaporan();
     }

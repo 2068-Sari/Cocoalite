@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using Cocoalite.Models.Context;
+using System.Collections.Generic;
 using Cocoalite.Models.Entity;
 
 namespace Cocoalite.Controllers
@@ -20,6 +21,10 @@ namespace Cocoalite.Controllers
             }
 
             return new DataTable();
+        }
+        public List<QualityControl> GetReportQualityControl()
+        {
+            return context.GetReportQualityControl();
         }
 
         public DataTable GetAllReceiving()
