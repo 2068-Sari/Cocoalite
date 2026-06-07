@@ -341,6 +341,10 @@ namespace Cocoalite.Views
                     return;
                 }
 
+                Random random = new Random();
+                int randomNumber = random.Next(100, 999);
+                string randomShipmentCode = $"SHP{randomNumber}";
+
                 Shipment shipment = new Shipment();
 
                 shipment.BatchId = Convert.ToInt32(cbBatch.SelectedValue);

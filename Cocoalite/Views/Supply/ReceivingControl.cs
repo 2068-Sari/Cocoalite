@@ -282,6 +282,10 @@ namespace Cocoalite.Views
                     return;
                 }
 
+                Random random = new Random();
+                int randomNumber = random.Next(100, 999);
+                string randomReceivingCode = $"RCV-{randomNumber}";
+
                 ReceivingController controller = new ReceivingController();
 
                 controller.AddReceiving(

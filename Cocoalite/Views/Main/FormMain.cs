@@ -47,6 +47,8 @@ namespace Cocoalite.Views
                 btnShipment.Visible = true;
                 btnActivityLog.Visible = true;
                 btnReport.Visible = true;
+
+                AturPosisiMenuAdmin();
             }
             else if (LoginSession.IsQualityController())
             {
@@ -59,13 +61,14 @@ namespace Cocoalite.Views
                 btnShipment.Visible = false;
                 btnActivityLog.Visible = false;
                 btnReport.Visible = true;
+
+                AturPosisiMenuQC();
             }
             else
             {
                 MessageBox.Show("Role tidak dikenali.");
             }
         }
-
         private void TampilkanInfoUserLogin()
         {
             string infoUser = LoginSession.CurrentUser?.TampilkanInfoUser() ?? "-";
@@ -127,6 +130,39 @@ namespace Cocoalite.Views
             }
         }
 
+        private void AturPosisiMenuQC()
+        {
+            btnDashboard.Location = new Point(30, 150);
+            btnQualityControl.Location = new Point(30, 205);
+            btnReport.Location = new Point(30, 260);
+
+            btnDashboard.Size = new Size(180, 40);
+            btnQualityControl.Size = new Size(180, 40);
+            btnReport.Size = new Size(180, 40);
+
+            // Logout tetap di bawah seperti posisi awal
+            btnLogout.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnLogout.Location = new Point(30, panelSidebar.Height - 85);
+            btnLogout.Size = new Size(190, 40);
+        }
+
+        private void AturPosisiMenuAdmin()
+        {
+            btnDashboard.Location = new Point(30, 130);
+            btnSupplier.Location = new Point(30, 178);
+            btnReceiving.Location = new Point(30, 226);
+            btnQualityControl.Location = new Point(30, 274);
+            btnBatch.Location = new Point(30, 322);
+            btnInventory.Location = new Point(30, 370);
+            btnShipment.Location = new Point(30, 418);
+            btnActivityLog.Location = new Point(30, 466);
+            btnReport.Location = new Point(30, 514);
+
+            // Logout tetap bawah
+            btnLogout.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnLogout.Location = new Point(30, panelSidebar.Height - 85);
+            btnLogout.Size = new Size(190, 40);
+        }
         private void btnDashboard_Click(object sender, EventArgs e)
         {
             TampilkanControl(new DashboardControl());
