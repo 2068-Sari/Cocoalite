@@ -47,6 +47,8 @@ namespace Cocoalite.Views
                 btnShipment.Visible = true;
                 btnActivityLog.Visible = true;
                 btnReport.Visible = true;
+                btnProfile.Visible = true;
+                btnKelolaQc.Visible = true;
 
                 AturPosisiMenuAdmin();
             }
@@ -61,6 +63,8 @@ namespace Cocoalite.Views
                 btnShipment.Visible = false;
                 btnActivityLog.Visible = false;
                 btnReport.Visible = true;
+                btnProfile.Visible = true;
+                btnKelolaQc.Visible = false;
 
                 AturPosisiMenuQC();
             }
@@ -215,6 +219,16 @@ namespace Cocoalite.Views
         {
             TampilkanControl(new ReportControl());
             SetActiveMenu(btnReport);
+        }
+
+        private void btnProfile_Click(object sender, EventArgs e)
+        {
+            TampilkanControl(new ProfileControl());
+        }
+
+        private void btnKelolaQc_Click(object sender, EventArgs e)
+        {
+            TampilkanControl(new KelolaQcControl());
         }
 
         private void btnLogout_Click(object sender, EventArgs e)

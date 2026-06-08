@@ -35,6 +35,13 @@ namespace Cocoalite.Models.Entity
             }
         }
 
+        public void GenerateShipmentCode()
+        {
+            Random random = new Random();
+            int number = random.Next(1, 1000);
+
+            ShipmentCode = "SHP-" + number.ToString("D3");
+        }
         public string Destination
         {
             get

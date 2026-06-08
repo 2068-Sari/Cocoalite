@@ -138,6 +138,9 @@
             lblBatchCode.Text = "Batch Code";
             lblBatchCode.TextAlign = ContentAlignment.MiddleLeft;
 
+
+            lblBatchCode.Visible = false;
+            txtBatchCode.Visible = false;
             // 
             // txtBatchCode
             // 
@@ -153,7 +156,7 @@
             lblBatchStatus.AutoSize = false;
             lblBatchStatus.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblBatchStatus.ForeColor = Color.FromArgb(74, 44, 30);
-            lblBatchStatus.Location = new Point(45, 121);
+            lblBatchStatus.Location = new Point(45, 78);
             lblBatchStatus.Name = "lblBatchStatus";
             lblBatchStatus.Size = new Size(150, 27);
             lblBatchStatus.TabIndex = 4;
@@ -166,7 +169,7 @@
             cbBatchStatus.DropDownStyle = ComboBoxStyle.DropDownList;
             cbBatchStatus.Font = new Font("Segoe UI", 9F);
             cbBatchStatus.FormattingEnabled = true;
-            cbBatchStatus.Location = new Point(220, 121);
+            cbBatchStatus.Location = new Point(220, 78);
             cbBatchStatus.Name = "cbBatchStatus";
             cbBatchStatus.Size = new Size(310, 28);
             cbBatchStatus.TabIndex = 5;

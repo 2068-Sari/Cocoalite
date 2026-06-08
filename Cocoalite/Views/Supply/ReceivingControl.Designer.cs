@@ -91,7 +91,7 @@
             panelForm.Controls.Add(btnClear);
             panelForm.Location = new Point(55, 135);
             panelForm.Name = "panelForm";
-            panelForm.Size = new Size(1050, 230);
+            panelForm.Size = new Size(1050, 210);
             panelForm.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             panelForm.TabIndex = 2;
 
@@ -131,6 +131,7 @@
             lblReceivingCode.TabIndex = 2;
             lblReceivingCode.Text = "Receiving Code";
             lblReceivingCode.TextAlign = ContentAlignment.MiddleLeft;
+            lblReceivingCode.Visible = false;
 
             // 
             // txtReceivingCode
@@ -140,6 +141,7 @@
             txtReceivingCode.Name = "txtReceivingCode";
             txtReceivingCode.Size = new Size(310, 27);
             txtReceivingCode.TabIndex = 3;
+            txtReceivingCode.Visible = false;
 
             // 
             // lblVehicleNumber
@@ -147,7 +149,7 @@
             lblVehicleNumber.AutoSize = false;
             lblVehicleNumber.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblVehicleNumber.ForeColor = Color.FromArgb(74, 44, 30);
-            lblVehicleNumber.Location = new Point(45, 121);
+            lblVehicleNumber.Location = new Point(45, 78);
             lblVehicleNumber.Name = "lblVehicleNumber";
             lblVehicleNumber.Size = new Size(150, 27);
             lblVehicleNumber.TabIndex = 4;
@@ -158,7 +160,7 @@
             // txtVehicleNumber
             // 
             txtVehicleNumber.Font = new Font("Segoe UI", 9F);
-            txtVehicleNumber.Location = new Point(220, 121);
+            txtVehicleNumber.Location = new Point(220, 78);
             txtVehicleNumber.Name = "txtVehicleNumber";
             txtVehicleNumber.Size = new Size(310, 27);
             txtVehicleNumber.TabIndex = 5;
@@ -216,7 +218,7 @@
             btnSave.FlatStyle = FlatStyle.Flat;
             btnSave.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnSave.ForeColor = Color.White;
-            btnSave.Location = new Point(220, 170);
+            btnSave.Location = new Point(220, 145);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(140, 40);
             btnSave.TabIndex = 10;
@@ -232,7 +234,7 @@
             btnUpdate.FlatStyle = FlatStyle.Flat;
             btnUpdate.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnUpdate.ForeColor = Color.White;
-            btnUpdate.Location = new Point(430, 170);
+            btnUpdate.Location = new Point(430, 145);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(140, 40);
             btnUpdate.TabIndex = 11;
@@ -248,7 +250,7 @@
             btnDelete.FlatStyle = FlatStyle.Flat;
             btnDelete.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnDelete.ForeColor = Color.White;
-            btnDelete.Location = new Point(640, 170);
+            btnDelete.Location = new Point(640, 145);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(140, 40);
             btnDelete.TabIndex = 12;
@@ -264,7 +266,7 @@
             btnClear.FlatStyle = FlatStyle.Flat;
             btnClear.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnClear.ForeColor = Color.FromArgb(74, 44, 30);
-            btnClear.Location = new Point(850, 170);
+            btnClear.Location = new Point(850, 145);
             btnClear.Name = "btnClear";
             btnClear.Size = new Size(140, 40);
             btnClear.TabIndex = 13;
@@ -279,7 +281,7 @@
             panelTable.BorderStyle = BorderStyle.None;
             panelTable.Controls.Add(lblTableTitle);
             panelTable.Controls.Add(dgvReceiving);
-            panelTable.Location = new Point(55, 405);
+            panelTable.Location = new Point(55, 385);
             panelTable.Name = "panelTable";
             panelTable.Size = new Size(1050, 310);
             panelTable.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;

@@ -42,6 +42,13 @@ namespace Cocoalite.Models.Entity
             }
         }
 
+        public void GenerateBatchCode()
+        {
+            Random random = new Random();
+            int number = random.Next(1, 1000);
+
+            BatchCode = "BTH-" + number.ToString("D3");
+        }
         public decimal BatchWeight
         {
             get { return batchWeight;}

@@ -1,7 +1,8 @@
-﻿using System;
-using System.Windows.Forms;
-using Cocoalite.Controllers;
+﻿using Cocoalite.Controllers;
+using Cocoalite.Models.Entity;
+using System;
 using System.Drawing.Drawing2D;
+using System.Windows.Forms;
 
 
 namespace Cocoalite.Views
@@ -242,13 +243,6 @@ namespace Cocoalite.Views
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(txtBatchCode.Text))
-            {
-                MessageBox.Show("Kode batch tidak boleh kosong!");
-                txtBatchCode.Focus();
-                return false;
-            }
-
             if (string.IsNullOrWhiteSpace(txtBatchWeight.Text))
             {
                 MessageBox.Show("Berat batch tidak boleh kosong!");
@@ -293,17 +287,27 @@ namespace Cocoalite.Views
                 int randomNumber = random.Next(100, 999);
                 string randomBatchCode = $"BTH-{randomNumber}";
 
+                Batch batch = new Batch();
+
+                batch.GenerateBatchCode();
+
+                txtBatchCode.Text = batch.BatchCode;
+
                 BatchController controller = new BatchController();
 
-                controller.UpdateBatch(
-                    selectedBatchId,
+                controller.AddBatch(
                     Convert.ToInt32(cbQc.SelectedValue),
-                    txtBatchCode.Text.Trim(),
+                    batch.BatchCode,
                     dtpBatchDate.Value,
                     decimal.Parse(txtBatchWeight.Text),
                     cbBatchStatus.Text
                 );
 
+                MessageBox.Show("Data batch berhasil ditambahkan!");
+
+                LoadBatch();
+                LoadApprovedQc();
+                ClearForm();
                 MessageBox.Show("Data batch berhasil ditambahkan!");
 
                 LoadBatch();
@@ -333,7 +337,8 @@ namespace Cocoalite.Views
             {
                 BatchController controller = new BatchController();
 
-                controller.AddBatch(
+                controller.UpdateBatch(
+                    selectedBatchId,
                     Convert.ToInt32(cbQc.SelectedValue),
                     txtBatchCode.Text.Trim(),
                     dtpBatchDate.Value,

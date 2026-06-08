@@ -267,13 +267,6 @@ namespace Cocoalite.Views
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(txtShipmentCode.Text))
-            {
-                MessageBox.Show("Kode shipment tidak boleh kosong!");
-                txtShipmentCode.Focus();
-                return false;
-            }
-
             if (string.IsNullOrWhiteSpace(txtDestination.Text))
             {
                 MessageBox.Show("Tujuan pengiriman tidak boleh kosong!");
@@ -341,15 +334,12 @@ namespace Cocoalite.Views
                     return;
                 }
 
-                Random random = new Random();
-                int randomNumber = random.Next(100, 999);
-                string randomShipmentCode = $"SHP{randomNumber}";
-
                 Shipment shipment = new Shipment();
 
                 shipment.BatchId = Convert.ToInt32(cbBatch.SelectedValue);
                 shipment.CreatedBy = LoginSession.CurrentUser.UserId;
-                shipment.ShipmentCode = txtShipmentCode.Text.Trim();
+                shipment.GenerateShipmentCode();
+                txtShipmentCode.Text = shipment.ShipmentCode;
                 shipment.Destination = txtDestination.Text.Trim();
                 shipment.ShipmentDate = DateOnly.FromDateTime(dtpShipmentDate.Value);
                 shipment.ShipmentWeight = decimal.Parse(txtShipmentWeight.Text);

@@ -153,6 +153,9 @@
             lblShipmentCode.Text = "Shipment Code";
             lblShipmentCode.TextAlign = ContentAlignment.MiddleLeft;
 
+
+            lblShipmentCode.Visible = false;
+            txtShipmentCode.Visible = false;
             // 
             // txtShipmentCode
             // 
@@ -168,7 +171,7 @@
             lblDestination.AutoSize = false;
             lblDestination.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblDestination.ForeColor = Color.FromArgb(74, 44, 30);
-            lblDestination.Location = new Point(45, 118);
+            lblDestination.Location = new Point(45, 78);
             lblDestination.Name = "lblDestination";
             lblDestination.Size = new Size(150, 27);
             lblDestination.TabIndex = 4;
@@ -179,7 +182,7 @@
             // txtDestination
             // 
             txtDestination.Font = new Font("Segoe UI", 9F);
-            txtDestination.Location = new Point(220, 118);
+            txtDestination.Location = new Point(220, 78);
             txtDestination.Name = "txtDestination";
             txtDestination.Size = new Size(310, 27);
             txtDestination.TabIndex = 5;
@@ -190,7 +193,7 @@
             lblVehicleNumber.AutoSize = false;
             lblVehicleNumber.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblVehicleNumber.ForeColor = Color.FromArgb(74, 44, 30);
-            lblVehicleNumber.Location = new Point(45, 161);
+            lblVehicleNumber.Location = new Point(45, 121);
             lblVehicleNumber.Name = "lblVehicleNumber";
             lblVehicleNumber.Size = new Size(150, 27);
             lblVehicleNumber.TabIndex = 6;
@@ -201,7 +204,7 @@
             // txtVehicleNumber
             // 
             txtVehicleNumber.Font = new Font("Segoe UI", 9F);
-            txtVehicleNumber.Location = new Point(220, 161);
+            txtVehicleNumber.Location = new Point(220, 121);
             txtVehicleNumber.Name = "txtVehicleNumber";
             txtVehicleNumber.Size = new Size(310, 27);
             txtVehicleNumber.TabIndex = 7;

@@ -40,6 +40,8 @@
             panelWelcome = new Panel();
             lblWelcome = new Label();
             lblInstruction = new Label();
+            btnProfile = new Button();
+            btnKelolaQc = new Button();
             panelSidebar.SuspendLayout();
             panelHeader.SuspendLayout();
             panelContent.SuspendLayout();
@@ -241,6 +243,32 @@
             btnLogout.Text = "Logout";
             btnLogout.UseVisualStyleBackColor = false;
             btnLogout.Click += btnLogout_Click;
+
+            // btnProfile
+            btnProfile.BackColor = Color.FromArgb(255, 248, 240);
+            btnProfile.FlatStyle = FlatStyle.Flat;
+            btnProfile.FlatAppearance.BorderColor = Color.FromArgb(92, 49, 13);
+            btnProfile.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+            btnProfile.ForeColor = Color.FromArgb(74, 44, 30);
+            btnProfile.Location = new Point(1160, 55);
+            btnProfile.Name = "btnProfile";
+            btnProfile.Size = new Size(90, 30);
+            btnProfile.Text = "Profile";
+            btnProfile.UseVisualStyleBackColor = false;
+            btnProfile.Click += btnProfile_Click;
+
+            // btnKelolaQc
+            btnKelolaQc.BackColor = Color.FromArgb(92, 49, 13);
+            btnKelolaQc.FlatStyle = FlatStyle.Flat;
+            btnKelolaQc.FlatAppearance.BorderSize = 0;
+            btnKelolaQc.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+            btnKelolaQc.ForeColor = Color.White;
+            btnKelolaQc.Location = new Point(1260, 55);
+            btnKelolaQc.Name = "btnKelolaQc";
+            btnKelolaQc.Size = new Size(100, 30);
+            btnKelolaQc.Text = "Kelola QC";
+            btnKelolaQc.UseVisualStyleBackColor = false;
+            btnKelolaQc.Click += btnKelolaQc_Click;
             // 
             // panelHeader
             // 
@@ -249,6 +277,8 @@
             panelHeader.Controls.Add(lblHeaderSubtitle);
             panelHeader.Controls.Add(lblUserName);
             panelHeader.Controls.Add(lblRole);
+            panelHeader.Controls.Add(btnProfile);
+            panelHeader.Controls.Add(btnKelolaQc);
             panelHeader.Dock = DockStyle.Top;
             panelHeader.Location = new Point(250, 0);
             panelHeader.Name = "panelHeader";
@@ -391,5 +421,7 @@
         private Panel panelWelcome;
         private Label lblWelcome;
         private Label lblInstruction;
+        private Button btnProfile;
+        private Button btnKelolaQc;
     }
 }

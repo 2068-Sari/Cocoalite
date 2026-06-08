@@ -1,8 +1,9 @@
-﻿using System;
-using System.Windows.Forms;
-using Cocoalite.Controllers;
+﻿using Cocoalite.Controllers;
 using Cocoalite.Helpers;
+using Cocoalite.Models.Entity;
+using System;
 using System.Drawing.Drawing2D;
+using System.Windows.Forms;
 
 namespace Cocoalite.Views
 {
@@ -236,13 +237,6 @@ namespace Cocoalite.Views
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(txtReceivingCode.Text))
-            {
-                MessageBox.Show("Kode receiving tidak boleh kosong!");
-                txtReceivingCode.Focus();
-                return false;
-            }
-
             if (string.IsNullOrWhiteSpace(txtCocoaWeight.Text))
             {
                 MessageBox.Show("Berat kakao tidak boleh kosong!");
@@ -282,16 +276,18 @@ namespace Cocoalite.Views
                     return;
                 }
 
-                Random random = new Random();
-                int randomNumber = random.Next(100, 999);
-                string randomReceivingCode = $"RCV-{randomNumber}";
+                Receiving receiving = new Receiving();
+
+                receiving.GenerateReceivingCode();
+
+                txtReceivingCode.Text = receiving.ReceivingCode;
 
                 ReceivingController controller = new ReceivingController();
 
                 controller.AddReceiving(
                     Convert.ToInt32(cbSupplier.SelectedValue),
                     LoginSession.CurrentUser.UserId,
-                    txtReceivingCode.Text.Trim(),
+                    receiving.ReceivingCode,
                     dtpReceivingDate.Value,
                     decimal.Parse(txtCocoaWeight.Text),
                     txtVehicleNumber.Text.Trim()
