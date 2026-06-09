@@ -10,6 +10,7 @@ namespace Cocoalite.Views
     public partial class ShipmentControl : UserControl
     {
         private int selectedShipmentId = 0;
+        private string selectedShipmentStatus = "";
 
         public ShipmentControl()
         {
@@ -48,6 +49,7 @@ namespace Cocoalite.Views
             cbShipmentStatus.Items.Add("Pending");
             cbShipmentStatus.Items.Add("Shipped");
             cbShipmentStatus.Items.Add("Delivered");
+            cbShipmentStatus.Items.Add("Cancelled");
             cbShipmentStatus.SelectedIndex = 0;
         }
 
@@ -247,6 +249,8 @@ namespace Cocoalite.Views
         private void ClearForm()
         {
             selectedShipmentId = 0;
+            selectedShipmentStatus = "";
+
             cbBatch.SelectedIndex = -1;
             txtShipmentCode.Clear();
             txtDestination.Clear();
@@ -325,6 +329,16 @@ namespace Cocoalite.Views
             {
                 return;
             }
+            if (cbShipmentStatus.Text == "Cancelled")
+            {
+                MessageBox.Show(
+                    "Shipment baru tidak boleh langsung berstatus Cancelled.\nGunakan status Pending terlebih dahulu.",
+                    "Validasi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
 
             try
             {
@@ -386,38 +400,54 @@ namespace Cocoalite.Views
                 return;
             }
 
+            string statusBaru = cbShipmentStatus.Text.Trim();
+
+            if (selectedShipmentStatus == "Cancelled")
+            {
+                MessageBox.Show(
+                    "Shipment yang sudah Cancelled tidak dapat diubah lagi.",
+                    "Validasi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
+
+            if (selectedShipmentStatus == "Delivered" && statusBaru == "Cancelled")
+            {
+                MessageBox.Show(
+                    "Shipment yang sudah Delivered tidak dapat dibatalkan.",
+                    "Validasi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
+
+            if (statusBaru == "Cancelled")
+            {
+                DialogResult result = MessageBox.Show(
+                    "Apakah Anda yakin ingin membatalkan shipment ini?\n\nStok akan dikembalikan otomatis ke inventory.",
+                    "Konfirmasi Pembatalan Shipment",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                );
+
+                if (result == DialogResult.No)
+                {
+                    return;
+                }
+            }
+
             try
             {
-                Shipment shipment = new Shipment();
-
-                shipment.ShipmentId = selectedShipmentId;
-                shipment.BatchId = Convert.ToInt32(cbBatch.SelectedValue);
-                shipment.ShipmentCode = txtShipmentCode.Text.Trim();
-                shipment.Destination = txtDestination.Text.Trim();
-                shipment.ShipmentDate = DateOnly.FromDateTime(dtpShipmentDate.Value);
-                shipment.ShipmentWeight = decimal.Parse(txtShipmentWeight.Text);
-                if (cbShipmentStatus.Text == "Shipped")
-                {
-                    shipment.TandaiDikirim();
-                }
-                else if (cbShipmentStatus.Text == "Delivered")
-                {
-                    shipment.TandaiDiterima();
-                }
-                else if (cbShipmentStatus.Text == "Cancelled")
-                {
-                    shipment.BatalkanPengiriman();
-                }
-                shipment.VehicleNumber = txtVehicleNumber.Text.Trim();
-                shipment.DriverName = txtDriverName.Text.Trim();
-
                 ShipmentController controller = new ShipmentController();
 
                 controller.UpdateShipment(
                     selectedShipmentId,
                     txtDestination.Text.Trim(),
                     dtpShipmentDate.Value,
-                    cbShipmentStatus.Text,
+                    statusBaru,
                     txtVehicleNumber.Text.Trim(),
                     txtDriverName.Text.Trim()
                 );
@@ -425,6 +455,7 @@ namespace Cocoalite.Views
                 MessageBox.Show("Data shipment berhasil diperbarui!");
 
                 LoadShipment();
+                LoadBatch();
                 ClearForm();
             }
             catch (Exception ex)
@@ -503,7 +534,8 @@ namespace Cocoalite.Views
 
             if (dgvShipment.Columns.Contains("shipment_status"))
             {
-                cbShipmentStatus.SelectedItem = row.Cells["shipment_status"].Value?.ToString() ?? "Pending";
+                selectedShipmentStatus = row.Cells["shipment_status"].Value?.ToString() ?? "Pending";
+                cbShipmentStatus.SelectedItem = selectedShipmentStatus;
             }
 
             txtVehicleNumber.Text = row.Cells["vehicle_number"].Value?.ToString() ?? "";
