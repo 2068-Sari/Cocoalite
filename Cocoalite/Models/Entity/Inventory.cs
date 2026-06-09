@@ -4,7 +4,7 @@ using Cocoalite.Interfaces;
 
 namespace Cocoalite.Models.Entity
 {
-    internal class Inventory : IDapatDilaporkan
+    public class Inventory : IDapatDilaporkan
     {
         private decimal stockQuantity;
         private string warehouseLocation = "";

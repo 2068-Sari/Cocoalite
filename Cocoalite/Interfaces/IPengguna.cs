@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Cocoalite.Interfaces
 {
-    internal interface IPengguna
+    public interface IPengguna
     {
         string Username { get; set; }
         string Role { get; }

@@ -2,11 +2,12 @@
 using System.Data;
 using Npgsql;
 using Cocoalite.Helpers;
+using Cocoalite.Interfaces;
 using Cocoalite.Models.Entity;
 
 namespace Cocoalite.Models.Context
 {
-    internal class ReceivingContext
+    internal class ReceivingContext : IReceivingContext
     {
         private readonly DbConnection db = new DbConnection();
 
@@ -19,9 +20,10 @@ namespace Cocoalite.Models.Context
                 conn.Open();
 
                 string query = @"
-                    SELECT supplier_id, supplier_name
-                    FROM suppliers
-                    ORDER BY supplier_name";
+            SELECT supplier_id, supplier_name
+            FROM suppliers
+            WHERE is_delete = FALSE
+            ORDER BY supplier_name";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
                 using (var adapter = new NpgsqlDataAdapter(cmd))

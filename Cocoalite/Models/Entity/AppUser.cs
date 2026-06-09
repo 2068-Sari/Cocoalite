@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Cocoalite.Models.Entity
 {
-    internal abstract class AppUser : IPengguna
+    public abstract class AppUser : IPengguna
     {
         private string fullName = "";
         private string username = "";

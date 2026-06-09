@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Text;
 using System.Linq;
 using System.Collections.Generic;
@@ -10,7 +11,6 @@ using Cocoalite.Models.Entity;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
-
 
 namespace Cocoalite.Views
 {
@@ -33,8 +33,10 @@ namespace Cocoalite.Views
 
             if (LoginSession.IsAdmin())
             {
+                cbJenisLaporan.Items.Add("Supplier");
+                cbJenisLaporan.Items.Add("Receiving");
+                cbJenisLaporan.Items.Add("Batch");
                 cbJenisLaporan.Items.Add("Inventory");
-                cbJenisLaporan.Items.Add("Quality Control");
                 cbJenisLaporan.Items.Add("Shipment");
                 cbJenisLaporan.Items.Add("Gabungan");
             }
@@ -44,6 +46,16 @@ namespace Cocoalite.Views
             }
 
             cbJenisLaporan.SelectedIndex = -1;
+        }
+
+        private string AmbilNilai(DataRow row, string namaKolom)
+        {
+            if (!row.Table.Columns.Contains(namaKolom))
+            {
+                return "-";
+            }
+
+            return row[namaKolom]?.ToString() ?? "-";
         }
 
         private void btnGenerate_Click(object sender, EventArgs e)
@@ -61,9 +73,19 @@ namespace Cocoalite.Views
 
             try
             {
-                ReportController controller = new ReportController();
-
                 string jenisLaporan = cbJenisLaporan.Text;
+
+                if (LoginSession.IsAdmin() && jenisLaporan == "Quality Control")
+                {
+                    MessageBox.Show(
+                        "Laporan Quality Control hanya dapat diakses oleh user QC.",
+                        "Akses Ditolak",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                    return;
+                }
+
                 if (LoginSession.IsQualityController() && jenisLaporan != "Quality Control")
                 {
                     MessageBox.Show(
@@ -75,7 +97,219 @@ namespace Cocoalite.Views
                     return;
                 }
 
-                if (jenisLaporan == "Inventory")
+                if (jenisLaporan == "Supplier")
+                {
+                    SupplierController supplierController =
+                        new SupplierController();
+
+                    DataTable daftarSupplier =
+                        supplierController.GetAllSuppliers();
+
+                    if (daftarSupplier.Rows.Count == 0)
+                    {
+                        txtReport.Text = "Belum ada data Supplier.";
+                        return;
+                    }
+
+                    StringBuilder laporan = new StringBuilder();
+
+                    laporan.AppendLine("LAPORAN SUPPLIER COCOALITE");
+                    laporan.AppendLine("PT Cacao Prima Nusantara");
+                    laporan.AppendLine("Tanggal Cetak: " + DateTime.Now.ToString("dd-MM-yyyy HH:mm"));
+                    laporan.AppendLine();
+                    laporan.AppendLine(new string('=', 125));
+
+                    laporan.AppendLine(
+                        "No".PadRight(5) +
+                        "Supplier ID".PadRight(15) +
+                        "Supplier Name".PadRight(30) +
+                        "Phone".PadRight(18) +
+                        "Email".PadRight(30) +
+                        "Created At"
+                    );
+
+                    laporan.AppendLine(new string('=', 125));
+
+                    int nomor = 1;
+
+                    foreach (DataRow row in daftarSupplier.Rows)
+                    {
+                        string supplierName = AmbilNilai(row, "supplier_name");
+                        string phone = AmbilNilai(row, "phone_number");
+                        string email = AmbilNilai(row, "email");
+                        string createdAt = AmbilNilai(row, "created_at");
+
+                        if (supplierName.Length > 27)
+                        {
+                            supplierName = supplierName.Substring(0, 27) + "...";
+                        }
+
+                        if (email.Length > 27)
+                        {
+                            email = email.Substring(0, 27) + "...";
+                        }
+
+                        laporan.AppendLine(
+                            nomor.ToString().PadRight(5) +
+                            AmbilNilai(row, "supplier_id").PadRight(15) +
+                            supplierName.PadRight(30) +
+                            phone.PadRight(18) +
+                            email.PadRight(30) +
+                            createdAt
+                        );
+
+                        nomor++;
+                    }
+
+                    laporan.AppendLine(new string('=', 125));
+                    laporan.AppendLine("Total Data Supplier: " + daftarSupplier.Rows.Count);
+
+                    txtReport.Text = laporan.ToString();
+                }
+                else if (jenisLaporan == "Receiving")
+                {
+                    ReceivingController receivingController =
+                        new ReceivingController();
+
+                    DataTable daftarReceiving =
+                        receivingController.GetAllReceiving();
+
+                    if (daftarReceiving.Rows.Count == 0)
+                    {
+                        txtReport.Text = "Belum ada data Receiving.";
+                        return;
+                    }
+
+                    StringBuilder laporan = new StringBuilder();
+
+                    laporan.AppendLine("LAPORAN RECEIVING COCOALITE");
+                    laporan.AppendLine("PT Cacao Prima Nusantara");
+                    laporan.AppendLine("Tanggal Cetak: " + DateTime.Now.ToString("dd-MM-yyyy HH:mm"));
+                    laporan.AppendLine();
+                    laporan.AppendLine(new string('=', 130));
+
+                    laporan.AppendLine(
+                        "No".PadRight(5) +
+                        "Receiving ID".PadRight(15) +
+                        "Code".PadRight(18) +
+                        "Supplier".PadRight(30) +
+                        "Date".PadRight(15) +
+                        "Weight".PadRight(15) +
+                        "Vehicle"
+                    );
+
+                    laporan.AppendLine(new string('=', 130));
+
+                    int nomor = 1;
+                    decimal totalBerat = 0;
+
+                    foreach (DataRow row in daftarReceiving.Rows)
+                    {
+                        string supplierName = AmbilNilai(row, "supplier_name");
+                        string receivingDate = AmbilNilai(row, "receiving_date");
+                        string vehicleNumber = AmbilNilai(row, "vehicle_number");
+
+                        decimal cocoaWeight = 0;
+
+                        if (row.Table.Columns.Contains("cocoa_weight"))
+                        {
+                            decimal.TryParse(row["cocoa_weight"]?.ToString(), out cocoaWeight);
+                        }
+
+                        totalBerat += cocoaWeight;
+
+                        if (supplierName.Length > 27)
+                        {
+                            supplierName = supplierName.Substring(0, 27) + "...";
+                        }
+
+                        laporan.AppendLine(
+                            nomor.ToString().PadRight(5) +
+                            AmbilNilai(row, "receiving_id").PadRight(15) +
+                            AmbilNilai(row, "receiving_code").PadRight(18) +
+                            supplierName.PadRight(30) +
+                            receivingDate.PadRight(15) +
+                            (cocoaWeight.ToString("N2") + " kg").PadRight(15) +
+                            vehicleNumber
+                        );
+
+                        nomor++;
+                    }
+
+                    laporan.AppendLine(new string('=', 130));
+                    laporan.AppendLine("Total Data Receiving : " + daftarReceiving.Rows.Count);
+                    laporan.AppendLine("Total Berat Kakao    : " + totalBerat.ToString("N2") + " kg");
+
+                    txtReport.Text = laporan.ToString();
+                }
+                else if (jenisLaporan == "Batch")
+                {
+                    BatchController batchController =
+                        new BatchController();
+
+                    DataTable daftarBatch =
+                        batchController.GetAllBatch();
+
+                    if (daftarBatch.Rows.Count == 0)
+                    {
+                        txtReport.Text = "Belum ada data Batch.";
+                        return;
+                    }
+
+                    StringBuilder laporan = new StringBuilder();
+
+                    laporan.AppendLine("LAPORAN BATCH COCOALITE");
+                    laporan.AppendLine("PT Cacao Prima Nusantara");
+                    laporan.AppendLine("Tanggal Cetak: " + DateTime.Now.ToString("dd-MM-yyyy HH:mm"));
+                    laporan.AppendLine();
+                    laporan.AppendLine(new string('=', 120));
+
+                    laporan.AppendLine(
+                        "No".PadRight(5) +
+                        "Batch ID".PadRight(12) +
+                        "QC ID".PadRight(10) +
+                        "Batch Code".PadRight(18) +
+                        "Batch Date".PadRight(15) +
+                        "Weight".PadRight(15) +
+                        "Status"
+                    );
+
+                    laporan.AppendLine(new string('=', 120));
+
+                    int nomor = 1;
+                    decimal totalBerat = 0;
+
+                    foreach (DataRow row in daftarBatch.Rows)
+                    {
+                        decimal batchWeight = 0;
+
+                        if (row.Table.Columns.Contains("batch_weight"))
+                        {
+                            decimal.TryParse(row["batch_weight"]?.ToString(), out batchWeight);
+                        }
+
+                        totalBerat += batchWeight;
+
+                        laporan.AppendLine(
+                            nomor.ToString().PadRight(5) +
+                            AmbilNilai(row, "batch_id").PadRight(12) +
+                            AmbilNilai(row, "qc_id").PadRight(10) +
+                            AmbilNilai(row, "batch_code").PadRight(18) +
+                            AmbilNilai(row, "batch_date").PadRight(15) +
+                            (batchWeight.ToString("N2") + " kg").PadRight(15) +
+                            AmbilNilai(row, "batch_status")
+                        );
+
+                        nomor++;
+                    }
+
+                    laporan.AppendLine(new string('=', 120));
+                    laporan.AppendLine("Total Data Batch : " + daftarBatch.Rows.Count);
+                    laporan.AppendLine("Total Berat Batch: " + totalBerat.ToString("N2") + " kg");
+
+                    txtReport.Text = laporan.ToString();
+                }
+                else if (jenisLaporan == "Inventory")
                 {
                     InventoryController inventoryController =
                         new InventoryController();
@@ -215,7 +449,6 @@ namespace Cocoalite.Views
 
                     txtReport.Text = laporan.ToString();
                 }
-
                 else if (jenisLaporan == "Shipment")
                 {
                     ShipmentController shipmentController =
@@ -308,30 +541,79 @@ namespace Cocoalite.Views
                         return;
                     }
 
+                    SupplierController supplierController =
+                        new SupplierController();
+
+                    ReceivingController receivingController =
+                        new ReceivingController();
+
+                    BatchController batchController =
+                        new BatchController();
+
                     InventoryController inventoryController =
                         new InventoryController();
-
-                    QualityControlController qcController =
-                        new QualityControlController();
 
                     ShipmentController shipmentController =
                         new ShipmentController();
 
+                    DataTable daftarSupplier =
+                        supplierController.GetAllSuppliers();
+
+                    DataTable daftarReceiving =
+                        receivingController.GetAllReceiving();
+
+                    DataTable daftarBatch =
+                        batchController.GetAllBatch();
+
                     List<Inventory> daftarInventory =
                         inventoryController.GetReportInventory();
-
-                    List<QualityControl> daftarQc =
-                        qcController.GetReportQualityControl();
 
                     List<Shipment> daftarShipment =
                         shipmentController.GetReportShipment();
 
+                    decimal totalReceiving = 0;
+                    foreach (DataRow row in daftarReceiving.Rows)
+                    {
+                        if (row.Table.Columns.Contains("cocoa_weight"))
+                        {
+                            decimal.TryParse(row["cocoa_weight"]?.ToString(), out decimal berat);
+                            totalReceiving += berat;
+                        }
+                    }
+
+                    decimal totalBatch = 0;
+                    foreach (DataRow row in daftarBatch.Rows)
+                    {
+                        if (row.Table.Columns.Contains("batch_weight"))
+                        {
+                            decimal.TryParse(row["batch_weight"]?.ToString(), out decimal berat);
+                            totalBatch += berat;
+                        }
+                    }
+
                     StringBuilder laporan = new StringBuilder();
 
-                    laporan.AppendLine("LAPORAN GABUNGAN OPERASIONAL COCOALITE");
+                    laporan.AppendLine("LAPORAN GABUNGAN ADMIN COCOALITE");
                     laporan.AppendLine("PT Cacao Prima Nusantara");
                     laporan.AppendLine("Tanggal Cetak: " + DateTime.Now.ToString("dd-MM-yyyy HH:mm"));
                     laporan.AppendLine("====================================================");
+                    laporan.AppendLine();
+
+                    laporan.AppendLine("RINGKASAN SUPPLIER");
+                    laporan.AppendLine("----------------------------------------");
+                    laporan.AppendLine("Total Data Supplier : " + daftarSupplier.Rows.Count);
+                    laporan.AppendLine();
+
+                    laporan.AppendLine("RINGKASAN RECEIVING");
+                    laporan.AppendLine("----------------------------------------");
+                    laporan.AppendLine("Total Data Receiving : " + daftarReceiving.Rows.Count);
+                    laporan.AppendLine("Total Berat Kakao    : " + totalReceiving.ToString("N2") + " kg");
+                    laporan.AppendLine();
+
+                    laporan.AppendLine("RINGKASAN BATCH");
+                    laporan.AppendLine("----------------------------------------");
+                    laporan.AppendLine("Total Data Batch : " + daftarBatch.Rows.Count);
+                    laporan.AppendLine("Total Berat Batch: " + totalBatch.ToString("N2") + " kg");
                     laporan.AppendLine();
 
                     laporan.AppendLine("RINGKASAN INVENTORY");
@@ -339,13 +621,6 @@ namespace Cocoalite.Views
                     laporan.AppendLine("Total Data Inventory : " + daftarInventory.Count);
                     laporan.AppendLine("Total Stok           : " +
                         daftarInventory.Sum(i => i.StockQuantity).ToString("N2") + " kg");
-                    laporan.AppendLine();
-
-                    laporan.AppendLine("RINGKASAN QUALITY CONTROL");
-                    laporan.AppendLine("----------------------------------------");
-                    laporan.AppendLine("Total Data QC : " + daftarQc.Count);
-                    laporan.AppendLine("Approved      : " + daftarQc.Count(q => q.QcStatus == "Approved"));
-                    laporan.AppendLine("Rejected      : " + daftarQc.Count(q => q.QcStatus == "Rejected"));
                     laporan.AppendLine();
 
                     laporan.AppendLine("RINGKASAN SHIPMENT");
@@ -371,6 +646,7 @@ namespace Cocoalite.Views
                 );
             }
         }
+
         private void btnDownloadPdf_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtReport.Text))

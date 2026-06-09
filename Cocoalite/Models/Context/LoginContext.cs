@@ -2,11 +2,12 @@
 using System.Data;
 using Npgsql;
 using Cocoalite.Helpers;
+using Cocoalite.Interfaces;
 using Cocoalite.Models.Entity;
 
 namespace Cocoalite.Models.Context
 {
-    internal class LoginContext
+    internal class LoginContext : ILoginContext
     {
         private readonly DbConnection db = new DbConnection();
 
@@ -19,25 +20,33 @@ namespace Cocoalite.Models.Context
                 conn.Open();
 
                 string query = @"
-            SELECT
-                user_id,
-                full_name,
-                username,
-                role
-            FROM users
-            WHERE username = @username
-            AND password_hash = @password
-            LIMIT 1";
+                    SELECT
+                        user_id,
+                        full_name,
+                        username,
+                        role,
+                        password_hash
+                    FROM users
+                    WHERE username = @username
+                    LIMIT 1";
 
-                using (var cmd = new Npgsql.NpgsqlCommand(query, conn))
+                using (var cmd = new NpgsqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@username", username);
-                    cmd.Parameters.AddWithValue("@password", password);
 
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
                         {
+                            string storedHash = reader["password_hash"].ToString() ?? "";
+
+                            bool isPasswordValid = PasswordHasher.Verify(password, storedHash);
+
+                            if (!isPasswordValid)
+                            {
+                                return null;
+                            }
+
                             string role = reader["role"].ToString() ?? "";
                             role = role.Trim().ToLower();
 
@@ -64,43 +73,53 @@ namespace Cocoalite.Models.Context
 
             return user;
         }
+
         public bool ChangePassword(
-     int userId,
-     string oldPassword,
-     string newPassword)
+            int userId,
+            string oldPassword,
+            string newPassword)
         {
             using (var conn = db.GetConnection())
             {
                 conn.Open();
 
                 string checkQuery = @"
-            SELECT COUNT(*)
-            FROM users
-            WHERE user_id = @user_id
-            AND password_hash = @old_password";
+                    SELECT password_hash
+                    FROM users
+                    WHERE user_id = @user_id";
 
-                using (var checkCmd = new Npgsql.NpgsqlCommand(checkQuery, conn))
+                string storedHash = "";
+
+                using (var checkCmd = new NpgsqlCommand(checkQuery, conn))
                 {
                     checkCmd.Parameters.AddWithValue("@user_id", userId);
-                    checkCmd.Parameters.AddWithValue("@old_password", oldPassword);
 
-                    int count = Convert.ToInt32(checkCmd.ExecuteScalar());
+                    object? result = checkCmd.ExecuteScalar();
 
-                    if (count == 0)
+                    if (result == null)
                     {
                         return false;
                     }
+
+                    storedHash = result.ToString() ?? "";
+                }
+
+                bool isOldPasswordValid = PasswordHasher.Verify(oldPassword, storedHash);
+
+                if (!isOldPasswordValid)
+                {
+                    return false;
                 }
 
                 string updateQuery = @"
-            UPDATE users
-            SET password_hash = @new_password
-            WHERE user_id = @user_id";
+                    UPDATE users
+                    SET password_hash = @new_password_hash
+                    WHERE user_id = @user_id";
 
-                using (var updateCmd = new Npgsql.NpgsqlCommand(updateQuery, conn))
+                using (var updateCmd = new NpgsqlCommand(updateQuery, conn))
                 {
                     updateCmd.Parameters.AddWithValue("@user_id", userId);
-                    updateCmd.Parameters.AddWithValue("@new_password", newPassword);
+                    updateCmd.Parameters.AddWithValue("@new_password_hash", PasswordHasher.Hash(newPassword));
 
                     updateCmd.ExecuteNonQuery();
                 }
@@ -118,18 +137,18 @@ namespace Cocoalite.Models.Context
                 conn.Open();
 
                 string query = @"
-            SELECT
-                user_id,
-                full_name,
-                username,
-                role,
-                created_at
-            FROM users
-            WHERE LOWER(role) = 'qc'
-            ORDER BY user_id";
+                    SELECT
+                        user_id,
+                        full_name,
+                        username,
+                        role,
+                        created_at
+                    FROM users
+                    WHERE LOWER(role) = 'qc'
+                    ORDER BY user_id";
 
-                using (var cmd = new Npgsql.NpgsqlCommand(query, conn))
-                using (var adapter = new Npgsql.NpgsqlDataAdapter(cmd))
+                using (var cmd = new NpgsqlCommand(query, conn))
+                using (var adapter = new NpgsqlDataAdapter(cmd))
                 {
                     adapter.Fill(table);
                 }
@@ -175,31 +194,31 @@ namespace Cocoalite.Models.Context
                 conn.Open();
 
                 string query = @"
-            INSERT INTO users (
-                full_name,
-                username,
-                password_hash,
-                role,
-                created_at
-            )
-            VALUES (
-                @full_name,
-                @username,
-                @password_hash,
-                'QC',
-                CURRENT_TIMESTAMP
-            )";
+                    INSERT INTO users (
+                        full_name,
+                        username,
+                        password_hash,
+                        role,
+                        created_at
+                    )
+                    VALUES (
+                        @full_name,
+                        @username,
+                        @password_hash,
+                        'QC',
+                        CURRENT_TIMESTAMP
+                    )";
 
-                using (var cmd = new Npgsql.NpgsqlCommand(query, conn))
+                using (var cmd = new NpgsqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@full_name", fullName);
                     cmd.Parameters.AddWithValue("@username", username);
-                    cmd.Parameters.AddWithValue("@password_hash", password);
+                    cmd.Parameters.AddWithValue("@password_hash", PasswordHasher.Hash(password));
 
                     cmd.ExecuteNonQuery();
                 }
             }
-        } 
+        }
 
         public void DeleteQcUser(int userId)
         {

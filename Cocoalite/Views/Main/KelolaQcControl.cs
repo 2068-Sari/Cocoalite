@@ -15,10 +15,13 @@ namespace Cocoalite.Views
 
         private void KelolaQcControl_Load(object sender, EventArgs e)
         {
+            txtFullName.MaxLength = 100;
+            txtUsername.MaxLength = 30;
+            txtPassword.MaxLength = 20;
+
             LoadQcUsers();
             AturDataGridView();
         }
-
         private void LoadQcUsers()
         {
             try
@@ -77,30 +80,62 @@ namespace Cocoalite.Views
 
         private bool ValidasiInput()
         {
-            if (string.IsNullOrWhiteSpace(txtFullName.Text))
+            string fullName = txtFullName.Text.Trim();
+            string username = txtUsername.Text.Trim();
+            string password = txtPassword.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(fullName))
             {
                 MessageBox.Show("Full name harus diisi.");
                 txtFullName.Focus();
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(txtUsername.Text))
+            if (fullName.Length > 100)
+            {
+                MessageBox.Show("Full name maksimal 100 karakter.");
+                txtFullName.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(username))
             {
                 MessageBox.Show("Username harus diisi.");
                 txtUsername.Focus();
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(txtPassword.Text))
+            if (username.Length < 4)
+            {
+                MessageBox.Show("Username minimal 4 karakter.");
+                txtUsername.Focus();
+                return false;
+            }
+
+            if (username.Length > 30)
+            {
+                MessageBox.Show("Username maksimal 30 karakter.");
+                txtUsername.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(password))
             {
                 MessageBox.Show("Password harus diisi.");
                 txtPassword.Focus();
                 return false;
             }
 
-            if (txtPassword.Text.Length < 4)
+            if (password.Length < 6)
             {
-                MessageBox.Show("Password minimal 4 karakter.");
+                MessageBox.Show("Password minimal 6 karakter.");
+                txtPassword.Focus();
+                return false;
+            }
+
+            if (password.Length > 20)
+            {
+                MessageBox.Show("Password maksimal 20 karakter.");
                 txtPassword.Focus();
                 return false;
             }

@@ -1,4 +1,5 @@
 ﻿using Cocoalite.Helpers;
+using Cocoalite.Interfaces;
 using Cocoalite.Models.Context;
 using Cocoalite.Models.Entity;
 using System.Data;
@@ -7,7 +8,17 @@ namespace Cocoalite.Controllers
 {
     internal class LoginController
     {
-        private readonly LoginContext context = new LoginContext();
+        private readonly ILoginContext context;
+
+        public LoginController()
+        {
+            context = new LoginContext();
+        }
+
+        public LoginController(ILoginContext context)
+        {
+            this.context = context;
+        }
 
         public bool Login(string username, string password)
         {
@@ -23,9 +34,9 @@ namespace Cocoalite.Controllers
         }
 
         public bool ChangePassword(
-    int userId,
-    string oldPassword,
-    string newPassword)
+            int userId,
+            string oldPassword,
+            string newPassword)
         {
             return context.ChangePassword(
                 userId,

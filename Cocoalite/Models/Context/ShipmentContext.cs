@@ -4,10 +4,11 @@ using Npgsql;
 using Cocoalite.Helpers;
 using System.Collections.Generic;
 using Cocoalite.Models.Entity;
+using Cocoalite.Interfaces;
 
 namespace Cocoalite.Models.Context
 {
-    internal class ShipmentContext
+    internal class ShipmentContext : IShipmentContext
     {
         private readonly DbConnection db = new DbConnection();
 
@@ -118,6 +119,7 @@ namespace Cocoalite.Models.Context
                         batch_id,
                         batch_code
                     FROM batches
+                    WHERE is_delete = FALSE
                     ORDER BY batch_id";
 
                 using (var cmd = new NpgsqlCommand(query, conn))

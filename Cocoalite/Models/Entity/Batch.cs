@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Cocoalite.Helpers;
+using Cocoalite.Interfaces;
 
 namespace Cocoalite.Models.Entity
 {
-    public class Batch
+    public class Batch : IDapatDilaporkan
     {
-        private string batchCode = "";
-        private decimal batchWeight;
-        private string batchStatus = "";
-        private List<Shipment> daftarShipment;
+        private string _batchCode = "";
+        private decimal _batchWeight;
+        private string _batchStatus = "";
+        private readonly List<Shipment> _daftarShipment;
 
         public int BatchId { get; set; }
         public int QcId { get; set; }
@@ -17,7 +19,7 @@ namespace Cocoalite.Models.Entity
 
         public Batch()
         {
-            daftarShipment = new List<Shipment>();
+            _daftarShipment = new List<Shipment>();
         }
 
         public Batch(string batchCode, decimal batchWeight, string batchStatus, List<Shipment> daftarShipment)
@@ -25,88 +27,93 @@ namespace Cocoalite.Models.Entity
             BatchCode = batchCode;
             BatchWeight = batchWeight;
             BatchStatus = batchStatus;
-            this.daftarShipment = daftarShipment;
+            _daftarShipment = daftarShipment ?? new List<Shipment>();
         }
 
         public string BatchCode
         {
-            get { return batchCode; }
+            get => _batchCode;
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
-                {
                     throw new ArgumentException("Kode batch tidak boleh kosong.");
-                }
 
-                batchCode = value;
+                _batchCode = value.Trim();
             }
         }
 
         public void GenerateBatchCode()
         {
-            Random random = new Random();
-            int number = random.Next(1, 1000);
-
-            BatchCode = "BTH-" + number.ToString("D3");
+            BatchCode = CodeGenerator.GenerateBatchCode();
         }
+
         public decimal BatchWeight
         {
-            get { return batchWeight;}
+            get => _batchWeight;
             set
             {
                 if (value <= 0)
-                {
                     throw new ArgumentException("Berat batch harus lebih dari 0.");
-                }
 
-                batchWeight = value;
+                _batchWeight = value;
             }
         }
 
         public string BatchStatus
         {
-            get
-            { return batchStatus;}
+            get => _batchStatus;
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
-                {
                     throw new ArgumentException("Status batch tidak boleh kosong.");
-                }
 
-                batchStatus = value;
+                _batchStatus = value.Trim();
             }
         }
 
-        public List<Shipment> DaftarShipment
-        {
-            get
-            {
-                return daftarShipment;
-            }
-        }
+        public IReadOnlyList<Shipment> DaftarShipment => _daftarShipment.AsReadOnly();
 
         public void TambahShipment(Shipment shipment)
         {
             if (shipment == null)
-            {
                 throw new ArgumentException("Data shipment tidak boleh kosong.");
-            }
 
-            daftarShipment.Add(shipment);
+            _daftarShipment.Add(shipment);
         }
 
         public string TampilkanInfoBatch()
         {
-            return $"Batch: {BatchCode} | Berat: {BatchWeight} kg | Status: {BatchStatus} | Jumlah Shipment: {daftarShipment.Count}";
+            return $"Batch: {BatchCode} | Berat: {BatchWeight} kg | Status: {BatchStatus} | Jumlah Shipment: {_daftarShipment.Count}";
         }
 
-        public void TampilkanDaftarShipment()
+        public string GetInfoDaftarShipment()
         {
-            foreach (Shipment shipment in daftarShipment)
+            StringBuilder sb = new StringBuilder();
+
+            foreach (Shipment shipment in _daftarShipment)
             {
-                Console.WriteLine(shipment.TampilkanInfoShipment());
+                sb.AppendLine(shipment.TampilkanInfoShipment());
             }
+
+            return sb.ToString();
+        }
+
+        public string BuatLaporan()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("LAPORAN BATCH");
+            sb.AppendLine("==============================");
+            sb.AppendLine($"Batch ID     : {BatchId}");
+            sb.AppendLine($"QC ID        : {QcId}");
+            sb.AppendLine($"Kode Batch   : {BatchCode}");
+            sb.AppendLine($"Tanggal      : {BatchDate:dd-MM-yyyy}");
+            sb.AppendLine($"Berat        : {BatchWeight} kg");
+            sb.AppendLine($"Status       : {BatchStatus}");
+            sb.AppendLine($"Jml Shipment : {_daftarShipment.Count}");
+            sb.AppendLine("==============================");
+
+            return sb.ToString();
         }
     }
 }

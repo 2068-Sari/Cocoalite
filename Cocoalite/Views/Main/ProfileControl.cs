@@ -17,32 +17,53 @@ namespace Cocoalite.Views
             lblFullNameValue.Text = LoginSession.CurrentUser?.FullName ?? "-";
             lblUsernameValue.Text = LoginSession.CurrentUser?.Username ?? "-";
             lblRoleValue.Text = LoginSession.CurrentUser?.Role ?? "-";
-        }
 
+            txtOldPassword.MaxLength = 20;
+            txtNewPassword.MaxLength = 20;
+            txtConfirmPassword.MaxLength = 20;
+        }
         private bool ValidasiInput()
         {
-            if (string.IsNullOrWhiteSpace(txtOldPassword.Text))
+            string oldPassword = txtOldPassword.Text.Trim();
+            string newPassword = txtNewPassword.Text.Trim();
+            string confirmPassword = txtConfirmPassword.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(oldPassword))
             {
                 MessageBox.Show("Password lama harus diisi.");
                 txtOldPassword.Focus();
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(txtNewPassword.Text))
+            if (string.IsNullOrWhiteSpace(newPassword))
             {
                 MessageBox.Show("Password baru harus diisi.");
                 txtNewPassword.Focus();
                 return false;
             }
 
-            if (txtNewPassword.Text.Length < 4)
+            if (newPassword.Length < 6)
             {
-                MessageBox.Show("Password baru minimal 4 karakter.");
+                MessageBox.Show("Password baru minimal 6 karakter.");
                 txtNewPassword.Focus();
                 return false;
             }
 
-            if (txtNewPassword.Text != txtConfirmPassword.Text)
+            if (newPassword.Length > 20)
+            {
+                MessageBox.Show("Password baru maksimal 20 karakter.");
+                txtNewPassword.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(confirmPassword))
+            {
+                MessageBox.Show("Konfirmasi password harus diisi.");
+                txtConfirmPassword.Focus();
+                return false;
+            }
+
+            if (newPassword != confirmPassword)
             {
                 MessageBox.Show("Konfirmasi password tidak sama.");
                 txtConfirmPassword.Focus();

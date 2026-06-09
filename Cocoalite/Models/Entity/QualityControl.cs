@@ -4,7 +4,7 @@ using Cocoalite.Interfaces;
 
 namespace Cocoalite.Models.Entity
 {
-    internal class QualityControl : IDapatDilaporkan
+    public class QualityControl : IDapatDilaporkan
     {
         private string grade = "";
         private string qcStatus = "";

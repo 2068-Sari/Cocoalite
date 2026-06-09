@@ -2,12 +2,13 @@
 using System.Data;
 using Npgsql;
 using Cocoalite.Helpers;
+using Cocoalite.Interfaces;
 using System.Collections.Generic;
 using Cocoalite.Models.Entity;
 
 namespace Cocoalite.Models.Context
 {
-    internal class QualityControlContext
+    internal class QualityControlContext : IQualityControlContext
     {
         private readonly DbConnection db = new DbConnection();
 
@@ -151,11 +152,11 @@ namespace Cocoalite.Models.Context
                         string query = @"
                     INSERT INTO quality_control
                     ( receiving_id, moisture_level, fermentation_level, defect_level, bean_size,
-                        grade, qc_status, inspection_notes, inspected_by, inspected_at
+                        grade, qc_status, inspection_notes, inspected_by, inspection_date
                     )
                     VALUES
                     ( @receiving_id, @moisture_level,  @fermentation_level, @defect_level,@bean_size,
-                        @grade,@qc_status, @inspection_notes, @inspected_by, @inspected_at
+                        @grade,@qc_status, @inspection_notes, @inspected_by, @inspection_date
                     )";
 
                         using (var cmd = new NpgsqlCommand(query, conn, transaction))
@@ -169,7 +170,7 @@ namespace Cocoalite.Models.Context
                             cmd.Parameters.AddWithValue("@qc_status", qc.QcStatus);
                             cmd.Parameters.AddWithValue("@inspection_notes", qc.InspectionNotes);
                             cmd.Parameters.AddWithValue("@inspected_by", qc.InspectedBy);
-                            cmd.Parameters.AddWithValue("@inspected_at", qc.InspectionDate);
+                            cmd.Parameters.AddWithValue("@inspection_date", qc.InspectionDate);
 
                             cmd.ExecuteNonQuery();
                         }
@@ -203,7 +204,7 @@ namespace Cocoalite.Models.Context
                         qc_status = @qc_status,
                         inspection_notes = @inspection_notes,
                         inspected_by = @inspected_by,
-                        inspected_at = @inspected_at
+                        inspection_date = @inspection_date
                     WHERE qc_id = @qc_id";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
@@ -218,7 +219,7 @@ namespace Cocoalite.Models.Context
                     cmd.Parameters.AddWithValue("@qc_status", qc.QcStatus);
                     cmd.Parameters.AddWithValue("@inspection_notes", qc.InspectionNotes);
                     cmd.Parameters.AddWithValue("@inspected_by", qc.InspectedBy);
-                    cmd.Parameters.AddWithValue("@inspected_at", qc.InspectionDate);
+                    cmd.Parameters.AddWithValue("@inspection_date", qc.InspectionDate);
 
                     cmd.ExecuteNonQuery();
                 }

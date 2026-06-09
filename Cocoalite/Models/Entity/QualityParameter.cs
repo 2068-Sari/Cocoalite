@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Cocoalite.Models.Entity
 {
-    internal class QualityParameter
+    public class QualityParameter
     {
         private decimal moistureLevel;
         private decimal fermentationLevel;

@@ -2,11 +2,12 @@
 using System.Data;
 using Npgsql;
 using Cocoalite.Helpers;
+using Cocoalite.Interfaces;
 using Cocoalite.Models.Entity;
 
 namespace Cocoalite.Models.Context
 {
-    internal class BatchContext
+    internal class BatchContext : IBatchContext
     {
         private readonly DbConnection db = new DbConnection();
 

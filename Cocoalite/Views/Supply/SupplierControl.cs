@@ -16,6 +16,10 @@ namespace Cocoalite.Views
 
         private void SupplierControl_Load(object sender, EventArgs e)
         {
+            txtSupplierName.MaxLength = 100;
+            txtPhone.MaxLength = 15;
+            txtEmail.MaxLength = 100;
+
             AturTampilanButton();
             AturTampilanTable();
             LoadSuppliers();
@@ -226,28 +230,61 @@ namespace Cocoalite.Views
 
         private bool ValidasiInput()
         {
-            if (string.IsNullOrWhiteSpace(txtSupplierName.Text))
+            string supplierName = txtSupplierName.Text.Trim();
+            string address = txtAddress.Text.Trim();
+            string phone = txtPhone.Text.Trim();
+            string email = txtEmail.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(supplierName))
             {
                 MessageBox.Show("Nama supplier tidak boleh kosong!");
                 txtSupplierName.Focus();
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(txtAddress.Text))
+            if (supplierName.Length > 100)
+            {
+                MessageBox.Show("Nama supplier maksimal 100 karakter!");
+                txtSupplierName.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(address))
             {
                 MessageBox.Show("Alamat supplier tidak boleh kosong!");
                 txtAddress.Focus();
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(txtPhone.Text))
+            if (string.IsNullOrWhiteSpace(phone))
             {
                 MessageBox.Show("Nomor telepon supplier tidak boleh kosong!");
                 txtPhone.Focus();
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(txtEmail.Text))
+            if (!phone.All(char.IsDigit))
+            {
+                MessageBox.Show("Nomor telepon hanya boleh berisi angka!");
+                txtPhone.Focus();
+                return false;
+            }
+
+            if (phone.Length < 10)
+            {
+                MessageBox.Show("Nomor telepon minimal 10 digit!");
+                txtPhone.Focus();
+                return false;
+            }
+
+            if (phone.Length > 15)
+            {
+                MessageBox.Show("Nomor telepon maksimal 15 digit!");
+                txtPhone.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(email))
             {
                 MessageBox.Show("Email supplier tidak boleh kosong!");
                 txtEmail.Focus();

@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Text;
+using Cocoalite.Helpers;
 using Cocoalite.Interfaces;
 
 namespace Cocoalite.Models.Entity
 {
     public class Shipment : IDapatDilaporkan
     {
-        private string shipmentCode = "";
-        private string destination = "";
-        private decimal shipmentWeight;
-        private string shipmentStatus = "Pending";
+        private string _shipmentCode = "";
+        private string _destination = "";
+        private decimal _shipmentWeight;
+        private string _shipmentStatus = "Pending";
 
         public int ShipmentId { get; set; }
         public int BatchId { get; set; }
@@ -20,83 +21,70 @@ namespace Cocoalite.Models.Entity
 
         public string ShipmentCode
         {
-            get
-            {
-                return shipmentCode;
-            }
+            get => _shipmentCode;
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
-                {
                     throw new ArgumentException("Kode shipment tidak boleh kosong.");
-                }
 
-                shipmentCode = value;
+                _shipmentCode = value.Trim();
             }
         }
 
         public void GenerateShipmentCode()
         {
-            Random random = new Random();
-            int number = random.Next(1, 1000);
-
-            ShipmentCode = "SHP-" + number.ToString("D3");
+            ShipmentCode = CodeGenerator.GenerateShipmentCode();
         }
+
         public string Destination
         {
-            get
-            {
-                return destination;
-            }
+            get => _destination;
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
-                {
                     throw new ArgumentException("Tujuan pengiriman tidak boleh kosong.");
-                }
 
-                destination = value;
+                _destination = value.Trim();
             }
         }
 
         public decimal ShipmentWeight
         {
-            get
-            {
-                return shipmentWeight;
-            }
+            get => _shipmentWeight;
             set
             {
                 if (value <= 0)
-                {
                     throw new ArgumentException("Berat pengiriman harus lebih dari 0.");
-                }
 
-                shipmentWeight = value;
+                _shipmentWeight = value;
             }
         }
 
         public string ShipmentStatus
         {
-            get
+            get => _shipmentStatus;
+            set
             {
-                return shipmentStatus;
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new ArgumentException("Status shipment tidak boleh kosong.");
+
+                _shipmentStatus = value.Trim();
             }
         }
 
         public void TandaiDikirim()
         {
-            shipmentStatus = "Shipped";
+            ShipmentStatus = "Shipped";
         }
 
         public void TandaiDiterima()
         {
-            shipmentStatus = "Delivered";
+            ShipmentStatus = "Delivered";
         }
 
         public void BatalkanPengiriman()
         {
-            shipmentStatus = "Cancelled";
+            ShipmentStatus = "Cancelled";
         }
 
         public string TampilkanInfoShipment()
@@ -110,23 +98,23 @@ namespace Cocoalite.Models.Entity
 
         public string BuatLaporan()
         {
-            StringBuilder laporan = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
 
-            laporan.AppendLine("LAPORAN SHIPMENT");
-            laporan.AppendLine("==============================");
-            laporan.AppendLine($"Shipment ID      : {ShipmentId}");
-            laporan.AppendLine($"Batch ID         : {BatchId}");
-            laporan.AppendLine($"Created By       : {CreatedBy}");
-            laporan.AppendLine($"Shipment Code    : {ShipmentCode}");
-            laporan.AppendLine($"Destination      : {Destination}");
-            laporan.AppendLine($"Shipment Date    : {ShipmentDate:dd-MM-yyyy}");
-            laporan.AppendLine($"Shipment Weight  : {ShipmentWeight} kg");
-            laporan.AppendLine($"Shipment Status  : {ShipmentStatus}");
-            laporan.AppendLine($"Vehicle Number   : {VehicleNumber}");
-            laporan.AppendLine($"Driver Name      : {DriverName}");
-            laporan.AppendLine("==============================");
+            sb.AppendLine("LAPORAN SHIPMENT");
+            sb.AppendLine("==============================");
+            sb.AppendLine($"Shipment ID      : {ShipmentId}");
+            sb.AppendLine($"Batch ID         : {BatchId}");
+            sb.AppendLine($"Created By       : {CreatedBy}");
+            sb.AppendLine($"Shipment Code    : {ShipmentCode}");
+            sb.AppendLine($"Destination      : {Destination}");
+            sb.AppendLine($"Shipment Date    : {ShipmentDate:dd-MM-yyyy}");
+            sb.AppendLine($"Shipment Weight  : {ShipmentWeight} kg");
+            sb.AppendLine($"Shipment Status  : {ShipmentStatus}");
+            sb.AppendLine($"Vehicle Number   : {VehicleNumber}");
+            sb.AppendLine($"Driver Name      : {DriverName}");
+            sb.AppendLine("==============================");
 
-            return laporan.ToString();
+            return sb.ToString();
         }
     }
 }

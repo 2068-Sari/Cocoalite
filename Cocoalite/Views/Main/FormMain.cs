@@ -66,14 +66,20 @@ namespace Cocoalite.Views
                 btnDashboard.Visible = true;
                 btnSupplier.Visible = true;
                 btnReceiving.Visible = true;
-                btnQualityControl.Visible = true;
+
+                // Admin tidak boleh akses Quality Control
+                btnQualityControl.Visible = false;
+
                 btnBatch.Visible = true;
                 btnInventory.Visible = true;
                 btnShipment.Visible = true;
                 btnActivityLog.Visible = true;
                 btnReport.Visible = true;
+
                 btnProfile.Visible = false;
                 btnKelolaQc.Visible = false;
+
+                
                 menuKelolaQc.Visible = true;
 
                 AturPosisiMenuAdmin();
@@ -89,8 +95,11 @@ namespace Cocoalite.Views
                 btnShipment.Visible = false;
                 btnActivityLog.Visible = false;
                 btnReport.Visible = true;
+
                 btnProfile.Visible = false;
                 btnKelolaQc.Visible = false;
+
+                
                 menuKelolaQc.Visible = false;
 
                 AturPosisiMenuQC();
@@ -184,14 +193,21 @@ namespace Cocoalite.Views
             btnDashboard.Location = new Point(30, 130);
             btnSupplier.Location = new Point(30, 178);
             btnReceiving.Location = new Point(30, 226);
-            btnQualityControl.Location = new Point(30, 274);
-            btnBatch.Location = new Point(30, 322);
-            btnInventory.Location = new Point(30, 370);
-            btnShipment.Location = new Point(30, 418);
-            btnActivityLog.Location = new Point(30, 466);
-            btnReport.Location = new Point(30, 514);
+            btnBatch.Location = new Point(30, 274);
+            btnInventory.Location = new Point(30, 322);
+            btnShipment.Location = new Point(30, 370);
+            btnActivityLog.Location = new Point(30, 418);
+            btnReport.Location = new Point(30, 466);
 
-            // Logout tetap bawah
+            btnDashboard.Size = new Size(180, 40);
+            btnSupplier.Size = new Size(180, 40);
+            btnReceiving.Size = new Size(180, 40);
+            btnBatch.Size = new Size(180, 40);
+            btnInventory.Size = new Size(180, 40);
+            btnShipment.Size = new Size(180, 40);
+            btnActivityLog.Size = new Size(180, 40);
+            btnReport.Size = new Size(180, 40);
+
             btnLogout.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnLogout.Location = new Point(30, panelSidebar.Height - 85);
             btnLogout.Size = new Size(190, 40);
@@ -251,6 +267,17 @@ namespace Cocoalite.Views
 
         private void btnQualityControl_Click(object sender, EventArgs e)
         {
+            if (!LoginSession.IsQualityController())
+            {
+                MessageBox.Show(
+                    "Fitur Quality Control hanya dapat diakses oleh user QC.",
+                    "Akses Ditolak",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
+
             TampilkanControl(new QualityControlControl());
             SetActiveMenu(btnQualityControl);
         }

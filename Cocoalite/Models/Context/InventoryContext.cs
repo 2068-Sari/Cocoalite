@@ -2,12 +2,13 @@
 using System.Data;
 using Npgsql;
 using Cocoalite.Helpers;
+using Cocoalite.Interfaces;
 using System.Collections.Generic;
 using Cocoalite.Models.Entity;
 
 namespace Cocoalite.Models.Context
 {
-    internal class InventoryContext
+    internal class InventoryContext : IInventoryContext
     {
         private readonly DbConnection db = new DbConnection();
 
@@ -42,14 +43,15 @@ namespace Cocoalite.Models.Context
                 conn.Open();
 
                 string query = @"
-                     SELECT
-                          inventory_id,
-                          batch_id,
-                          stock_quantity,
-                          warehouse_location,
-                          updated_at
-                      FROM inventory
-                      ORDER BY inventory_id";
+                    SELECT
+                        inventory_id,
+                        batch_id,
+                        stock_quantity,
+                        warehouse_location,
+                        updated_at
+                    FROM inventory
+                    WHERE is_delete = FALSE
+                    ORDER BY inventory_id";
 
                 using (var cmd = new Npgsql.NpgsqlCommand(query, conn))
                 using (var reader = cmd.ExecuteReader())
@@ -92,6 +94,7 @@ namespace Cocoalite.Models.Context
                 string query = @"
                     SELECT batch_id, batch_code
                     FROM batches
+                    WHERE is_delete = FALSE
                     ORDER BY batch_id";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
@@ -115,10 +118,10 @@ namespace Cocoalite.Models.Context
                     try
                     {
                         string query = @"
-                    INSERT INTO inventory
-                        (batch_id, stock_quantity, warehouse_location)
-                    VALUES
-                        (@batch_id, @stock_quantity, @warehouse_location)";
+                            INSERT INTO inventory
+                                (batch_id, stock_quantity, warehouse_location)
+                            VALUES
+                                (@batch_id, @stock_quantity, @warehouse_location)";
 
                         using (var cmd = new NpgsqlCommand(query, conn, transaction))
                         {
@@ -174,9 +177,9 @@ namespace Cocoalite.Models.Context
                 conn.Open();
 
                 string query = @"
-            UPDATE inventory 
-            SET is_delete = TRUE 
-            WHERE inventory_id = @inventory_id";
+                    UPDATE inventory 
+                    SET is_delete = TRUE 
+                    WHERE inventory_id = @inventory_id";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
                 {
