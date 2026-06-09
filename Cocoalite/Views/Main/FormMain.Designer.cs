@@ -244,19 +244,24 @@
             btnLogout.UseVisualStyleBackColor = false;
             btnLogout.Click += btnLogout_Click;
 
+            // 
             // btnProfile
+            // 
+            btnProfile.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnProfile.BackColor = Color.FromArgb(255, 248, 240);
-            btnProfile.FlatStyle = FlatStyle.Flat;
             btnProfile.FlatAppearance.BorderColor = Color.FromArgb(92, 49, 13);
+            btnProfile.FlatStyle = FlatStyle.Flat;
             btnProfile.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
             btnProfile.ForeColor = Color.FromArgb(74, 44, 30);
-            btnProfile.Location = new Point(1160, 55);
+            btnProfile.Location = new Point(820, 80);
             btnProfile.Name = "btnProfile";
-            btnProfile.Size = new Size(90, 30);
-            btnProfile.Text = "Profile";
+            btnProfile.Size = new Size(95, 28);
+            btnProfile.TabIndex = 4;
+            btnProfile.Text = "Akun ▼";
             btnProfile.UseVisualStyleBackColor = false;
+            btnProfile.Cursor = Cursors.Hand;
+            btnProfile.Visible = false;
             btnProfile.Click += btnProfile_Click;
-
             // btnKelolaQc
             btnKelolaQc.BackColor = Color.FromArgb(92, 49, 13);
             btnKelolaQc.FlatStyle = FlatStyle.Flat;
@@ -267,6 +272,7 @@
             btnKelolaQc.Name = "btnKelolaQc";
             btnKelolaQc.Size = new Size(100, 30);
             btnKelolaQc.Text = "Kelola QC";
+            btnKelolaQc.Visible = false;
             btnKelolaQc.UseVisualStyleBackColor = false;
             btnKelolaQc.Click += btnKelolaQc_Click;
             // 
@@ -324,9 +330,9 @@
             lblRole.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             lblRole.Font = new Font("Segoe UI", 9F);
             lblRole.ForeColor = Color.FromArgb(120, 86, 60);
-            lblRole.Location = new Point(660, 55);
+            lblRole.Location = new Point(630, 55);
             lblRole.Name = "lblRole";
-            lblRole.Size = new Size(270, 25);
+            lblRole.Size = new Size(300, 25);
             lblRole.TabIndex = 3;
             lblRole.Text = "Role: -";
             lblRole.TextAlign = ContentAlignment.MiddleRight;

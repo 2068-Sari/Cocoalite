@@ -9,11 +9,15 @@ namespace Cocoalite.Views
     {
         private UserControl? activeControl = null;
 
+        private ContextMenuStrip menuAkun = new ContextMenuStrip();
+        private ToolStripMenuItem menuKelolaProfile = new ToolStripMenuItem("Kelola Profile");
+        private ToolStripMenuItem menuKelolaQc = new ToolStripMenuItem("Kelola QC");
+
         public FormMain()
         {
             InitializeComponent();
+            SiapkanMenuAkun();
         }
-
         private void FormMain_Load(object sender, EventArgs e)
         {
             if (!LoginSession.IsLoggedIn())
@@ -34,6 +38,27 @@ namespace Cocoalite.Views
             SetActiveMenu(btnDashboard);
         }
 
+        private void SiapkanMenuAkun()
+        {
+            menuAkun.Items.Clear();
+
+            menuKelolaProfile.Click += menuKelolaProfile_Click;
+            menuKelolaQc.Click += menuKelolaQc_Click;
+
+            menuAkun.Items.Add(menuKelolaProfile);
+            menuAkun.Items.Add(menuKelolaQc);
+
+            btnProfile.Text = "Akun ▼";
+            btnProfile.Size = new Size(110, 30);
+
+            // Tombol Kelola QC yang lama tidak dipakai lagi
+            btnKelolaQc.Visible = false;
+
+            // Supaya nama user juga bisa diklik untuk membuka menu akun
+            lblUserName.Cursor = Cursors.Hand;
+            lblUserName.Click += lblUserName_Click;
+        }
+
         private void AturHakAkses()
         {
             if (LoginSession.IsAdmin())
@@ -47,8 +72,9 @@ namespace Cocoalite.Views
                 btnShipment.Visible = true;
                 btnActivityLog.Visible = true;
                 btnReport.Visible = true;
-                btnProfile.Visible = true;
-                btnKelolaQc.Visible = true;
+                btnProfile.Visible = false;
+                btnKelolaQc.Visible = false;
+                menuKelolaQc.Visible = true;
 
                 AturPosisiMenuAdmin();
             }
@@ -63,8 +89,9 @@ namespace Cocoalite.Views
                 btnShipment.Visible = false;
                 btnActivityLog.Visible = false;
                 btnReport.Visible = true;
-                btnProfile.Visible = true;
+                btnProfile.Visible = false;
                 btnKelolaQc.Visible = false;
+                menuKelolaQc.Visible = false;
 
                 AturPosisiMenuQC();
             }
@@ -80,10 +107,12 @@ namespace Cocoalite.Views
 
             Text = "CocoaLite - " + infoUser;
 
-            lblUserName.Text = infoUser;
+            lblUserName.Text = infoUser + " ▼";
             lblRole.Text = "Role: " + role;
             lblWelcome.Text = "Selamat datang, " + infoUser;
         }
+
+
 
         private void TampilkanControl(UserControl control)
         {
@@ -167,6 +196,41 @@ namespace Cocoalite.Views
             btnLogout.Location = new Point(30, panelSidebar.Height - 85);
             btnLogout.Size = new Size(190, 40);
         }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show(
+                "Apakah Anda yakin ingin logout?",
+                "Konfirmasi Logout",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (result == DialogResult.Yes)
+            {
+                LoginSession.Clear();
+
+                FormLogin formLogin = new FormLogin();
+                formLogin.Show();
+
+                this.Close();
+            }
+        }
+
+        private void menuKelolaProfile_Click(object? sender, EventArgs e)
+        {
+            TampilkanControl(new ProfileControl());
+        }
+
+        private void menuKelolaQc_Click(object? sender, EventArgs e)
+        {
+            TampilkanControl(new KelolaQcControl());
+        }
+
+        private void lblUserName_Click(object? sender, EventArgs e)
+        {
+            menuAkun.Show(lblUserName, new Point(0, lblUserName.Height));
+        }
         private void btnDashboard_Click(object sender, EventArgs e)
         {
             TampilkanControl(new DashboardControl());
@@ -223,32 +287,12 @@ namespace Cocoalite.Views
 
         private void btnProfile_Click(object sender, EventArgs e)
         {
-            TampilkanControl(new ProfileControl());
+            menuAkun.Show(btnProfile, new Point(0, btnProfile.Height));
         }
 
         private void btnKelolaQc_Click(object sender, EventArgs e)
         {
             TampilkanControl(new KelolaQcControl());
-        }
-
-        private void btnLogout_Click(object sender, EventArgs e)
-        {
-            DialogResult result = MessageBox.Show(
-                "Apakah Anda yakin ingin logout?",
-                "Konfirmasi Logout",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question
-            );
-
-            if (result == DialogResult.Yes)
-            {
-                LoginSession.Clear();
-
-                FormLogin formLogin = new FormLogin();
-                formLogin.Show();
-
-                this.Close();
-            }
         }
     }
 }

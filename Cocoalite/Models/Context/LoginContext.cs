@@ -1,8 +1,8 @@
-﻿using Cocoalite.Helpers;
-using Cocoalite.Models.Entity;
-using Npgsql;
-using System;
+﻿using System;
 using System.Data;
+using Npgsql;
+using Cocoalite.Helpers;
+using Cocoalite.Models.Entity;
 
 namespace Cocoalite.Models.Context
 {
@@ -12,17 +12,24 @@ namespace Cocoalite.Models.Context
 
         public AppUser? GetUserByLogin(string username, string password)
         {
+            AppUser? user = null;
+
             using (var conn = db.GetConnection())
             {
                 conn.Open();
 
                 string query = @"
-                    SELECT  user_id, full_name, username, role
-                    FROM users
-                    WHERE username = @username
-                    AND password_hash = @password";
+            SELECT
+                user_id,
+                full_name,
+                username,
+                role
+            FROM users
+            WHERE username = @username
+            AND password_hash = @password
+            LIMIT 1";
 
-                using (var cmd = new NpgsqlCommand(query, conn))
+                using (var cmd = new Npgsql.NpgsqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@username", username);
                     cmd.Parameters.AddWithValue("@password", password);
@@ -31,12 +38,8 @@ namespace Cocoalite.Models.Context
                     {
                         if (reader.Read())
                         {
-                            int userId = Convert.ToInt32(reader["user_id"]);
-                            string fullName = reader["full_name"].ToString() ?? "";
-                            string userName = reader["username"].ToString() ?? "";
-                            string role = reader["role"].ToString()?.ToLower() ?? "";
-
-                            AppUser user;
+                            string role = reader["role"].ToString() ?? "";
+                            role = role.Trim().ToLower();
 
                             if (role == "admin")
                             {
@@ -48,22 +51,23 @@ namespace Cocoalite.Models.Context
                             }
                             else
                             {
-                                throw new Exception("Role user tidak dikenali.");
+                                return null;
                             }
 
-                            user.UserId = userId;
-                            user.FullName = fullName;
-                            user.Username = userName;
-
-                            return user;
+                            user.UserId = Convert.ToInt32(reader["user_id"]);
+                            user.FullName = reader["full_name"].ToString() ?? "";
+                            user.Username = reader["username"].ToString() ?? "";
                         }
                     }
+                }
+            }
 
-
-                    public bool ChangePassword(
-    int userId,
-    string oldPassword,
-    string newPassword)
+            return user;
+        }
+        public bool ChangePassword(
+     int userId,
+     string oldPassword,
+     string newPassword)
         {
             using (var conn = db.GetConnection())
             {
@@ -73,7 +77,7 @@ namespace Cocoalite.Models.Context
             SELECT COUNT(*)
             FROM users
             WHERE user_id = @user_id
-            AND password = @old_password";
+            AND password_hash = @old_password";
 
                 using (var checkCmd = new Npgsql.NpgsqlCommand(checkQuery, conn))
                 {
@@ -90,7 +94,7 @@ namespace Cocoalite.Models.Context
 
                 string updateQuery = @"
             UPDATE users
-            SET password = @new_password
+            SET password_hash = @new_password
             WHERE user_id = @user_id";
 
                 using (var updateCmd = new Npgsql.NpgsqlCommand(updateQuery, conn))
@@ -121,7 +125,7 @@ namespace Cocoalite.Models.Context
                 role,
                 created_at
             FROM users
-            WHERE role = 'QC'
+            WHERE LOWER(role) = 'qc'
             ORDER BY user_id";
 
                 using (var cmd = new Npgsql.NpgsqlCommand(query, conn))
@@ -141,11 +145,11 @@ namespace Cocoalite.Models.Context
                 conn.Open();
 
                 string query = @"
-            SELECT COUNT(*)
-            FROM users
-            WHERE username = @username";
+                    SELECT COUNT(*)
+                    FROM users
+                    WHERE username = @username";
 
-                using (var cmd = new Npgsql.NpgsqlCommand(query, conn))
+                using (var cmd = new NpgsqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@username", username);
 
@@ -174,14 +178,14 @@ namespace Cocoalite.Models.Context
             INSERT INTO users (
                 full_name,
                 username,
-                password,
+                password_hash,
                 role,
                 created_at
             )
             VALUES (
                 @full_name,
                 @username,
-                @password,
+                @password_hash,
                 'QC',
                 CURRENT_TIMESTAMP
             )";
@@ -190,12 +194,12 @@ namespace Cocoalite.Models.Context
                 {
                     cmd.Parameters.AddWithValue("@full_name", fullName);
                     cmd.Parameters.AddWithValue("@username", username);
-                    cmd.Parameters.AddWithValue("@password", password);
+                    cmd.Parameters.AddWithValue("@password_hash", password);
 
                     cmd.ExecuteNonQuery();
                 }
             }
-        }
+        } 
 
         public void DeleteQcUser(int userId)
         {
@@ -204,21 +208,16 @@ namespace Cocoalite.Models.Context
                 conn.Open();
 
                 string query = @"
-            DELETE FROM users
-            WHERE user_id = @user_id
-            AND role = 'QC'";
+                    DELETE FROM users
+                    WHERE user_id = @user_id
+                    AND role = 'QC'";
 
-                using (var cmd = new Npgsql.NpgsqlCommand(query, conn))
+                using (var cmd = new NpgsqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@user_id", userId);
                     cmd.ExecuteNonQuery();
                 }
             }
-        }
-    }
-            }
-
-            return null;
         }
     }
 }

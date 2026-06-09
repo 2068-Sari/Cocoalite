@@ -1,0 +1,216 @@
+﻿using System;
+using System.Windows.Forms;
+using Cocoalite.Controllers;
+
+namespace Cocoalite.Views
+{
+    public partial class KelolaQcControl : UserControl
+    {
+        private int selectedUserId = 0;
+
+        public KelolaQcControl()
+        {
+            InitializeComponent();
+        }
+
+        private void KelolaQcControl_Load(object sender, EventArgs e)
+        {
+            LoadQcUsers();
+            AturDataGridView();
+        }
+
+        private void LoadQcUsers()
+        {
+            try
+            {
+                LoginController controller = new LoginController();
+
+                dgvQcUsers.DataSource = controller.GetAllQcUsers();
+
+                AturHeaderKolom();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void AturDataGridView()
+        {
+            dgvQcUsers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvQcUsers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvQcUsers.MultiSelect = false;
+            dgvQcUsers.ReadOnly = true;
+            dgvQcUsers.AllowUserToAddRows = false;
+            dgvQcUsers.AllowUserToDeleteRows = false;
+            dgvQcUsers.RowHeadersVisible = false;
+        }
+
+        private void AturHeaderKolom()
+        {
+            if (dgvQcUsers.Columns.Contains("user_id"))
+            {
+                dgvQcUsers.Columns["user_id"].HeaderText = "ID";
+                dgvQcUsers.Columns["user_id"].Width = 50;
+            }
+
+            if (dgvQcUsers.Columns.Contains("full_name"))
+            {
+                dgvQcUsers.Columns["full_name"].HeaderText = "Full Name";
+            }
+
+            if (dgvQcUsers.Columns.Contains("username"))
+            {
+                dgvQcUsers.Columns["username"].HeaderText = "Username";
+            }
+
+            if (dgvQcUsers.Columns.Contains("role"))
+            {
+                dgvQcUsers.Columns["role"].HeaderText = "Role";
+            }
+
+            if (dgvQcUsers.Columns.Contains("created_at"))
+            {
+                dgvQcUsers.Columns["created_at"].HeaderText = "Created At";
+            }
+        }
+
+        private bool ValidasiInput()
+        {
+            if (string.IsNullOrWhiteSpace(txtFullName.Text))
+            {
+                MessageBox.Show("Full name harus diisi.");
+                txtFullName.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtUsername.Text))
+            {
+                MessageBox.Show("Username harus diisi.");
+                txtUsername.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtPassword.Text))
+            {
+                MessageBox.Show("Password harus diisi.");
+                txtPassword.Focus();
+                return false;
+            }
+
+            if (txtPassword.Text.Length < 4)
+            {
+                MessageBox.Show("Password minimal 4 karakter.");
+                txtPassword.Focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        private void ClearForm()
+        {
+            selectedUserId = 0;
+            txtFullName.Clear();
+            txtUsername.Clear();
+            txtPassword.Clear();
+            txtFullName.Focus();
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            if (!ValidasiInput())
+            {
+                return;
+            }
+
+            try
+            {
+                LoginController controller = new LoginController();
+
+                controller.AddQcUser(
+                    txtFullName.Text.Trim(),
+                    txtUsername.Text.Trim(),
+                    txtPassword.Text.Trim()
+                );
+
+                MessageBox.Show("Akun QC berhasil ditambahkan.");
+
+                LoadQcUsers();
+                ClearForm();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Gagal menambahkan akun QC: " + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (selectedUserId == 0)
+            {
+                MessageBox.Show("Pilih akun QC terlebih dahulu.");
+                return;
+            }
+
+            DialogResult result = MessageBox.Show(
+                "Yakin ingin menghapus akun QC ini?",
+                "Konfirmasi Hapus",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (result == DialogResult.No)
+            {
+                return;
+            }
+
+            try
+            {
+                LoginController controller = new LoginController();
+
+                controller.DeleteQcUser(selectedUserId);
+
+                MessageBox.Show("Akun QC berhasil dihapus.");
+
+                LoadQcUsers();
+                ClearForm();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Akun QC tidak dapat dihapus jika sudah digunakan pada data Quality Control.\n\nDetail: " + ex.Message,
+                    "Gagal",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+            }
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            ClearForm();
+        }
+
+        private void dgvQcUsers_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0)
+            {
+                return;
+            }
+
+            DataGridViewRow row = dgvQcUsers.Rows[e.RowIndex];
+
+            selectedUserId = Convert.ToInt32(row.Cells["user_id"].Value);
+
+            txtFullName.Text = row.Cells["full_name"].Value?.ToString() ?? "";
+            txtUsername.Text = row.Cells["username"].Value?.ToString() ?? "";
+            txtPassword.Clear();
+        }
+    }
+}
