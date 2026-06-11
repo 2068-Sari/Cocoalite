@@ -39,6 +39,9 @@
             lblTableTitle = new Label();
             dgvQcUsers = new DataGridView();
 
+            lblRecoveryCode = new Label();
+            txtRecoveryCode = new TextBox();
+
             panelForm.SuspendLayout();
             panelTable.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvQcUsers).BeginInit();
@@ -155,6 +158,27 @@
             txtPassword.Size = new Size(310, 27);
             txtPassword.TabIndex = 5;
 
+            // 
+            // lblRecoveryCode
+            // 
+            lblRecoveryCode.AutoSize = true;
+            lblRecoveryCode.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblRecoveryCode.ForeColor = Color.FromArgb(74, 44, 30);
+            lblRecoveryCode.Location = new Point(40, 190);
+            lblRecoveryCode.Name = "lblRecoveryCode";
+            lblRecoveryCode.Size = new Size(118, 20);
+            lblRecoveryCode.TabIndex = 6;
+            lblRecoveryCode.Text = "Kode Pemulihan";
+
+            // 
+            // txtRecoveryCode
+            // 
+            txtRecoveryCode.Font = new Font("Segoe UI", 10F);
+            txtRecoveryCode.Location = new Point(40, 215);
+            txtRecoveryCode.Name = "txtRecoveryCode";
+            txtRecoveryCode.Size = new Size(270, 30);
+            txtRecoveryCode.TabIndex = 7;
+            txtRecoveryCode.MaxLength = 30;
             // 
             // btnSave
             // 
@@ -294,5 +318,7 @@
         private Panel panelTable;
         private Label lblTableTitle;
         private DataGridView dgvQcUsers;
+        private Label lblRecoveryCode;
+        private TextBox txtRecoveryCode;
     }
 }

@@ -21,9 +21,16 @@ namespace Cocoalite.Interfaces
         void AddQcUser(
             string fullName,
             string username,
-            string password);
+            string password,
+            string recoveryCode); 
 
         void DeleteQcUser(int userId);
+        bool ResetPasswordBySecurityAnswer(
+            string username,
+            string securityAnswer,
+            string newPassword);
+
+        void SetRecoveryCode(int userId, string recoveryCode);
     }
 
     public interface IReceivingContext

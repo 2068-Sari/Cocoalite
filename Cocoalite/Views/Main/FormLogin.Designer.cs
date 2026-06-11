@@ -32,6 +32,7 @@ namespace Cocoalite.Views
             lblUsername = new Label();
             txtUsername = new TextBox();
             lblPassword = new Label();
+            lblForgotPassword = new LinkLabel();
             txtPassword = new TextBox();
             chkShowPassword = new CheckBox();
             btnLogin = new Button();
@@ -119,12 +120,13 @@ namespace Cocoalite.Views
             panelLogin.Controls.Add(lblPassword);
             panelLogin.Controls.Add(txtPassword);
             panelLogin.Controls.Add(chkShowPassword);
+            panelLogin.Controls.Add(lblForgotPassword);
             panelLogin.Controls.Add(btnLogin);
             panelLogin.Controls.Add(btnExit);
             panelLogin.Controls.Add(lblFooter);
             panelLogin.Location = new Point(420, 70);
             panelLogin.Name = "panelLogin";
-            panelLogin.Size = new Size(420, 420);
+            panelLogin.Size = new Size(420, 445);
             panelLogin.TabIndex = 1;
             // 
             // lblLoginTitle
@@ -179,6 +181,21 @@ namespace Cocoalite.Views
             lblPassword.Size = new Size(76, 20);
             lblPassword.TabIndex = 4;
             lblPassword.Text = "Password";
+
+            // 
+            // lblForgotPassword
+            // 
+            lblForgotPassword.AutoSize = true;
+            lblForgotPassword.Font = new Font("Segoe UI", 9F);
+            lblForgotPassword.LinkColor = Color.FromArgb(92, 49, 13);
+            lblForgotPassword.Location = new Point(155, 365);
+            lblForgotPassword.Name = "lblForgotPassword";
+            lblForgotPassword.Size = new Size(118, 20);
+            lblForgotPassword.TabIndex = 10;
+            lblForgotPassword.TabStop = true;
+            lblForgotPassword.Text = "Lupa Password?";
+            lblForgotPassword.LinkClicked += lblForgotPassword_LinkClicked;
+
             // 
             // txtPassword
             // 
@@ -237,7 +254,7 @@ namespace Cocoalite.Views
             // 
             lblFooter.Font = new Font("Segoe UI", 8F);
             lblFooter.ForeColor = Color.FromArgb(120, 86, 60);
-            lblFooter.Location = new Point(40, 375);
+            lblFooter.Location = new Point(40, 392);
             lblFooter.Name = "lblFooter";
             lblFooter.Size = new Size(335, 25);
             lblFooter.TabIndex = 9;
@@ -280,6 +297,7 @@ namespace Cocoalite.Views
         private Label lblPassword;
         private TextBox txtPassword;
         private CheckBox chkShowPassword;
+        private LinkLabel lblForgotPassword;
         private Button btnLogin;
         private Button btnExit;
         private Label lblFooter;

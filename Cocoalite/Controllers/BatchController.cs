@@ -1,13 +1,24 @@
-﻿using System;
-using System.Data;
+﻿using Cocoalite.Interfaces;
 using Cocoalite.Models.Context;
 using Cocoalite.Models.Entity;
+using System;
+using System.Data;
 
 namespace Cocoalite.Controllers
 {
     public class BatchController
     {
-        private readonly BatchContext _context = new BatchContext();
+        private readonly IBatchContext _context;
+
+        public BatchController()
+        {
+            _context = new BatchContext();
+        }
+
+        public BatchController(IBatchContext context)
+        {
+            _context = context;
+        }
 
         public DataTable GetApprovedQc()
         {
@@ -34,20 +45,17 @@ namespace Cocoalite.Controllers
         }
 
         public void AddBatch(
-     int qcId,
-     string batchCode,
-     DateTime batchDate, // Parameter dari Form tetap DateTime agar tidak merusak UI
-     decimal batchWeight,
-     string batchStatus)
+            int qcId,
+            string batchCode,
+            DateTime batchDate,
+            decimal batchWeight,
+            string batchStatus)
         {
             Batch batch = new Batch();
 
             batch.QcId = qcId;
             batch.BatchCode = batchCode;
-
-            // ✨ JALAN KELUAR: Ubah DateTime menjadi DateOnly secara natural di sini
             batch.BatchDate = DateOnly.FromDateTime(batchDate);
-
             batch.BatchWeight = batchWeight;
             batch.BatchStatus = "Available";
 
@@ -58,7 +66,7 @@ namespace Cocoalite.Controllers
             int batchId,
             int qcId,
             string batchCode,
-            DateTime batchDate, // Parameter tetap DateTime
+            DateTime batchDate,
             decimal batchWeight,
             string batchStatus)
         {
@@ -72,15 +80,13 @@ namespace Cocoalite.Controllers
             batch.BatchId = batchId;
             batch.QcId = qcId;
             batch.BatchCode = batchCode;
-
-            // ✨ JALAN KELUAR: Lakukan hal yang sama untuk proses Update
             batch.BatchDate = DateOnly.FromDateTime(batchDate);
-
             batch.BatchWeight = batchWeight;
             batch.BatchStatus = batchStatus;
 
             _context.UpdateBatch(batch);
         }
+
         public void DeleteBatch(int batchId)
         {
             if (batchId <= 0)

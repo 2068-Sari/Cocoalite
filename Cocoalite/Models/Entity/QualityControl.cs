@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Text;
+using System.Linq;
 using Cocoalite.Interfaces;
 
 namespace Cocoalite.Models.Entity
 {
-    public class QualityControl : IDapatDilaporkan
+    public class QualityControl : IDapatDilaporkan, IProsesQC
     {
         private string grade = "";
         private string qcStatus = "";
@@ -21,6 +22,20 @@ namespace Cocoalite.Models.Entity
             Parameter = new QualityParameter();
         }
 
+        private static readonly string[] AllowedGrades =
+        {
+            "Grade A",
+            "Grade B",
+            "Grade C",
+            "Reject"
+        };
+
+        private static readonly string[] AllowedStatuses =
+        {
+            "Approved",
+            "Rejected"
+        };
+
         public string Grade
         {
             get
@@ -34,7 +49,14 @@ namespace Cocoalite.Models.Entity
                     throw new ArgumentException("Grade tidak boleh kosong.");
                 }
 
-                grade = value;
+                string newGrade = value.Trim();
+
+                if (!AllowedGrades.Contains(newGrade))
+                {
+                    throw new ArgumentException("Grade tidak valid.");
+                }
+
+                grade = newGrade;
             }
         }
 
@@ -51,7 +73,14 @@ namespace Cocoalite.Models.Entity
                     throw new ArgumentException("Status QC tidak boleh kosong.");
                 }
 
-                qcStatus = value;
+                string newStatus = value.Trim();
+
+                if (!AllowedStatuses.Contains(newStatus))
+                {
+                    throw new ArgumentException("Status QC tidak valid.");
+                }
+
+                qcStatus = newStatus;
             }
         }
 

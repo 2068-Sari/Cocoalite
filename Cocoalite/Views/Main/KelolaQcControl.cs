@@ -18,6 +18,7 @@ namespace Cocoalite.Views
             txtFullName.MaxLength = 100;
             txtUsername.MaxLength = 30;
             txtPassword.MaxLength = 20;
+            txtRecoveryCode.MaxLength = 30;
 
             LoadQcUsers();
             AturDataGridView();
@@ -83,6 +84,7 @@ namespace Cocoalite.Views
             string fullName = txtFullName.Text.Trim();
             string username = txtUsername.Text.Trim();
             string password = txtPassword.Text.Trim();
+            string recoveryCode = txtRecoveryCode.Text.Trim();
 
             if (string.IsNullOrWhiteSpace(fullName))
             {
@@ -140,15 +142,38 @@ namespace Cocoalite.Views
                 return false;
             }
 
+            if (string.IsNullOrWhiteSpace(recoveryCode))
+            {
+                MessageBox.Show("Kode pemulihan harus diisi.");
+                txtRecoveryCode.Focus();
+                return false;
+            }
+
+            if (recoveryCode.Length < 4)
+            {
+                MessageBox.Show("Kode pemulihan minimal 4 karakter.");
+                txtRecoveryCode.Focus();
+                return false;
+            }
+
+            if (recoveryCode.Length > 30)
+            {
+                MessageBox.Show("Kode pemulihan maksimal 30 karakter.");
+                txtRecoveryCode.Focus();
+                return false;
+            }
+
             return true;
+
         }
 
-        private void ClearForm()
+     private void ClearForm()
         {
             selectedUserId = 0;
             txtFullName.Clear();
             txtUsername.Clear();
             txtPassword.Clear();
+            txtRecoveryCode.Clear();
             txtFullName.Focus();
         }
 
@@ -166,7 +191,8 @@ namespace Cocoalite.Views
                 controller.AddQcUser(
                     txtFullName.Text.Trim(),
                     txtUsername.Text.Trim(),
-                    txtPassword.Text.Trim()
+                    txtPassword.Text.Trim(),
+                    txtRecoveryCode.Text.Trim()
                 );
 
                 MessageBox.Show("Akun QC berhasil ditambahkan.");
@@ -246,6 +272,7 @@ namespace Cocoalite.Views
             txtFullName.Text = row.Cells["full_name"].Value?.ToString() ?? "";
             txtUsername.Text = row.Cells["username"].Value?.ToString() ?? "";
             txtPassword.Clear();
+            txtRecoveryCode.Clear();
         }
     }
 }

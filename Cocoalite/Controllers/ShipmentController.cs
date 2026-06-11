@@ -1,14 +1,25 @@
-﻿using System;
-using System.Data;
+﻿using Cocoalite.Interfaces;
 using Cocoalite.Models.Context;
-using System.Collections.Generic;
 using Cocoalite.Models.Entity;
+using System;
+using System.Collections.Generic;
+using System.Data;
 
 namespace Cocoalite.Controllers
 {
     public class ShipmentController
     {
-        private readonly ShipmentContext context = new ShipmentContext();
+        private readonly IShipmentContext context;
+
+        public ShipmentController()
+        {
+            context = new ShipmentContext();
+        }
+
+        public ShipmentController(IShipmentContext context)
+        {
+            this.context = context;
+        }
         public List<Shipment> GetReportShipment()
         {
             return context.GetReportShipment();
@@ -43,10 +54,6 @@ namespace Cocoalite.Controllers
             {
                 throw new ArgumentNullException(nameof(shipment), "Objek shipment kosong.");
             }
-
-            Random random = new Random();
-            int randomNumber = random.Next(1000, 99999);
-            shipment.ShipmentCode = $"SHP-{randomNumber}";
 
             context.InsertShipment(shipment);
         }

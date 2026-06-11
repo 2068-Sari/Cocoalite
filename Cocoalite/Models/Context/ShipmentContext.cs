@@ -253,7 +253,8 @@ namespace Cocoalite.Models.Context
                         shipment_status = @shipment_status,
                         vehicle_number = @vehicle_number,
                         driver_name = @driver_name
-                    WHERE shipment_id = @shipment_id";
+                    WHERE shipment_id = @shipment_id
+                    AND is_deleted = false";    
 
                 using (var cmd = new NpgsqlCommand(query, conn))
                 {

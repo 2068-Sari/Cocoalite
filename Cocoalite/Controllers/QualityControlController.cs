@@ -1,19 +1,29 @@
 ﻿using System;
 using System.Data;
-using Cocoalite.Models.Context;
 using System.Collections.Generic;
+using Cocoalite.Interfaces;
+using Cocoalite.Models.Context;
 using Cocoalite.Models.Entity;
 
 namespace Cocoalite.Controllers
 {
     internal class QualityControlController
     {
-        private readonly QualityControlContext context =
-            new QualityControlContext();
+        private readonly IQualityControlContext _context;
+
+        public QualityControlController()
+        {
+            _context = new QualityControlContext();
+        }
+
+        public QualityControlController(IQualityControlContext context)
+        {
+            _context = context;
+        }
 
         public DataTable GetAllQualityControl()
         {
-            DataTable data = context.GetAllQualityControl();
+            DataTable data = _context.GetAllQualityControl();
 
             if (data != null)
             {
@@ -22,14 +32,15 @@ namespace Cocoalite.Controllers
 
             return new DataTable();
         }
+
         public List<QualityControl> GetReportQualityControl()
         {
-            return context.GetReportQualityControl();
+            return _context.GetReportQualityControl();
         }
 
         public DataTable GetAllReceiving()
         {
-            DataTable data = context.GetAllReceiving();
+            DataTable data = _context.GetAllReceiving();
 
             if (data != null)
             {
@@ -44,7 +55,22 @@ namespace Cocoalite.Controllers
             decimal fermentationLevel,
             decimal defectLevel)
         {
-            return context.DetermineGrade(
+            if (moistureLevel < 0)
+            {
+                throw new ArgumentException("Moisture level tidak boleh negatif.");
+            }
+
+            if (fermentationLevel < 0)
+            {
+                throw new ArgumentException("Fermentation level tidak boleh negatif.");
+            }
+
+            if (defectLevel < 0)
+            {
+                throw new ArgumentException("Defect level tidak boleh negatif.");
+            }
+
+            return _context.DetermineGrade(
                 moistureLevel,
                 fermentationLevel,
                 defectLevel
@@ -58,7 +84,7 @@ namespace Cocoalite.Controllers
                 throw new ArgumentNullException(nameof(qc), "Objek Quality Control kosong.");
             }
 
-            context.InsertQualityControl(qc);
+            _context.InsertQualityControl(qc);
         }
 
         public void UpdateQualityControl(QualityControl qc)
@@ -73,7 +99,7 @@ namespace Cocoalite.Controllers
                 throw new ArgumentException("ID Quality Control tidak valid.");
             }
 
-            context.UpdateQualityControl(qc);
+            _context.UpdateQualityControl(qc);
         }
 
         public void DeleteQualityControl(int qcId)
@@ -83,7 +109,7 @@ namespace Cocoalite.Controllers
                 throw new ArgumentException("ID Quality Control tidak valid.");
             }
 
-            context.DeleteQualityControl(qcId);
+            _context.DeleteQualityControl(qcId);
         }
     }
 }

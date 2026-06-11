@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using Cocoalite.Interfaces;
 using Cocoalite.Models.Context;
 using Cocoalite.Models.Entity;
 
@@ -7,8 +8,17 @@ namespace Cocoalite.Controllers
 {
     internal class ReceivingController
     {
-        private readonly ReceivingContext _context =
-            new ReceivingContext();
+        private readonly IReceivingContext _context;
+
+        public ReceivingController()
+        {
+            _context = new ReceivingContext();
+        }
+
+        public ReceivingController(IReceivingContext context)
+        {
+            _context = context;
+        }
 
         public DataTable GetSuppliers()
         {

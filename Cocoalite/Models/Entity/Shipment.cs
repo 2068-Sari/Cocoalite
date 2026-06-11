@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using Cocoalite.Helpers;
 using Cocoalite.Interfaces;
 
 namespace Cocoalite.Models.Entity
 {
-    public class Shipment : IDapatDilaporkan
+    public class Shipment : IDapatDilaporkan, IProsesPengiriman
     {
         private string _shipmentCode = "";
         private string _destination = "";
@@ -60,15 +61,32 @@ namespace Cocoalite.Models.Entity
             }
         }
 
+        private static readonly string[] AllowedStatuses =
+        {
+            "Pending",
+            "Shipped",
+            "Delivered",
+            "Cancelled"
+        };
+
         public string ShipmentStatus
         {
             get => _shipmentStatus;
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
+                {
                     throw new ArgumentException("Status shipment tidak boleh kosong.");
+                }
 
-                _shipmentStatus = value.Trim();
+                string status = value.Trim();
+
+                if (!AllowedStatuses.Contains(status))
+                {
+                    throw new ArgumentException("Status shipment tidak valid.");
+                }
+
+                _shipmentStatus = status;
             }
         }
 

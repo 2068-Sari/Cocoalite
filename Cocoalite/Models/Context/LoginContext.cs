@@ -28,6 +28,7 @@ namespace Cocoalite.Models.Context
                         password_hash
                     FROM users
                     WHERE username = @username
+                    AND is_deleted = false  
                     LIMIT 1";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
@@ -128,6 +129,136 @@ namespace Cocoalite.Models.Context
             return true;
         }
 
+        public bool ResetPasswordBySecurityAnswer(
+            string username,
+            string securityAnswer,
+            string newPassword)
+        {
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                throw new ArgumentException("Username tidak boleh kosong.");
+            }
+
+            if (string.IsNullOrWhiteSpace(securityAnswer))
+            {
+                throw new ArgumentException("Kode pemulihan tidak boleh kosong.");
+            }
+
+            if (string.IsNullOrWhiteSpace(newPassword))
+            {
+                throw new ArgumentException("Password baru tidak boleh kosong.");
+            }
+
+            if (newPassword.Length < 6 || newPassword.Length > 20)
+            {
+                throw new ArgumentException("Password harus terdiri dari 6 sampai 20 karakter.");
+            }
+
+            using (var conn = db.GetConnection())
+            {
+                conn.Open();
+
+                string selectQuery = @"
+                    SELECT user_id, recovery_code_hash
+                    FROM users
+                    WHERE username = @username
+                    AND is_deleted = FALSE";
+
+                using (var selectCmd = new NpgsqlCommand(selectQuery, conn))
+                {
+                    selectCmd.Parameters.AddWithValue("@username", username.Trim());
+
+                    using (var reader = selectCmd.ExecuteReader())
+                    {
+                        if (!reader.Read())
+                        {
+                            throw new Exception("Username tidak ditemukan.");
+                        }
+
+                        int userId = Convert.ToInt32(reader["user_id"]);
+                        string recoveryCodeHash = reader["recovery_code_hash"]?.ToString() ?? "";
+
+                        if (string.IsNullOrWhiteSpace(recoveryCodeHash))
+                        {
+                            throw new Exception("Akun ini belum memiliki kode pemulihan.");
+                        }
+
+                        bool isAnswerValid = PasswordHasher.Verify(
+                            securityAnswer.Trim(),
+                            recoveryCodeHash
+                        );
+
+                        if (!isAnswerValid)
+                        {
+                            throw new Exception("Kode pemulihan salah.");
+                        }
+
+                        reader.Close();
+
+                        string newPasswordHash = PasswordHasher.Hash(newPassword);
+
+                        string updateQuery = @"
+                            UPDATE users
+                            SET password_hash = @password_hash
+                            WHERE user_id = @user_id";
+
+                        using (var updateCmd = new NpgsqlCommand(updateQuery, conn))
+                        {
+                            updateCmd.Parameters.AddWithValue("@password_hash", newPasswordHash);
+                            updateCmd.Parameters.AddWithValue("@user_id", userId);
+
+                            int affectedRows = updateCmd.ExecuteNonQuery();
+
+                            return affectedRows > 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        public void SetRecoveryCode(int userId, string recoveryCode)
+        {
+            if (userId <= 0)
+            {
+                throw new ArgumentException("ID user tidak valid.");
+            }
+
+            if (string.IsNullOrWhiteSpace(recoveryCode))
+            {
+                throw new ArgumentException("Kode pemulihan tidak boleh kosong.");
+            }
+
+            if (recoveryCode.Length < 4 || recoveryCode.Length > 30)
+            {
+                throw new ArgumentException("Kode pemulihan harus terdiri dari 4 sampai 30 karakter.");
+            }
+
+            string recoveryCodeHash = PasswordHasher.Hash(recoveryCode);
+
+            using (var conn = db.GetConnection())
+            {
+                conn.Open();
+
+                string query = @"
+                    UPDATE users
+                    SET recovery_code_hash = @recovery_code_hash
+                    WHERE user_id = @user_id
+                    AND is_deleted = FALSE";
+
+                using (var cmd = new NpgsqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@recovery_code_hash", recoveryCodeHash);
+                    cmd.Parameters.AddWithValue("@user_id", userId);
+
+                    int affectedRows = cmd.ExecuteNonQuery();
+
+                    if (affectedRows == 0)
+                    {
+                        throw new Exception("User tidak ditemukan atau sudah tidak aktif.");
+                    }
+                }
+            }
+        }
         public DataTable GetAllQcUsers()
         {
             DataTable table = new DataTable();
@@ -145,6 +276,7 @@ namespace Cocoalite.Models.Context
                         created_at
                     FROM users
                     WHERE LOWER(role) = 'qc'
+                    AND is_deleted = false  
                     ORDER BY user_id";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
@@ -166,7 +298,8 @@ namespace Cocoalite.Models.Context
                 string query = @"
                     SELECT COUNT(*)
                     FROM users
-                    WHERE username = @username";
+                    WHERE username = @username
+                    AND is_deleted = FALSE";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
                 {
@@ -180,13 +313,24 @@ namespace Cocoalite.Models.Context
         }
 
         public void AddQcUser(
-            string fullName,
-            string username,
-            string password)
+      string fullName,
+      string username,
+      string password,
+      string recoveryCode)
         {
             if (IsUsernameExists(username))
             {
                 throw new ArgumentException("Username sudah digunakan.");
+            }
+
+            if (string.IsNullOrWhiteSpace(recoveryCode))
+            {
+                throw new ArgumentException("Kode pemulihan tidak boleh kosong.");
+            }
+
+            if (recoveryCode.Length < 4 || recoveryCode.Length > 30)
+            {
+                throw new ArgumentException("Kode pemulihan harus terdiri dari 4 sampai 30 karakter.");
             }
 
             using (var conn = db.GetConnection())
@@ -194,26 +338,29 @@ namespace Cocoalite.Models.Context
                 conn.Open();
 
                 string query = @"
-                    INSERT INTO users (
-                        full_name,
-                        username,
-                        password_hash,
-                        role,
-                        created_at
-                    )
-                    VALUES (
-                        @full_name,
-                        @username,
-                        @password_hash,
-                        'QC',
-                        CURRENT_TIMESTAMP
-                    )";
+            INSERT INTO users (
+                full_name,
+                username,
+                password_hash,
+                recovery_code_hash,
+                role,
+                created_at
+            )
+            VALUES (
+                @full_name,
+                @username,
+                @password_hash,
+                @recovery_code_hash,
+                'qc',
+                CURRENT_TIMESTAMP
+            )";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@full_name", fullName);
-                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Parameters.AddWithValue("@full_name", fullName.Trim());
+                    cmd.Parameters.AddWithValue("@username", username.Trim());
                     cmd.Parameters.AddWithValue("@password_hash", PasswordHasher.Hash(password));
+                    cmd.Parameters.AddWithValue("@recovery_code_hash", PasswordHasher.Hash(recoveryCode));
 
                     cmd.ExecuteNonQuery();
                 }
@@ -227,9 +374,10 @@ namespace Cocoalite.Models.Context
                 conn.Open();
 
                 string query = @"
-                    DELETE FROM users
+                    UPDATE users
+                    SET is_deleted = TRUE
                     WHERE user_id = @user_id
-                    AND role = 'QC'";
+                    AND role = 'qc'";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
                 {

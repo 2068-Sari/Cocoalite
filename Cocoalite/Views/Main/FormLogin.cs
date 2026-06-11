@@ -14,7 +14,28 @@ namespace Cocoalite.Views
 
         private void FormLogin_Load(object sender, EventArgs e)
         {
-            txtUsername.Focus();
+            try
+            {
+                LoginController controller = new LoginController();
+
+                // SET KODE PEMULIHAN SEMENTARA UNTUK AKUN LAMA
+                // Ganti userId sesuai data di tabel users kamu.
+
+                controller.SetRecoveryCode(1, "admin2026"); // untuk akun admin user_id = 1
+                controller.SetRecoveryCode(2, "qcA2026");    // untuk akun qc user_id = 2
+                controller.SetRecoveryCode(4, "qcB2026");    // untuk akun qc user_id = 3, kalau ada
+
+                txtUsername.Focus();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Gagal mengatur kode pemulihan: " + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -80,6 +101,12 @@ namespace Cocoalite.Views
         private void chkShowPassword_CheckedChanged(object sender, EventArgs e)
         {
             txtPassword.UseSystemPasswordChar = !chkShowPassword.Checked;
+        }
+
+        private void lblForgotPassword_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            ForgotPasswordForm forgotPasswordForm = new ForgotPasswordForm();
+            forgotPasswordForm.ShowDialog();
         }
 
         private void txtPassword_KeyDown(object sender, KeyEventArgs e)

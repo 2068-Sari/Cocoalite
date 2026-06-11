@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using Cocoalite.Interfaces;
 using Cocoalite.Models.Context;
 using Cocoalite.Models.Entity;
 
@@ -7,8 +8,17 @@ namespace Cocoalite.Controllers
 {
     internal class SupplierController
     {
-        private readonly SupplierContext _context =
-            new SupplierContext();
+        private readonly ISupplierContext _context;
+
+        public SupplierController()
+        {
+            _context = new SupplierContext();
+        }
+
+        public SupplierController(ISupplierContext context)
+        {
+            _context = context;
+        }
 
         public DataTable GetAllSuppliers()
         {

@@ -25,6 +25,7 @@ namespace Cocoalite.Models.Context
                         qc.bean_size, qc.grade,  qc.qc_status, qc.inspection_notes, qc.inspected_by, qc.inspection_date
                     FROM quality_control qc
                     JOIN receiving r ON qc.receiving_id = r.receiving_id
+                    WHERE qc.is_delete = FALSE
                     ORDER BY qc.qc_id";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
@@ -59,6 +60,7 @@ namespace Cocoalite.Models.Context
                 qc.inspection_notes,
                 qc.inspection_date
             FROM quality_control qc
+            WHERE qc.is_delete = FALSE
             ORDER BY qc.qc_id";
 
                 using (var cmd = new Npgsql.NpgsqlCommand(query, conn))
@@ -233,7 +235,8 @@ namespace Cocoalite.Models.Context
                 conn.Open();
 
                 string query = @"
-                    DELETE FROM quality_control
+                   UPDATE quality_control
+                    SET is_delete = TRUE
                     WHERE qc_id = @qc_id";
 
                 using (var cmd = new NpgsqlCommand(query, conn))

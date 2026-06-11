@@ -25,6 +25,8 @@ namespace Cocoalite.Models.Context
                     FROM quality_control qc
                     JOIN receiving r ON qc.receiving_id = r.receiving_id
                     WHERE qc.qc_status = 'Approved'
+                        AND r.is_delete = FALSE
+                        AND qc.qc_id NOT IN (SELECT qc_id FROM batches WHERE is_delete = FALSE)
                     ORDER BY qc.qc_id";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
