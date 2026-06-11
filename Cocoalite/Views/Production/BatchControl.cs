@@ -283,9 +283,6 @@ namespace Cocoalite.Views
 
             try
             {
-                Random random = new Random();
-                int randomNumber = random.Next(100, 999);
-                string randomBatchCode = $"BTH-{randomNumber}";
 
                 Batch batch = new Batch();
 

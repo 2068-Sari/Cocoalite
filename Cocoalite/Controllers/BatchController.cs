@@ -57,7 +57,7 @@ namespace Cocoalite.Controllers
             batch.BatchCode = batchCode;
             batch.BatchDate = DateOnly.FromDateTime(batchDate);
             batch.BatchWeight = batchWeight;
-            batch.BatchStatus = "Available";
+            batch.BatchStatus = batchStatus;
 
             _context.InsertBatch(batch);
         }

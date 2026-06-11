@@ -322,21 +322,71 @@ namespace Cocoalite.Views
 
             return true;
         }
+        private bool ValidasiInput(bool isUpdate = false)
+        {
+            if (cbBatch.SelectedIndex == -1 || cbBatch.SelectedValue == null)
+            {
+                MessageBox.Show("Batch harus dipilih!");
+                cbBatch.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtDestination.Text))
+            {
+                MessageBox.Show("Tujuan pengiriman tidak boleh kosong!");
+                txtDestination.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtShipmentWeight.Text))
+            {
+                MessageBox.Show("Berat shipment tidak boleh kosong!");
+                txtShipmentWeight.Focus();
+                return false;
+            }
+
+            if (!decimal.TryParse(txtShipmentWeight.Text, out decimal weight))
+            {
+                MessageBox.Show("Berat shipment harus berupa angka!");
+                txtShipmentWeight.Focus();
+                return false;
+            }
+
+            if (weight <= 0)
+            {
+                MessageBox.Show("Berat shipment harus lebih dari 0!");
+                txtShipmentWeight.Focus();
+                return false;
+            }
+
+            if (isUpdate && cbShipmentStatus.SelectedIndex == -1)
+            {
+                MessageBox.Show("Status shipment harus dipilih!");
+                cbShipmentStatus.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtVehicleNumber.Text))
+            {
+                MessageBox.Show("Nomor kendaraan tidak boleh kosong!");
+                txtVehicleNumber.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtDriverName.Text))
+            {
+                MessageBox.Show("Nama driver tidak boleh kosong!");
+                txtDriverName.Focus();
+                return false;
+            }
+
+            return true;
+        }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (!ValidasiInput())
+            if (!ValidasiInput(true))
             {
-                return;
-            }
-            if (cbShipmentStatus.Text == "Cancelled")
-            {
-                MessageBox.Show(
-                    "Shipment baru tidak boleh langsung berstatus Cancelled.\nGunakan status Pending terlebih dahulu.",
-                    "Validasi",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
                 return;
             }
 
@@ -344,7 +394,7 @@ namespace Cocoalite.Views
             {
                 if (LoginSession.CurrentUser == null)
                 {
-                    MessageBox.Show("Session login tidak ditemukan. Silakan login ulang.");
+                    MessageBox.Show("Session login tidak ditemukan.");
                     return;
                 }
 
@@ -353,29 +403,16 @@ namespace Cocoalite.Views
                 shipment.BatchId = Convert.ToInt32(cbBatch.SelectedValue);
                 shipment.CreatedBy = LoginSession.CurrentUser.UserId;
                 shipment.GenerateShipmentCode();
-                txtShipmentCode.Text = shipment.ShipmentCode;
                 shipment.Destination = txtDestination.Text.Trim();
                 shipment.ShipmentDate = DateOnly.FromDateTime(dtpShipmentDate.Value);
                 shipment.ShipmentWeight = decimal.Parse(txtShipmentWeight.Text);
-                if (cbShipmentStatus.Text == "Shipped")
-                {
-                    shipment.TandaiDikirim();
-                }
-                else if (cbShipmentStatus.Text == "Delivered")
-                {
-                    shipment.TandaiDiterima();
-                }
-                else if (cbShipmentStatus.Text == "Cancelled")
-                {
-                    shipment.BatalkanPengiriman();
-                }
                 shipment.VehicleNumber = txtVehicleNumber.Text.Trim();
                 shipment.DriverName = txtDriverName.Text.Trim();
 
                 ShipmentController controller = new ShipmentController();
                 controller.AddShipment(shipment);
 
-                MessageBox.Show("Data shipment berhasil ditambahkan!");
+                MessageBox.Show("Data shipment berhasil ditambahkan dengan status Pending.");
 
                 LoadShipment();
                 LoadBatch();
