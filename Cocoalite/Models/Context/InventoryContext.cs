@@ -103,7 +103,6 @@ namespace Cocoalite.Models.Context
                     adapter.Fill(table);
                 }
             }
-
             return table;
         }
 
