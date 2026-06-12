@@ -70,6 +70,7 @@ namespace Cocoalite.Interfaces
 
         void DeleteBatch(int batchId);
     }
+
     public interface IShipmentContext
     {
         List<Shipment> GetReportShipment();
@@ -80,18 +81,15 @@ namespace Cocoalite.Interfaces
 
         DataTable GetAllShipment();
 
+        Inventory? GetInventoryByBatchId(int batchId);
+
         void InsertShipment(Shipment shipment);
 
-        void UpdateShipment(
-            int shipmentId,
-            string destination,
-            DateTime shipmentDate,
-            string shipmentStatus,
-            string vehicleNumber,
-            string driverName);
+        void UpdateShipment(Shipment shipment);
 
         void DeleteShipment(int shipmentId);
     }
+
     public interface IInventoryContext
     {
         DataTable GetAllInventory();
@@ -106,6 +104,7 @@ namespace Cocoalite.Interfaces
 
         void DeleteInventory(int inventoryId);
     }
+
     public interface IQualityControlContext
     {
         DataTable GetAllQualityControl();

@@ -110,6 +110,20 @@ namespace Cocoalite.Models.Entity
             Parameter.BeanSize = beanSize;
         }
 
+        public void TerapkanHasilPemeriksaan(string hasilGrade)
+        {
+            Grade = hasilGrade;
+
+            if (Grade == "Reject")
+            {
+                QcStatus = "Rejected";
+            }
+            else
+            {
+                QcStatus = "Approved";
+            }
+        }
+
         public string TampilkanInfoQualityControl()
         {
             return

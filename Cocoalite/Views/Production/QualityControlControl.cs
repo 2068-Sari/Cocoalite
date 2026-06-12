@@ -414,8 +414,7 @@ namespace Cocoalite.Views
                     cbBeanSize.Text.Trim()
                 );
 
-                qc.Grade = txtGrade.Text.Trim();
-                qc.QcStatus = cbQcStatus.Text;
+                qc.TerapkanHasilPemeriksaan(txtGrade.Text.Trim());
                 qc.InspectionNotes = txtNotes.Text.Trim();
                 qc.InspectionDate = dtpInspectionDate.Value;
 
@@ -462,8 +461,7 @@ namespace Cocoalite.Views
                     cbBeanSize.Text.Trim()
                 );
 
-                qc.Grade = txtGrade.Text.Trim();
-                qc.QcStatus = cbQcStatus.Text;
+                qc.TerapkanHasilPemeriksaan(txtGrade.Text.Trim());
                 qc.InspectionNotes = txtNotes.Text.Trim();
                 qc.InspectionDate = dtpInspectionDate.Value;
 

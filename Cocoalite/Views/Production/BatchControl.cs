@@ -305,11 +305,6 @@ namespace Cocoalite.Views
                 LoadBatch();
                 LoadApprovedQc();
                 ClearForm();
-                MessageBox.Show("Data batch berhasil ditambahkan!");
-
-                LoadBatch();
-                LoadApprovedQc();
-                ClearForm();
             }
             catch (Exception ex)
             {

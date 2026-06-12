@@ -58,21 +58,62 @@ namespace Cocoalite.Models.Service
             return qc.QcStatus == "Approved" && qc.Grade != "Reject";
         }
 
-        public bool ApakahShipmentBisaDilakukan(
-            Inventory inventory,
-            decimal shipmentWeight)
+        public void PastikanShipmentBisaDibuat(
+    Inventory inventory,
+    Shipment shipment)
         {
             if (inventory == null)
             {
                 throw new ArgumentException("Data inventory tidak boleh kosong.");
             }
 
-            if (shipmentWeight <= 0)
+            if (shipment == null)
+            {
+                throw new ArgumentException("Data shipment tidak boleh kosong.");
+            }
+
+            if (shipment.ShipmentWeight <= 0)
             {
                 throw new ArgumentException("Berat shipment harus lebih dari 0.");
             }
 
-            return inventory.StockQuantity >= shipmentWeight;
+            if (inventory.StockQuantity < shipment.ShipmentWeight)
+            {
+                throw new ArgumentException(
+                    "Stok inventory tidak mencukupi untuk melakukan shipment."
+                );
+            }
+
+            if (inventory.InventoryStatus == "Empty")
+            {
+                throw new ArgumentException(
+                    "Shipment tidak dapat dilakukan karena stok inventory kosong."
+                );
+            }
+        }
+
+        public void PastikanTransisiStatusShipment(
+            string statusLama,
+            string statusBaru)
+        {
+            if (string.IsNullOrWhiteSpace(statusBaru))
+            {
+                throw new ArgumentException("Status shipment tidak boleh kosong.");
+            }
+
+            if (statusLama == "Cancelled")
+            {
+                throw new ArgumentException(
+                    "Shipment yang sudah Cancelled tidak dapat diubah lagi."
+                );
+            }
+
+            if (statusLama == "Delivered" && statusBaru == "Cancelled")
+            {
+                throw new ArgumentException(
+                    "Shipment yang sudah Delivered tidak dapat dibatalkan."
+                );
+            }
         }
 
         public string TentukanStatusBatch(

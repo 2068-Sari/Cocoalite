@@ -324,7 +324,7 @@ namespace Cocoalite.Views
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (!ValidasiInput(true))
+            if (!ValidasiInput(false))
             {
                 return;
             }
@@ -420,13 +420,14 @@ namespace Cocoalite.Views
                 ShipmentController controller = new ShipmentController();
 
                 controller.UpdateShipment(
-                    selectedShipmentId,
-                    txtDestination.Text.Trim(),
-                    dtpShipmentDate.Value,
-                    statusBaru,
-                    txtVehicleNumber.Text.Trim(),
-                    txtDriverName.Text.Trim()
-                );
+                     selectedShipmentId,
+                     txtDestination.Text.Trim(),
+                     dtpShipmentDate.Value,
+                     selectedShipmentStatus,
+                     statusBaru,
+                     txtVehicleNumber.Text.Trim(),
+                     txtDriverName.Text.Trim()
+ );
 
                 MessageBox.Show("Data shipment berhasil diperbarui!");
 

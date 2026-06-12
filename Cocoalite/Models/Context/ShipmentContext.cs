@@ -233,37 +233,54 @@ namespace Cocoalite.Models.Context
             }
         }
 
-        public void UpdateShipment(
-            int shipmentId,
-            string destination,
-            DateTime shipmentDate,
-            string shipmentStatus,
-            string vehicleNumber,
-            string driverName)
+        public void UpdateShipment(Shipment shipment)
         {
             using (var conn = db.GetConnection())
             {
                 conn.Open();
 
                 string query = @"
-                    UPDATE shipments
-                    SET
-                        destination = @destination,
-                        shipment_date = @shipment_date,
-                        shipment_status = @shipment_status,
-                        vehicle_number = @vehicle_number,
-                        driver_name = @driver_name
-                    WHERE shipment_id = @shipment_id
-                    AND is_deleted = false";    
+            UPDATE shipments
+            SET
+                destination = @destination,
+                shipment_date = @shipment_date,
+                shipment_status = @shipment_status,
+                vehicle_number = @vehicle_number,
+                driver_name = @driver_name
+            WHERE shipment_id = @shipment_id
+            AND is_deleted = false";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@shipment_id", shipmentId);
-                    cmd.Parameters.AddWithValue("@destination", destination);
-                    cmd.Parameters.AddWithValue("@shipment_date", shipmentDate);
-                    cmd.Parameters.AddWithValue("@shipment_status", shipmentStatus);
-                    cmd.Parameters.AddWithValue("@vehicle_number", vehicleNumber);
-                    cmd.Parameters.AddWithValue("@driver_name", driverName);
+                    cmd.Parameters.AddWithValue(
+                        "@shipment_id",
+                        shipment.ShipmentId
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@destination",
+                        shipment.Destination
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@shipment_date",
+                        shipment.ShipmentDate
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@shipment_status",
+                        shipment.ShipmentStatus
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@vehicle_number",
+                        shipment.VehicleNumber
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@driver_name",
+                        shipment.DriverName
+                    );
 
                     cmd.ExecuteNonQuery();
                 }
@@ -287,6 +304,58 @@ namespace Cocoalite.Models.Context
                     cmd.ExecuteNonQuery();
                 }
             }
+        }
+
+        public Inventory? GetInventoryByBatchId(int batchId)
+        {
+            using (var conn = db.GetConnection())
+            {
+                conn.Open();
+
+                string query = @"
+            SELECT
+                inventory_id,
+                batch_id,
+                stock_quantity,
+                warehouse_location,
+                updated_at
+            FROM inventory
+            WHERE batch_id = @batch_id
+            AND is_delete = FALSE
+            LIMIT 1";
+
+                using (var cmd = new NpgsqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@batch_id", batchId);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            Inventory inventory = new Inventory();
+
+                            inventory.InventoryId =
+                                Convert.ToInt32(reader["inventory_id"]);
+
+                            inventory.BatchId =
+                                Convert.ToInt32(reader["batch_id"]);
+
+                            inventory.StockQuantity =
+                                Convert.ToDecimal(reader["stock_quantity"]);
+
+                            inventory.WarehouseLocation =
+                                reader["warehouse_location"].ToString() ?? "";
+
+                            inventory.UpdatedAt =
+                                Convert.ToDateTime(reader["updated_at"]);
+
+                            return inventory;
+                        }
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }

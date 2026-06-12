@@ -17,9 +17,36 @@ namespace Cocoalite.Models.Entity
         public int BatchId { get; set; }
         public int CreatedBy { get; set; }
         public DateOnly ShipmentDate { get; set; }
-        public string VehicleNumber { get; set; } = "";
-        public string DriverName { get; set; } = "";
+        private string _vehicleNumber = "";
+        private string _driverName = "";
 
+        public string VehicleNumber
+        {
+            get => _vehicleNumber;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new ArgumentException("Nomor kendaraan tidak boleh kosong.");
+                }
+
+                _vehicleNumber = value.Trim();
+            }
+        }
+
+        public string DriverName
+        {
+            get => _driverName;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new ArgumentException("Nama driver tidak boleh kosong.");
+                }
+
+                _driverName = value.Trim();
+            }
+        }
         public string ShipmentCode
         {
             get => _shipmentCode;
