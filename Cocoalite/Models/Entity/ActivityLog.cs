@@ -4,13 +4,12 @@ namespace Cocoalite.Models.Entity
 {
     internal class ActivityLog
     {
-        private string activity = "";
-
         public int LogId { get; set; }
         public int UserId { get; set; }
         public string FullName { get; set; } = "";
         public DateTime LogTime { get; set; }
 
+        private string activity = "";
         public string Activity
         {
             get

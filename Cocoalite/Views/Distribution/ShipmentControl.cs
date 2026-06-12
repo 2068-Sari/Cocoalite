@@ -261,67 +261,6 @@ namespace Cocoalite.Views
             txtDriverName.Clear();
             cbBatch.Focus();
         }
-
-        private bool ValidasiInput()
-        {
-            if (cbBatch.SelectedIndex == -1 || cbBatch.SelectedValue == null)
-            {
-                MessageBox.Show("Batch harus dipilih!");
-                cbBatch.Focus();
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtDestination.Text))
-            {
-                MessageBox.Show("Tujuan pengiriman tidak boleh kosong!");
-                txtDestination.Focus();
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtShipmentWeight.Text))
-            {
-                MessageBox.Show("Berat shipment tidak boleh kosong!");
-                txtShipmentWeight.Focus();
-                return false;
-            }
-
-            if (!decimal.TryParse(txtShipmentWeight.Text, out decimal weight))
-            {
-                MessageBox.Show("Berat shipment harus berupa angka!");
-                txtShipmentWeight.Focus();
-                return false;
-            }
-
-            if (weight <= 0)
-            {
-                MessageBox.Show("Berat shipment harus lebih dari 0!");
-                txtShipmentWeight.Focus();
-                return false;
-            }
-
-            if (cbShipmentStatus.SelectedIndex == -1)
-            {
-                MessageBox.Show("Status shipment harus dipilih!");
-                cbShipmentStatus.Focus();
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtVehicleNumber.Text))
-            {
-                MessageBox.Show("Nomor kendaraan tidak boleh kosong!");
-                txtVehicleNumber.Focus();
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtDriverName.Text))
-            {
-                MessageBox.Show("Nama driver tidak boleh kosong!");
-                txtDriverName.Focus();
-                return false;
-            }
-
-            return true;
-        }
         private bool ValidasiInput(bool isUpdate = false)
         {
             if (cbBatch.SelectedIndex == -1 || cbBatch.SelectedValue == null)
