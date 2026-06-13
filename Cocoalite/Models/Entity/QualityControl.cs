@@ -38,23 +38,16 @@ namespace Cocoalite.Models.Entity
 
         public string Grade
         {
-            get
-            {
-                return grade;
-            }
+            get { return grade; }
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
-                {
                     throw new ArgumentException("Grade tidak boleh kosong.");
-                }
 
                 string newGrade = value.Trim();
 
                 if (!AllowedGrades.Contains(newGrade))
-                {
                     throw new ArgumentException("Grade tidak valid.");
-                }
 
                 grade = newGrade;
             }
@@ -62,23 +55,16 @@ namespace Cocoalite.Models.Entity
 
         public string QcStatus
         {
-            get
-            {
-                return qcStatus;
-            }
+            get { return qcStatus; }
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
-                {
                     throw new ArgumentException("Status QC tidak boleh kosong.");
-                }
 
                 string newStatus = value.Trim();
 
                 if (!AllowedStatuses.Contains(newStatus))
-                {
                     throw new ArgumentException("Status QC tidak valid.");
-                }
 
                 qcStatus = newStatus;
             }
@@ -86,14 +72,8 @@ namespace Cocoalite.Models.Entity
 
         public string InspectionNotes
         {
-            get
-            {
-                return inspectionNotes;
-            }
-            set
-            {
-                inspectionNotes = value ?? "";
-            }
+            get { return inspectionNotes; }
+            set { inspectionNotes = value ?? ""; }
         }
 
         public DateTime InspectionDate { get; set; }
@@ -113,15 +93,19 @@ namespace Cocoalite.Models.Entity
         public void TerapkanHasilPemeriksaan(string hasilGrade)
         {
             Grade = hasilGrade;
+            QcStatus = (Grade == "Reject") ? "Rejected" : "Approved";
+        }
 
-            if (Grade == "Reject")
-            {
-                QcStatus = "Rejected";
-            }
-            else
-            {
-                QcStatus = "Approved";
-            }
+        /// <summary>
+        /// Alternatif TerapkanHasilPemeriksaan yang menghitung grade langsung
+        /// dari Parameter domain object, tanpa bergantung pada database.
+        /// Memanfaatkan QualityParameter.TentukanGrade() sebagai business rule
+        /// yang melekat di domain model (bukan di stored function DB).
+        /// </summary>
+        public void TerapkanHasilDariParameter()
+        {
+            string hasilGrade = Parameter.TentukanGrade();
+            TerapkanHasilPemeriksaan(hasilGrade);
         }
 
         public string TampilkanInfoQualityControl()

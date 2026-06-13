@@ -50,31 +50,26 @@ namespace Cocoalite.Controllers
             return new DataTable();
         }
 
+        /// <summary>
+        /// Menentukan grade kakao berdasarkan parameter kualitas.
+        ///
+        /// PERBAIKAN: Tidak lagi memanggil database. Grade sekarang dihitung
+        /// langsung oleh domain model QualityParameter.TentukanGrade(), yang
+        /// merupakan satu-satunya sumber kebenaran untuk business rule ini.
+        /// </summary>
         public string DetermineGrade(
             decimal moistureLevel,
             decimal fermentationLevel,
             decimal defectLevel)
         {
-            if (moistureLevel < 0)
-            {
-                throw new ArgumentException("Moisture level tidak boleh negatif.");
-            }
+            // Validasi range diurus oleh setter QualityParameter (lempar ArgumentException)
+            QualityParameter parameter = new QualityParameter();
+            parameter.MoistureLevel = moistureLevel;
+            parameter.FermentationLevel = fermentationLevel;
+            parameter.DefectLevel = defectLevel;
 
-            if (fermentationLevel < 0)
-            {
-                throw new ArgumentException("Fermentation level tidak boleh negatif.");
-            }
-
-            if (defectLevel < 0)
-            {
-                throw new ArgumentException("Defect level tidak boleh negatif.");
-            }
-
-            return _context.DetermineGrade(
-                moistureLevel,
-                fermentationLevel,
-                defectLevel
-            );
+            // Domain model yang menentukan grade — bukan stored function DB
+            return parameter.TentukanGrade();
         }
 
         public void AddQualityControl(QualityControl qc)

@@ -79,95 +79,29 @@ namespace Cocoalite.Views
             }
         }
 
-        private bool ValidasiInput()
+        /// <summary>
+        /// PERBAIKAN: Hanya cek kelengkapan field (UX).
+        /// Aturan panjang password (6-20) dan recovery code (4-30) dihapus —
+        /// itu business rule milik LoginController, bukan View.
+        /// </summary>
+        private bool ValidasiInputLengkap()
         {
-            string fullName = txtFullName.Text.Trim();
-            string username = txtUsername.Text.Trim();
-            string password = txtPassword.Text.Trim();
-            string recoveryCode = txtRecoveryCode.Text.Trim();
+            if (string.IsNullOrWhiteSpace(txtFullName.Text))
+            { MessageBox.Show("Full name harus diisi."); txtFullName.Focus(); return false; }
 
-            if (string.IsNullOrWhiteSpace(fullName))
-            {
-                MessageBox.Show("Full name harus diisi.");
-                txtFullName.Focus();
-                return false;
-            }
+            if (string.IsNullOrWhiteSpace(txtUsername.Text))
+            { MessageBox.Show("Username harus diisi."); txtUsername.Focus(); return false; }
 
-            if (fullName.Length > 100)
-            {
-                MessageBox.Show("Full name maksimal 100 karakter.");
-                txtFullName.Focus();
-                return false;
-            }
+            if (string.IsNullOrWhiteSpace(txtPassword.Text))
+            { MessageBox.Show("Password harus diisi."); txtPassword.Focus(); return false; }
 
-            if (string.IsNullOrWhiteSpace(username))
-            {
-                MessageBox.Show("Username harus diisi.");
-                txtUsername.Focus();
-                return false;
-            }
-
-            if (username.Length < 4)
-            {
-                MessageBox.Show("Username minimal 4 karakter.");
-                txtUsername.Focus();
-                return false;
-            }
-
-            if (username.Length > 30)
-            {
-                MessageBox.Show("Username maksimal 30 karakter.");
-                txtUsername.Focus();
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(password))
-            {
-                MessageBox.Show("Password harus diisi.");
-                txtPassword.Focus();
-                return false;
-            }
-
-            if (password.Length < 6)
-            {
-                MessageBox.Show("Password minimal 6 karakter.");
-                txtPassword.Focus();
-                return false;
-            }
-
-            if (password.Length > 20)
-            {
-                MessageBox.Show("Password maksimal 20 karakter.");
-                txtPassword.Focus();
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(recoveryCode))
-            {
-                MessageBox.Show("Kode pemulihan harus diisi.");
-                txtRecoveryCode.Focus();
-                return false;
-            }
-
-            if (recoveryCode.Length < 4)
-            {
-                MessageBox.Show("Kode pemulihan minimal 4 karakter.");
-                txtRecoveryCode.Focus();
-                return false;
-            }
-
-            if (recoveryCode.Length > 30)
-            {
-                MessageBox.Show("Kode pemulihan maksimal 30 karakter.");
-                txtRecoveryCode.Focus();
-                return false;
-            }
+            if (string.IsNullOrWhiteSpace(txtRecoveryCode.Text))
+            { MessageBox.Show("Kode pemulihan harus diisi."); txtRecoveryCode.Focus(); return false; }
 
             return true;
-
         }
 
-     private void ClearForm()
+        private void ClearForm()
         {
             selectedUserId = 0;
             txtFullName.Clear();
@@ -179,96 +113,65 @@ namespace Cocoalite.Views
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (!ValidasiInput())
-            {
-                return;
-            }
+            if (!ValidasiInputLengkap()) return;
 
             try
             {
                 LoginController controller = new LoginController();
-
                 controller.AddQcUser(
                     txtFullName.Text.Trim(),
                     txtUsername.Text.Trim(),
                     txtPassword.Text.Trim(),
                     txtRecoveryCode.Text.Trim()
                 );
-
                 MessageBox.Show("Akun QC berhasil ditambahkan.");
-
-                LoadQcUsers();
-                ClearForm();
+                LoadQcUsers(); ClearForm();
+            }
+            catch (ArgumentException ex)
+            {
+                // Business rule dari LoginController (panjang password, recovery code, dll.)
+                MessageBox.Show(ex.Message, "Validasi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    "Gagal menambahkan akun QC: " + ex.Message,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
+                MessageBox.Show("Gagal menambahkan akun QC: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
             if (selectedUserId == 0)
-            {
-                MessageBox.Show("Pilih akun QC terlebih dahulu.");
-                return;
-            }
+            { MessageBox.Show("Pilih akun QC terlebih dahulu."); return; }
 
             DialogResult result = MessageBox.Show(
                 "Yakin ingin menghapus akun QC ini?",
-                "Konfirmasi Hapus",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question
-            );
+                "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-            if (result == DialogResult.No)
-            {
-                return;
-            }
+            if (result == DialogResult.No) return;
 
             try
             {
                 LoginController controller = new LoginController();
-
                 controller.DeleteQcUser(selectedUserId);
-
                 MessageBox.Show("Akun QC berhasil dihapus.");
-
-                LoadQcUsers();
-                ClearForm();
+                LoadQcUsers(); ClearForm();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
                     "Akun QC tidak dapat dihapus jika sudah digunakan pada data Quality Control.\n\nDetail: " + ex.Message,
-                    "Gagal",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
+                    "Gagal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
-        private void btnClear_Click(object sender, EventArgs e)
-        {
-            ClearForm();
-        }
+        private void btnClear_Click(object sender, EventArgs e) { ClearForm(); }
 
         private void dgvQcUsers_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0)
-            {
-                return;
-            }
-
+            if (e.RowIndex < 0) return;
             DataGridViewRow row = dgvQcUsers.Rows[e.RowIndex];
-
             selectedUserId = Convert.ToInt32(row.Cells["user_id"].Value);
-
             txtFullName.Text = row.Cells["full_name"].Value?.ToString() ?? "";
             txtUsername.Text = row.Cells["username"].Value?.ToString() ?? "";
             txtPassword.Clear();

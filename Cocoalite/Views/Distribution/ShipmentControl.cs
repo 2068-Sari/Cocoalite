@@ -177,6 +177,7 @@ namespace Cocoalite.Views
             dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgv.ScrollBars = ScrollBars.Both;
         }
+
         private void AturHeaderKolom()
         {
             if (dgvShipment.Columns.Contains("shipment_id"))
@@ -186,64 +187,40 @@ namespace Cocoalite.Views
             }
 
             if (dgvShipment.Columns.Contains("batch_id"))
-            {
                 dgvShipment.Columns["batch_id"].Visible = false;
-            }
 
             if (dgvShipment.Columns.Contains("created_by"))
-            {
                 dgvShipment.Columns["created_by"].Visible = false;
-            }
 
             if (dgvShipment.Columns.Contains("batch_code"))
-            {
                 dgvShipment.Columns["batch_code"].HeaderText = "Batch Code";
-            }
 
             if (dgvShipment.Columns.Contains("full_name"))
-            {
                 dgvShipment.Columns["full_name"].HeaderText = "Created By";
-            }
 
             if (dgvShipment.Columns.Contains("shipment_code"))
-            {
                 dgvShipment.Columns["shipment_code"].HeaderText = "Shipment Code";
-            }
 
             if (dgvShipment.Columns.Contains("destination"))
-            {
                 dgvShipment.Columns["destination"].HeaderText = "Destination";
-            }
 
             if (dgvShipment.Columns.Contains("shipment_date"))
-            {
                 dgvShipment.Columns["shipment_date"].HeaderText = "Shipment Date";
-            }
 
             if (dgvShipment.Columns.Contains("shipment_weight"))
-            {
                 dgvShipment.Columns["shipment_weight"].HeaderText = "Shipment Weight";
-            }
 
             if (dgvShipment.Columns.Contains("shipment_status"))
-            {
                 dgvShipment.Columns["shipment_status"].HeaderText = "Shipment Status";
-            }
 
             if (dgvShipment.Columns.Contains("vehicle_number"))
-            {
                 dgvShipment.Columns["vehicle_number"].HeaderText = "Vehicle Number";
-            }
 
             if (dgvShipment.Columns.Contains("driver_name"))
-            {
                 dgvShipment.Columns["driver_name"].HeaderText = "Driver Name";
-            }
 
             if (dgvShipment.Columns.Contains("created_at"))
-            {
                 dgvShipment.Columns["created_at"].HeaderText = "Created At";
-            }
         }
 
         private void ClearForm()
@@ -261,6 +238,7 @@ namespace Cocoalite.Views
             txtDriverName.Clear();
             cbBatch.Focus();
         }
+
         private bool ValidasiInput(bool isUpdate = false)
         {
             if (cbBatch.SelectedIndex == -1 || cbBatch.SelectedValue == null)
@@ -371,35 +349,16 @@ namespace Cocoalite.Views
                 return;
             }
 
-            if (!ValidasiInput())
+            if (!ValidasiInput(isUpdate: true))
             {
                 return;
             }
 
             string statusBaru = cbShipmentStatus.Text.Trim();
 
-            if (selectedShipmentStatus == "Cancelled")
-            {
-                MessageBox.Show(
-                    "Shipment yang sudah Cancelled tidak dapat diubah lagi.",
-                    "Validasi",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                return;
-            }
-
-            if (selectedShipmentStatus == "Delivered" && statusBaru == "Cancelled")
-            {
-                MessageBox.Show(
-                    "Shipment yang sudah Delivered tidak dapat dibatalkan.",
-                    "Validasi",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                return;
-            }
-
+            // Konfirmasi khusus pembatalan — ini murni UX, bukan business rule.
+            // Aturan "boleh/tidak boleh Cancel" sepenuhnya dijaga oleh
+            // CocoaWorkflowManager.PastikanTransisiStatusShipment() di layer Controller.
             if (statusBaru == "Cancelled")
             {
                 DialogResult result = MessageBox.Show(
@@ -419,15 +378,18 @@ namespace Cocoalite.Views
             {
                 ShipmentController controller = new ShipmentController();
 
+                // Seluruh validasi transisi status (Cancelled tidak bisa diubah,
+                // Delivered tidak bisa di-Cancel, dsb.) dilempar sebagai
+                // ArgumentException oleh CocoaWorkflowManager dan ditangkap di sini.
                 controller.UpdateShipment(
-                     selectedShipmentId,
-                     txtDestination.Text.Trim(),
-                     dtpShipmentDate.Value,
-                     selectedShipmentStatus,
-                     statusBaru,
-                     txtVehicleNumber.Text.Trim(),
-                     txtDriverName.Text.Trim()
- );
+                    selectedShipmentId,
+                    txtDestination.Text.Trim(),
+                    dtpShipmentDate.Value,
+                    selectedShipmentStatus,
+                    statusBaru,
+                    txtVehicleNumber.Text.Trim(),
+                    txtDriverName.Text.Trim()
+                );
 
                 MessageBox.Show("Data shipment berhasil diperbarui!");
 
@@ -435,9 +397,15 @@ namespace Cocoalite.Views
                 LoadBatch();
                 ClearForm();
             }
+            catch (ArgumentException ex)
+            {
+                // Business rule violation dari CocoaWorkflowManager atau domain model.
+                MessageBox.Show(ex.Message, "Validasi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                // Error teknis (koneksi DB, dsb.)
+                MessageBox.Show("Terjadi kesalahan: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

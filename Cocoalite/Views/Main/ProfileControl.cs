@@ -22,71 +22,40 @@ namespace Cocoalite.Views
             txtNewPassword.MaxLength = 20;
             txtConfirmPassword.MaxLength = 20;
         }
-        private bool ValidasiInput()
+
+        /// <summary>
+        /// PERBAIKAN: Hanya cek kelengkapan dan kesesuaian password vs konfirmasi.
+        /// Aturan panjang password (6-20) dihapus — itu business rule milik Controller.
+        /// Cek password == konfirmasi tetap di sini karena ini UX concern murni
+        /// (mencegah typo sebelum request dikirim ke Controller).
+        /// </summary>
+        private bool ValidasiInputLengkap()
         {
-            string oldPassword = txtOldPassword.Text.Trim();
-            string newPassword = txtNewPassword.Text.Trim();
-            string confirmPassword = txtConfirmPassword.Text.Trim();
+            if (string.IsNullOrWhiteSpace(txtOldPassword.Text))
+            { MessageBox.Show("Password lama harus diisi."); txtOldPassword.Focus(); return false; }
 
-            if (string.IsNullOrWhiteSpace(oldPassword))
-            {
-                MessageBox.Show("Password lama harus diisi.");
-                txtOldPassword.Focus();
-                return false;
-            }
+            if (string.IsNullOrWhiteSpace(txtNewPassword.Text))
+            { MessageBox.Show("Password baru harus diisi."); txtNewPassword.Focus(); return false; }
 
-            if (string.IsNullOrWhiteSpace(newPassword))
-            {
-                MessageBox.Show("Password baru harus diisi.");
-                txtNewPassword.Focus();
-                return false;
-            }
+            if (string.IsNullOrWhiteSpace(txtConfirmPassword.Text))
+            { MessageBox.Show("Konfirmasi password harus diisi."); txtConfirmPassword.Focus(); return false; }
 
-            if (newPassword.Length < 6)
-            {
-                MessageBox.Show("Password baru minimal 6 karakter.");
-                txtNewPassword.Focus();
-                return false;
-            }
-
-            if (newPassword.Length > 20)
-            {
-                MessageBox.Show("Password baru maksimal 20 karakter.");
-                txtNewPassword.Focus();
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(confirmPassword))
-            {
-                MessageBox.Show("Konfirmasi password harus diisi.");
-                txtConfirmPassword.Focus();
-                return false;
-            }
-
-            if (newPassword != confirmPassword)
-            {
-                MessageBox.Show("Konfirmasi password tidak sama.");
-                txtConfirmPassword.Focus();
-                return false;
-            }
+            // Ini UX concern: mencegah typo sebelum request dikirim.
+            // Bukan business rule — tidak ada logika bisnis di sini.
+            if (txtNewPassword.Text != txtConfirmPassword.Text)
+            { MessageBox.Show("Konfirmasi password tidak sama."); txtConfirmPassword.Focus(); return false; }
 
             return true;
         }
 
         private void btnUpdatePassword_Click(object sender, EventArgs e)
         {
-            if (!ValidasiInput())
-            {
-                return;
-            }
+            if (!ValidasiInputLengkap()) return;
 
             try
             {
                 if (LoginSession.CurrentUser == null)
-                {
-                    MessageBox.Show("Session login tidak ditemukan.");
-                    return;
-                }
+                { MessageBox.Show("Session login tidak ditemukan."); return; }
 
                 LoginController controller = new LoginController();
 
@@ -98,25 +67,22 @@ namespace Cocoalite.Views
 
                 if (!berhasil)
                 {
-                    MessageBox.Show(
-                        "Password lama salah.",
-                        "Gagal",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning
-                    );
+                    MessageBox.Show("Password lama salah.", "Gagal",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                MessageBox.Show(
-                    "Password berhasil diperbarui.",
-                    "Berhasil",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                );
+                MessageBox.Show("Password berhasil diperbarui.", "Berhasil",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 txtOldPassword.Clear();
                 txtNewPassword.Clear();
                 txtConfirmPassword.Clear();
+            }
+            catch (ArgumentException ex)
+            {
+                // Business rule dari LoginController (panjang password, dsb.)
+                MessageBox.Show(ex.Message, "Validasi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {

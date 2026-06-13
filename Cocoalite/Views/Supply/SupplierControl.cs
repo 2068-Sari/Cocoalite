@@ -228,118 +228,61 @@ namespace Cocoalite.Views
             txtSupplierName.Focus();
         }
 
-        private bool ValidasiInput()
+        /// <summary>
+        /// PERBAIKAN: Hanya cek kelengkapan field (UX). Validasi format telepon,
+        /// email, panjang nama diserahkan ke setter domain model Supplier.
+        /// </summary>
+        private bool ValidasiInputLengkap()
         {
-            string supplierName = txtSupplierName.Text.Trim();
-            string address = txtAddress.Text.Trim();
-            string phone = txtPhone.Text.Trim();
-            string email = txtEmail.Text.Trim();
+            if (string.IsNullOrWhiteSpace(txtSupplierName.Text))
+            { MessageBox.Show("Nama supplier tidak boleh kosong!"); txtSupplierName.Focus(); return false; }
 
-            if (string.IsNullOrWhiteSpace(supplierName))
-            {
-                MessageBox.Show("Nama supplier tidak boleh kosong!");
-                txtSupplierName.Focus();
-                return false;
-            }
+            if (string.IsNullOrWhiteSpace(txtAddress.Text))
+            { MessageBox.Show("Alamat supplier tidak boleh kosong!"); txtAddress.Focus(); return false; }
 
-            if (supplierName.Length > 100)
-            {
-                MessageBox.Show("Nama supplier maksimal 100 karakter!");
-                txtSupplierName.Focus();
-                return false;
-            }
+            if (string.IsNullOrWhiteSpace(txtPhone.Text))
+            { MessageBox.Show("Nomor telepon supplier tidak boleh kosong!"); txtPhone.Focus(); return false; }
 
-            if (string.IsNullOrWhiteSpace(address))
-            {
-                MessageBox.Show("Alamat supplier tidak boleh kosong!");
-                txtAddress.Focus();
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(phone))
-            {
-                MessageBox.Show("Nomor telepon supplier tidak boleh kosong!");
-                txtPhone.Focus();
-                return false;
-            }
-
-            if (!phone.All(char.IsDigit))
-            {
-                MessageBox.Show("Nomor telepon hanya boleh berisi angka!");
-                txtPhone.Focus();
-                return false;
-            }
-
-            if (phone.Length < 10)
-            {
-                MessageBox.Show("Nomor telepon minimal 10 digit!");
-                txtPhone.Focus();
-                return false;
-            }
-
-            if (phone.Length > 15)
-            {
-                MessageBox.Show("Nomor telepon maksimal 15 digit!");
-                txtPhone.Focus();
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(email))
-            {
-                MessageBox.Show("Email supplier tidak boleh kosong!");
-                txtEmail.Focus();
-                return false;
-            }
+            if (string.IsNullOrWhiteSpace(txtEmail.Text))
+            { MessageBox.Show("Email supplier tidak boleh kosong!"); txtEmail.Focus(); return false; }
 
             return true;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (!ValidasiInput())
-            {
-                return;
-            }
+            if (!ValidasiInputLengkap()) return;
 
             try
             {
                 SupplierController controller = new SupplierController();
-
                 controller.AddSupplier(
                     txtSupplierName.Text.Trim(),
                     txtAddress.Text.Trim(),
                     txtPhone.Text.Trim(),
                     txtEmail.Text.Trim()
                 );
-
                 MessageBox.Show("Supplier berhasil ditambahkan!");
-
-                LoadSuppliers();
-                ClearForm();
+                LoadSuppliers(); ClearForm();
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
-                MessageBox.Show(ex.Message);
+                // Validasi format dari setter Supplier (telepon, email, dsb.)
+                MessageBox.Show(ex.Message, "Validasi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             if (selectedSupplierId == 0)
-            {
-                MessageBox.Show("Pilih data supplier terlebih dahulu!");
-                return;
-            }
+            { MessageBox.Show("Pilih data supplier terlebih dahulu!"); return; }
 
-            if (!ValidasiInput())
-            {
-                return;
-            }
+            if (!ValidasiInputLengkap()) return;
 
             try
             {
                 SupplierController controller = new SupplierController();
-
                 controller.UpdateSupplier(
                     selectedSupplierId,
                     txtSupplierName.Text.Trim(),
@@ -347,72 +290,48 @@ namespace Cocoalite.Views
                     txtPhone.Text.Trim(),
                     txtEmail.Text.Trim()
                 );
-
                 MessageBox.Show("Supplier berhasil diperbarui!");
-
-                LoadSuppliers();
-                ClearForm();
+                LoadSuppliers(); ClearForm();
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message, "Validasi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
             if (selectedSupplierId == 0)
-            {
-                MessageBox.Show("Pilih data supplier terlebih dahulu!");
-                return;
-            }
+            { MessageBox.Show("Pilih data supplier terlebih dahulu!"); return; }
 
             DialogResult result = MessageBox.Show(
                 "Yakin ingin menghapus supplier ini?",
-                "Konfirmasi Hapus",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question
-            );
+                "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-            if (result == DialogResult.No)
-            {
-                return;
-            }
+            if (result == DialogResult.No) return;
 
             try
             {
                 SupplierController controller = new SupplierController();
                 controller.DeleteSupplier(selectedSupplierId);
-
                 MessageBox.Show("Supplier berhasil dihapus!");
-
-                LoadSuppliers();
-                ClearForm();
+                LoadSuppliers(); ClearForm();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    "Data supplier tidak dapat dihapus jika sudah digunakan pada data receiving.\n\nDetail: " + ex.Message
-                );
+                    "Data supplier tidak dapat dihapus jika sudah digunakan pada data receiving.\n\nDetail: " + ex.Message);
             }
         }
 
-        private void btnClear_Click(object sender, EventArgs e)
-        {
-            ClearForm();
-        }
+        private void btnClear_Click(object sender, EventArgs e) { ClearForm(); }
 
         private void dgv1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0)
-            {
-                return;
-            }
-
+            if (e.RowIndex < 0) return;
             DataGridViewRow row = dgv1.Rows[e.RowIndex];
-
             selectedSupplierId = Convert.ToInt32(row.Cells["supplier_id"].Value);
-
             txtSupplierName.Text = row.Cells["supplier_name"].Value?.ToString() ?? "";
             txtAddress.Text = row.Cells["address"].Value?.ToString() ?? "";
             txtPhone.Text = row.Cells["phone_number"].Value?.ToString() ?? "";

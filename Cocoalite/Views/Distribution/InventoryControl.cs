@@ -1,7 +1,8 @@
-﻿using System;
-using System.Windows.Forms;
-using Cocoalite.Controllers;
+﻿using Cocoalite.Controllers;
+using Cocoalite.Models.Entity;
+using System;
 using System.Drawing.Drawing2D;
+using System.Windows.Forms;
 
 
 namespace Cocoalite.Views
@@ -251,35 +252,21 @@ namespace Cocoalite.Views
             return true;
         }
 
-        private string TentukanStatusInventory(decimal stock)
-        {
-            if (stock == 0)
-            {
-                return "Empty";
-            }
-
-            if (stock < 300)
-            {
-                return "Low Stock";
-            }
-
-            return "Available";
-        }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (!ValidasiInput())
-            {
-                return;
-            }
+            if (!ValidasiInput()) return;
 
             try
             {
                 decimal stock = decimal.Parse(txtStockQuantity.Text);
-                txtInventoryStatus.Text = TentukanStatusInventory(stock);
+
+                // PERBAIKAN: Domain model yang menentukan status, bukan View.
+                Inventory preview = new Inventory();
+                preview.StockQuantity = stock;
+                txtInventoryStatus.Text = preview.InventoryStatus;
 
                 InventoryController controller = new InventoryController();
-
                 controller.AddInventory(
                     Convert.ToInt32(cbBatch.SelectedValue),
                     stock,
@@ -287,14 +274,10 @@ namespace Cocoalite.Views
                 );
 
                 MessageBox.Show("Data inventory berhasil ditambahkan!");
-
                 LoadInventory();
                 ClearForm();
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -305,18 +288,18 @@ namespace Cocoalite.Views
                 return;
             }
 
-            if (!ValidasiInput())
-            {
-                return;
-            }
+            if (!ValidasiInput()) return;
 
             try
             {
                 decimal stock = decimal.Parse(txtStockQuantity.Text);
-                txtInventoryStatus.Text = TentukanStatusInventory(stock);
+
+                // PERBAIKAN: Domain model yang menentukan status, bukan View.
+                Inventory preview = new Inventory();
+                preview.StockQuantity = stock;
+                txtInventoryStatus.Text = preview.InventoryStatus;
 
                 InventoryController controller = new InventoryController();
-
                 controller.UpdateInventory(
                     selectedInventoryId,
                     Convert.ToInt32(cbBatch.SelectedValue),
@@ -325,14 +308,10 @@ namespace Cocoalite.Views
                 );
 
                 MessageBox.Show("Data inventory berhasil diperbarui!");
-
                 LoadInventory();
                 ClearForm();
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -350,10 +329,7 @@ namespace Cocoalite.Views
                 MessageBoxIcon.Question
             );
 
-            if (result == DialogResult.No)
-            {
-                return;
-            }
+            if (result == DialogResult.No) return;
 
             try
             {
@@ -361,7 +337,6 @@ namespace Cocoalite.Views
                 controller.DeleteInventory(selectedInventoryId);
 
                 MessageBox.Show("Data inventory berhasil dihapus!");
-
                 LoadInventory();
                 ClearForm();
             }
@@ -373,34 +348,24 @@ namespace Cocoalite.Views
             }
         }
 
-        private void btnClear_Click(object sender, EventArgs e)
-        {
-            ClearForm();
-        }
+        private void btnClear_Click(object sender, EventArgs e) { ClearForm(); }
 
         private void dgvInventory_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0)
-            {
-                return;
-            }
+            if (e.RowIndex < 0) return;
 
             DataGridViewRow row = dgvInventory.Rows[e.RowIndex];
 
             selectedInventoryId = Convert.ToInt32(row.Cells["inventory_id"].Value);
 
             if (dgvInventory.Columns.Contains("batch_id"))
-            {
                 cbBatch.SelectedValue = Convert.ToInt32(row.Cells["batch_id"].Value);
-            }
 
             txtStockQuantity.Text = row.Cells["stock_quantity"].Value?.ToString() ?? "";
             txtWarehouseLocation.Text = row.Cells["warehouse_location"].Value?.ToString() ?? "";
 
             if (dgvInventory.Columns.Contains("inventory_status"))
-            {
                 txtInventoryStatus.Text = row.Cells["inventory_status"].Value?.ToString() ?? "";
-            }
         }
     }
 }

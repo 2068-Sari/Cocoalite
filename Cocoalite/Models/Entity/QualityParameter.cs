@@ -11,19 +11,13 @@ namespace Cocoalite.Models.Entity
         private decimal defectLevel;
         private string beanSize = "";
 
-
         public decimal MoistureLevel
         {
-            get
-            {
-                return moistureLevel;
-            }
+            get { return moistureLevel; }
             set
             {
                 if (value < 0 || value > 100)
-                {
                     throw new ArgumentException("Moisture level harus berada antara 0 sampai 100.");
-                }
 
                 moistureLevel = value;
             }
@@ -31,16 +25,11 @@ namespace Cocoalite.Models.Entity
 
         public decimal FermentationLevel
         {
-            get
-            {
-                return fermentationLevel;
-            }
+            get { return fermentationLevel; }
             set
             {
                 if (value < 0 || value > 100)
-                {
                     throw new ArgumentException("Fermentation level harus berada antara 0 sampai 100.");
-                }
 
                 fermentationLevel = value;
             }
@@ -48,16 +37,11 @@ namespace Cocoalite.Models.Entity
 
         public decimal DefectLevel
         {
-            get
-            {
-                return defectLevel;
-            }
+            get { return defectLevel; }
             set
             {
                 if (value < 0 || value > 100)
-                {
                     throw new ArgumentException("Defect level harus berada antara 0 sampai 100.");
-                }
 
                 defectLevel = value;
             }
@@ -65,19 +49,28 @@ namespace Cocoalite.Models.Entity
 
         public string BeanSize
         {
-            get
-            {
-                return beanSize;
-            }
+            get { return beanSize; }
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
-                {
                     throw new ArgumentException("Bean size tidak boleh kosong.");
-                }
 
                 beanSize = value;
             }
+        }
+
+        public string TentukanGrade()
+        {
+            if (moistureLevel <= 7.5m && fermentationLevel >= 75m && defectLevel <= 3m)
+                return "Grade A";
+
+            if (moistureLevel <= 8.5m && fermentationLevel >= 65m && defectLevel <= 5m)
+                return "Grade B";
+
+            if (moistureLevel <= 10m && fermentationLevel >= 50m && defectLevel <= 10m)
+                return "Grade C";
+
+            return "Reject";
         }
 
         public string TampilkanInfoParameter()
