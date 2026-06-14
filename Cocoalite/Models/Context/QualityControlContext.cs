@@ -117,29 +117,6 @@ namespace Cocoalite.Models.Context
             return table;
         }
 
-        public string DetermineGrade(
-            decimal moistureLevel,
-            decimal fermentationLevel,
-            decimal defectLevel)
-        {
-            using (var conn = db.GetConnection())
-            {
-                conn.Open();
-
-                string query = "SELECT determine_grade(@moisture, @fermentation, @defect)";
-
-                using (var cmd = new NpgsqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@moisture", moistureLevel);
-                    cmd.Parameters.AddWithValue("@fermentation", fermentationLevel);
-                    cmd.Parameters.AddWithValue("@defect", defectLevel);
-
-                    object? result = cmd.ExecuteScalar();
-
-                    return result?.ToString() ?? "Reject";
-                }
-            }
-        }
 
         public void InsertQualityControl(QualityControl qc)
         {

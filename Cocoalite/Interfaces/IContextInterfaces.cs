@@ -113,11 +113,6 @@ namespace Cocoalite.Interfaces
 
         DataTable GetAllReceiving();
 
-        string DetermineGrade(
-            decimal moistureLevel,
-            decimal fermentationLevel,
-            decimal defectLevel);
-
         void InsertQualityControl(QualityControl qc);
 
         void UpdateQualityControl(QualityControl qc);

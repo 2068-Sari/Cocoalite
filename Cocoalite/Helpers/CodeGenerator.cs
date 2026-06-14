@@ -10,19 +10,24 @@ namespace Cocoalite.Helpers
 
         private static Random Rng => _random.Value!;
 
+        private static string ShortDate()
+        {
+            return DateTime.Now.ToString("MMdd");
+        }
+
         public static string GenerateReceivingCode()
         {
-            return "RCV-" + Rng.Next(1, 1000).ToString("D3");
+            return $"RCV-{ShortDate()}-{Rng.Next(0, 1000):D3}";
         }
 
         public static string GenerateBatchCode()
         {
-            return "BTH-" + Rng.Next(1, 1000).ToString("D3");
+            return $"BTH-{ShortDate()}-{Rng.Next(0, 1000):D3}";
         }
 
         public static string GenerateShipmentCode()
         {
-            return "SHP-" + Rng.Next(1000, 99999).ToString();
+            return $"SHP-{ShortDate()}-{Rng.Next(0, 1000):D3}";
         }
     }
 }

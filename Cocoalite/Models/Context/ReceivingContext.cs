@@ -20,10 +20,10 @@ namespace Cocoalite.Models.Context
                 conn.Open();
 
                 string query = @"
-            SELECT supplier_id, supplier_name
-            FROM suppliers
-            WHERE is_delete = FALSE
-            ORDER BY supplier_name";
+                    SELECT supplier_id, supplier_name
+                    FROM suppliers
+                    WHERE is_delete = FALSE
+                    ORDER BY supplier_name";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
                 using (var adapter = new NpgsqlDataAdapter(cmd))

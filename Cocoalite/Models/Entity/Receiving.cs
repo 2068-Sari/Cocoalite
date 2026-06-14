@@ -23,7 +23,10 @@ namespace Cocoalite.Models.Entity
 
         public Receiving(Supplier supplier)
         {
-            Supplier = supplier ?? throw new ArgumentException("Supplier tidak boleh kosong.");
+            if (supplier == null)
+                throw new ArgumentException("Supplier tidak boleh kosong.");
+
+            Supplier = supplier;
             SupplierId = supplier.SupplierId;
         }
 
@@ -64,18 +67,26 @@ namespace Cocoalite.Models.Entity
 
         public string TampilkanInfoReceiving()
         {
-            return $"Receiving: {ReceivingCode} | Supplier: {Supplier.SupplierName} | Berat: {CocoaWeight} kg | Kendaraan: {VehicleNumber}";
+            string namaSupplier = Supplier?.SupplierName ?? "(supplier tidak diketahui)";
+
+            return
+                $"Receiving: {ReceivingCode} | " +
+                $"Supplier: {namaSupplier} | " +
+                $"Berat: {CocoaWeight} kg | " +
+                $"Kendaraan: {VehicleNumber}";
         }
 
         public string BuatLaporan()
         {
+            string namaSupplier = Supplier?.SupplierName ?? "(supplier tidak diketahui)";
+
             return
                 $"LAPORAN RECEIVING\n" +
                 $"==============================\n" +
                 $"Receiving ID     : {ReceivingId}\n" +
                 $"Kode             : {ReceivingCode}\n" +
                 $"Supplier ID      : {SupplierId}\n" +
-                $"Supplier         : {Supplier.SupplierName}\n" +
+                $"Supplier         : {namaSupplier}\n" +
                 $"Tanggal          : {ReceivingDate:dd-MM-yyyy}\n" +
                 $"Berat Kakao      : {CocoaWeight} kg\n" +
                 $"Nomor Kendaraan  : {VehicleNumber}\n" +

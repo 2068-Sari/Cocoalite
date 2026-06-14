@@ -6,45 +6,128 @@ namespace Cocoalite.Models.Entity
 {
     internal class DashboardSummary : IDapatDilaporkan
     {
-        public int TotalSupplier { get; set; }
-        public int TotalReceiving { get; set; }
-        public int TotalQc { get; set; }
-        public int TotalBatch { get; set; }
-        public decimal TotalStok { get; set; }
-        public int TotalShipment { get; set; }
+        // =====================================================================
+        // Private backing fields — encapsulasi mencegah nilai tidak valid
+        // masuk ke dalam objek. Nilai negatif tidak bermakna untuk data summary
+        // operasional, sehingga validasi ini adalah business rule yang sah.
+        // =====================================================================
+        private int _totalSupplier;
+        private int _totalReceiving;
+        private int _totalQc;
+        private int _totalBatch;
+        private decimal _totalStok;
+        private int _totalShipment;
 
-        /// <summary>
-        /// Business rule: stok dianggap kritis jika di bawah 300 kg.
-        /// Threshold konsisten dengan aturan "Low Stock" di class Inventory.
-        /// Logika ini melekat di domain model, bukan di UI.
-        /// </summary>
-        public bool ApakahStokKritis()
+        public int TotalSupplier
         {
-            return TotalStok < 300m;
+            get => _totalSupplier;
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentException("Total supplier tidak boleh negatif.");
+
+                _totalSupplier = value;
+            }
         }
 
-        /// <summary>
-        /// Menghitung rasio shipment terhadap jumlah batch sebagai
-        /// indikator efisiensi distribusi. Mengembalikan 0 jika belum ada batch.
-        /// </summary>
+        public int TotalReceiving
+        {
+            get => _totalReceiving;
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentException("Total receiving tidak boleh negatif.");
+
+                _totalReceiving = value;
+            }
+        }
+
+        public int TotalQc
+        {
+            get => _totalQc;
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentException("Total QC tidak boleh negatif.");
+
+                _totalQc = value;
+            }
+        }
+
+        public int TotalBatch
+        {
+            get => _totalBatch;
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentException("Total batch tidak boleh negatif.");
+
+                _totalBatch = value;
+            }
+        }
+
+        public decimal TotalStok
+        {
+            get => _totalStok;
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentException("Total stok tidak boleh negatif.");
+
+                _totalStok = value;
+            }
+        }
+
+        public int TotalShipment
+        {
+            get => _totalShipment;
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentException("Total shipment tidak boleh negatif.");
+
+                _totalShipment = value;
+            }
+        }
+
+        // =====================================================================
+        // Business rule: stok dianggap kritis jika di bawah 300 kg.
+        // Threshold konsisten dengan aturan "Low Stock" di class Inventory.
+        // Logika ini melekat di domain model, bukan di UI.
+        // =====================================================================
+        public bool ApakahStokKritis()
+        {
+            return _totalStok < 300m;
+        }
+
+        // =====================================================================
+        // Menghitung rasio shipment terhadap jumlah batch sebagai
+        // indikator efisiensi distribusi. Mengembalikan 0 jika belum ada batch.
+        // =====================================================================
         public decimal HitungRasioShipmentPerBatch()
         {
-            if (TotalBatch == 0)
+            if (_totalBatch == 0)
                 return 0m;
 
-            return Math.Round((decimal)TotalShipment / TotalBatch, 2);
+            return Math.Round((decimal)_totalShipment / _totalBatch, 2);
         }
 
         public string TampilkanInfoDashboard()
         {
-            return $"Supplier: {TotalSupplier} | Receiving: {TotalReceiving} | QC: {TotalQc} | Batch: {TotalBatch} | Stok: {TotalStok} kg | Shipment: {TotalShipment}";
+            return
+                $"Supplier: {TotalSupplier} | " +
+                $"Receiving: {TotalReceiving} | " +
+                $"QC: {TotalQc} | " +
+                $"Batch: {TotalBatch} | " +
+                $"Stok: {TotalStok} kg | " +
+                $"Shipment: {TotalShipment}";
         }
 
-        /// <summary>
-        /// Implementasi kontrak IDapatDilaporkan.
-        /// Menghasilkan ringkasan operasional sistem secara terformat,
-        /// termasuk indikator status stok dan rasio distribusi.
-        /// </summary>
+        // =====================================================================
+        // Implementasi kontrak IDapatDilaporkan.
+        // Menghasilkan ringkasan operasional sistem secara terformat,
+        // termasuk indikator status stok dan rasio distribusi.
+        // =====================================================================
         public string BuatLaporan()
         {
             StringBuilder sb = new StringBuilder();
