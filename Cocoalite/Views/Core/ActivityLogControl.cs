@@ -28,6 +28,7 @@ namespace Cocoalite.Views
                 dgvActivityLog.DataSource = controller.GetAllActivityLogs();
 
                 AturHeaderKolom();
+                AturDataGridView();
             }
             catch (Exception ex)
             {
@@ -37,13 +38,43 @@ namespace Cocoalite.Views
 
         private void AturDataGridView()
         {
-            dgvActivityLog.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvActivityLog.BackgroundColor = Color.White;
+            dgvActivityLog.BorderStyle = BorderStyle.None;
+            dgvActivityLog.GridColor = Color.FromArgb(230, 220, 210);
+
+            dgvActivityLog.EnableHeadersVisualStyles = false;
+            dgvActivityLog.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvActivityLog.ColumnHeadersHeight = 42;
+
+            dgvActivityLog.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(92, 49, 13);
+            dgvActivityLog.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvActivityLog.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dgvActivityLog.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgvActivityLog.ColumnHeadersDefaultCellStyle.Padding = new Padding(8, 0, 8, 0);
+
+            dgvActivityLog.DefaultCellStyle.BackColor = Color.White;
+            dgvActivityLog.DefaultCellStyle.ForeColor = Color.FromArgb(74, 44, 30);
+            dgvActivityLog.DefaultCellStyle.Font = new Font("Segoe UI", 10F);
+            dgvActivityLog.DefaultCellStyle.SelectionBackColor = Color.FromArgb(191, 129, 74);
+            dgvActivityLog.DefaultCellStyle.SelectionForeColor = Color.White;
+            dgvActivityLog.DefaultCellStyle.Padding = new Padding(8, 4, 8, 4);
+
+            dgvActivityLog.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(250, 246, 240);
+
+            dgvActivityLog.RowHeadersVisible = false;
+            dgvActivityLog.RowTemplate.Height = 38;
+
             dgvActivityLog.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvActivityLog.MultiSelect = false;
             dgvActivityLog.ReadOnly = true;
             dgvActivityLog.AllowUserToAddRows = false;
             dgvActivityLog.AllowUserToDeleteRows = false;
-            dgvActivityLog.RowHeadersVisible = false;
+            dgvActivityLog.AllowUserToResizeRows = false;
+
+            dgvActivityLog.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvActivityLog.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgvActivityLog.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            dgvActivityLog.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
         }
 
         private void AturTampilanPanelDanTabel()
@@ -59,6 +90,11 @@ namespace Cocoalite.Views
 
             panel.Paint -= Panel_Paint;
             panel.Paint += Panel_Paint;
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            LoadActivityLog();
         }
 
         private void Panel_Paint(object? sender, PaintEventArgs e)
@@ -137,36 +173,39 @@ namespace Cocoalite.Views
 
         private void AturHeaderKolom()
         {
-            if (dgvActivityLog.Columns.Contains("log_id"))
+            if (dgvActivityLog.Columns.Contains("LogId"))
             {
-                dgvActivityLog.Columns["log_id"].HeaderText = "ID";
-                dgvActivityLog.Columns["log_id"].Width = 50;
+                dgvActivityLog.Columns["LogId"].HeaderText = "Log ID";
+                dgvActivityLog.Columns["LogId"].Width = 70;
+                dgvActivityLog.Columns["LogId"].DisplayIndex = 0;
             }
 
-            if (dgvActivityLog.Columns.Contains("user_id"))
+            if (dgvActivityLog.Columns.Contains("UserId"))
             {
-                dgvActivityLog.Columns["user_id"].Visible = false;
+                dgvActivityLog.Columns["UserId"].Visible = false;
             }
 
-            if (dgvActivityLog.Columns.Contains("full_name"))
+            if (dgvActivityLog.Columns.Contains("FullName"))
             {
-                dgvActivityLog.Columns["full_name"].HeaderText = "User";
+                dgvActivityLog.Columns["FullName"].HeaderText = "User";
+                dgvActivityLog.Columns["FullName"].Width = 180;
+                dgvActivityLog.Columns["FullName"].DisplayIndex = 1;
             }
 
-            if (dgvActivityLog.Columns.Contains("activity"))
+            if (dgvActivityLog.Columns.Contains("Activity"))
             {
-                dgvActivityLog.Columns["activity"].HeaderText = "Activity";
+                dgvActivityLog.Columns["Activity"].HeaderText = "Activity";
+                dgvActivityLog.Columns["Activity"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dgvActivityLog.Columns["Activity"].DisplayIndex = 2;
             }
 
-            if (dgvActivityLog.Columns.Contains("log_time"))
+            if (dgvActivityLog.Columns.Contains("LogTime"))
             {
-                dgvActivityLog.Columns["log_time"].HeaderText = "Log Time";
+                dgvActivityLog.Columns["LogTime"].HeaderText = "Log Time";
+                dgvActivityLog.Columns["LogTime"].Width = 180;
+                dgvActivityLog.Columns["LogTime"].DisplayIndex = 3;
+                dgvActivityLog.Columns["LogTime"].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
             }
-        }
-
-        private void btnRefresh_Click(object sender, EventArgs e)
-        {
-            LoadActivityLog();
         }
     }
 }

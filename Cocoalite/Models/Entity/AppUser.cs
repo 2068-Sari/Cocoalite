@@ -1,48 +1,54 @@
 ﻿using Cocoalite.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Cocoalite.Models.Entity
 {
     public abstract class AppUser : IPengguna
     {
-        private string fullName = "";
-        private string username = "";
+        // =====================================================================
+        // Private backing fields untuk semua atribut.
+        // UserId harus > 0 setelah diisi dari database.
+        // FullName dan Username divalidasi agar tidak kosong (business rule).
+        // Role diset oleh subclass melalui protected set — tidak bisa diubah
+        // dari luar, mencegah eskalasi hak akses secara tidak sah.
+        // =====================================================================
+        private int _userId;
+        private string _fullName = "";
+        private string _username = "";
 
-        public int UserId { get; set; }
+        public int UserId
+        {
+            get => _userId;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("User ID tidak boleh negatif.");
+                }
+
+                _userId = value;
+            }
+        }
 
         public string FullName
         {
-            get
-            {
-                return fullName;
-            }
+            get => _fullName;
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
-                {
                     throw new ArgumentException("Nama lengkap tidak boleh kosong.");
-                }
-
-                fullName = value;
+                _fullName = value;
             }
         }
 
         public string Username
         {
-            get
-            {
-                return username;
-            }
+            get => _username;
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
-                {
                     throw new ArgumentException("Username tidak boleh kosong.");
-                }
-
-                username = value;
+                _username = value;
             }
         }
 
@@ -52,7 +58,7 @@ namespace Cocoalite.Models.Entity
 
         public virtual string TampilkanInfoUser()
         {
-            return $"{FullName} ({Role})";
+            return $"{_fullName} ({Role})";
         }
     }
 }

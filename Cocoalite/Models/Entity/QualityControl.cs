@@ -7,13 +7,13 @@ namespace Cocoalite.Models.Entity
 {
     public class QualityControl : IDapatDilaporkan, IProsesQC
     {
-        private string grade = "";
-        private string qcStatus = "";
-        private string inspectionNotes = "";
-
-        public int QcId { get; set; }
-        public int ReceivingId { get; set; }
-        public int InspectedBy { get; set; }
+        private int _qcId;
+        private int _receivingId;
+        private int _inspectedBy;
+        private DateTime _inspectionDate;
+        private string _grade = "";
+        private string _qcStatus = "";
+        private string _inspectionNotes = "";
 
         public QualityParameter Parameter { get; private set; }
 
@@ -36,9 +36,62 @@ namespace Cocoalite.Models.Entity
             "Rejected"
         };
 
+        public int QcId
+        {
+            get => _qcId;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("QC ID tidak boleh negatif.");
+                }
+
+                _qcId = value;
+            }
+        }
+
+        public int ReceivingId
+        {
+            get => _receivingId;
+            set
+            {
+                if (value <= 0)
+                {
+                    throw new ArgumentException("Receiving ID tidak valid.");
+                }
+
+                _receivingId = value;
+            }
+        }
+
+        public int InspectedBy
+        {
+            get => _inspectedBy;
+            set
+            {
+                if (value <= 0)
+                {
+                    throw new ArgumentException("User pemeriksa tidak valid.");
+                }
+
+                _inspectedBy = value;
+            }
+        }
+
+        public DateTime InspectionDate
+        {
+            get => _inspectionDate;
+            set
+            {
+                if (value == default)
+                    throw new ArgumentException("Tanggal inspeksi tidak valid.");
+                _inspectionDate = value;
+            }
+        }
+
         public string Grade
         {
-            get { return grade; }
+            get => _grade;
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
@@ -49,13 +102,13 @@ namespace Cocoalite.Models.Entity
                 if (!AllowedGrades.Contains(newGrade))
                     throw new ArgumentException("Grade tidak valid.");
 
-                grade = newGrade;
+                _grade = newGrade;
             }
         }
 
         public string QcStatus
         {
-            get { return qcStatus; }
+            get => _qcStatus;
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
@@ -66,17 +119,15 @@ namespace Cocoalite.Models.Entity
                 if (!AllowedStatuses.Contains(newStatus))
                     throw new ArgumentException("Status QC tidak valid.");
 
-                qcStatus = newStatus;
+                _qcStatus = newStatus;
             }
         }
 
         public string InspectionNotes
         {
-            get { return inspectionNotes; }
-            set { inspectionNotes = value ?? ""; }
+            get => _inspectionNotes;
+            set { _inspectionNotes = value ?? ""; }
         }
-
-        public DateTime InspectionDate { get; set; }
 
         public void IsiParameter(
             decimal moistureLevel,
@@ -97,10 +148,8 @@ namespace Cocoalite.Models.Entity
         }
 
         /// <summary>
-        /// Alternatif TerapkanHasilPemeriksaan yang menghitung grade langsung
-        /// dari Parameter domain object, tanpa bergantung pada database.
-        /// Memanfaatkan QualityParameter.TentukanGrade() sebagai business rule
-        /// yang melekat di domain model (bukan di stored function DB).
+        /// Menghitung grade langsung dari Parameter domain object,
+        /// tanpa bergantung pada database.
         /// </summary>
         public void TerapkanHasilDariParameter()
         {
@@ -111,10 +160,10 @@ namespace Cocoalite.Models.Entity
         public string TampilkanInfoQualityControl()
         {
             return
-                $"QC ID: {QcId} | " +
-                $"Receiving ID: {ReceivingId} | " +
-                $"Grade: {Grade} | " +
-                $"Status: {QcStatus}";
+                $"QC ID: {_qcId} | " +
+                $"Receiving ID: {_receivingId} | " +
+                $"Grade: {_grade} | " +
+                $"Status: {_qcStatus}";
         }
 
         public string BuatLaporan()
@@ -123,17 +172,17 @@ namespace Cocoalite.Models.Entity
 
             laporan.AppendLine("LAPORAN QUALITY CONTROL");
             laporan.AppendLine("==============================");
-            laporan.AppendLine($"QC ID              : {QcId}");
-            laporan.AppendLine($"Receiving ID       : {ReceivingId}");
-            laporan.AppendLine($"Inspected By       : {InspectedBy}");
+            laporan.AppendLine($"QC ID              : {_qcId}");
+            laporan.AppendLine($"Receiving ID       : {_receivingId}");
+            laporan.AppendLine($"Inspected By       : {_inspectedBy}");
             laporan.AppendLine($"Moisture Level     : {Parameter.MoistureLevel}%");
             laporan.AppendLine($"Fermentation Level : {Parameter.FermentationLevel}%");
             laporan.AppendLine($"Defect Level       : {Parameter.DefectLevel}%");
             laporan.AppendLine($"Bean Size          : {Parameter.BeanSize}");
-            laporan.AppendLine($"Grade              : {Grade}");
-            laporan.AppendLine($"QC Status          : {QcStatus}");
-            laporan.AppendLine($"Inspection Notes   : {InspectionNotes}");
-            laporan.AppendLine($"Inspection Date    : {InspectionDate:dd-MM-yyyy}");
+            laporan.AppendLine($"Grade              : {_grade}");
+            laporan.AppendLine($"QC Status          : {_qcStatus}");
+            laporan.AppendLine($"Inspection Notes   : {_inspectionNotes}");
+            laporan.AppendLine($"Inspection Date    : {_inspectionDate:dd-MM-yyyy}");
             laporan.AppendLine("==============================");
 
             return laporan.ToString();

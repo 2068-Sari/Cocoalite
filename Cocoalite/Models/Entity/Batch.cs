@@ -8,14 +8,13 @@ namespace Cocoalite.Models.Entity
 {
     public class Batch : IDapatDilaporkan
     {
+        private int _batchId;
+        private int _qcId;
+        private DateOnly _batchDate;
         private string _batchCode = "";
         private decimal _batchWeight;
         private string _batchStatus = "";
         private readonly List<Shipment> _daftarShipment;
-
-        public int BatchId { get; set; }
-        public int QcId { get; set; }
-        public DateOnly BatchDate { get; set; }
 
         public Batch()
         {
@@ -27,7 +26,47 @@ namespace Cocoalite.Models.Entity
             BatchCode = batchCode;
             BatchWeight = batchWeight;
             BatchStatus = batchStatus;
-            _daftarShipment = daftarShipment ?? new List<Shipment>();
+            _daftarShipment = daftarShipment != null
+                ? new List<Shipment>(daftarShipment)
+                : new List<Shipment>();
+        }
+
+        public int BatchId
+        {
+            get => _batchId;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Batch ID tidak boleh negatif.");
+                }
+                _batchId = value;
+            }
+        }
+
+        public int QcId
+        {
+            get => _qcId;
+            set
+            {
+                if (value <= 0)
+                {
+                    throw new ArgumentException("QC ID tidak valid.");
+                }
+
+                _qcId = value;
+            }
+        }
+
+        public DateOnly BatchDate
+        {
+            get => _batchDate;
+            set
+            {
+                if (value == default)
+                    throw new ArgumentException("Tanggal batch tidak valid.");
+                _batchDate = value;
+            }
         }
 
         public string BatchCode
@@ -37,7 +76,6 @@ namespace Cocoalite.Models.Entity
             {
                 if (string.IsNullOrWhiteSpace(value))
                     throw new ArgumentException("Kode batch tidak boleh kosong.");
-
                 _batchCode = value.Trim();
             }
         }
@@ -54,7 +92,6 @@ namespace Cocoalite.Models.Entity
             {
                 if (value <= 0)
                     throw new ArgumentException("Berat batch harus lebih dari 0.");
-
                 _batchWeight = value;
             }
         }
@@ -66,7 +103,6 @@ namespace Cocoalite.Models.Entity
             {
                 if (string.IsNullOrWhiteSpace(value))
                     throw new ArgumentException("Status batch tidak boleh kosong.");
-
                 _batchStatus = value.Trim();
             }
         }
@@ -77,13 +113,16 @@ namespace Cocoalite.Models.Entity
         {
             if (shipment == null)
                 throw new ArgumentException("Data shipment tidak boleh kosong.");
-
             _daftarShipment.Add(shipment);
         }
 
         public string TampilkanInfoBatch()
         {
-            return $"Batch: {BatchCode} | Berat: {BatchWeight} kg | Status: {BatchStatus} | Jumlah Shipment: {_daftarShipment.Count}";
+            return
+                $"Batch: {BatchCode} | " +
+                $"Berat: {BatchWeight} kg | " +
+                $"Status: {BatchStatus} | " +
+                $"Jumlah Shipment: {_daftarShipment.Count}";
         }
 
         public string GetInfoDaftarShipment()

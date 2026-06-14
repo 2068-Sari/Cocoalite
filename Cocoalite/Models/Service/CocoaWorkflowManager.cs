@@ -43,9 +43,9 @@ namespace Cocoalite.Models.Service
             ));
         }
 
-        public List<(string Tahap, string Keterangan)> AmbilAlurProses()
+        public IReadOnlyList<(string Tahap, string Keterangan)> AmbilAlurProses()
         {
-            return daftarAlurProses;
+            return daftarAlurProses.AsReadOnly();
         }
 
         public bool ApakahQcBisaMenjadiBatch(QualityControl qc)

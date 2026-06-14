@@ -27,7 +27,7 @@
             lblStockQuantity = new Label();
             txtStockQuantity = new TextBox();
             lblWarehouseLocation = new Label();
-            txtWarehouseLocation = new TextBox();
+            cbWarehouseLocation = new ComboBox();
             lblInventoryStatus = new Label();
             txtInventoryStatus = new TextBox();
             btnSave = new Button();
@@ -78,7 +78,7 @@
             panelForm.Controls.Add(lblStockQuantity);
             panelForm.Controls.Add(txtStockQuantity);
             panelForm.Controls.Add(lblWarehouseLocation);
-            panelForm.Controls.Add(txtWarehouseLocation);
+            panelForm.Controls.Add(cbWarehouseLocation);
             panelForm.Controls.Add(lblInventoryStatus);
             panelForm.Controls.Add(txtInventoryStatus);
             panelForm.Controls.Add(btnSave);
@@ -128,10 +128,13 @@
             lblWarehouseLocation.Text = "Warehouse Location";
             lblWarehouseLocation.TextAlign = ContentAlignment.MiddleLeft;
 
-            // txtWarehouseLocation
-            txtWarehouseLocation.Font = new Font("Segoe UI", 9F);
-            txtWarehouseLocation.Location = new Point(790, 35);
-            txtWarehouseLocation.Size = new Size(260, 27);
+            // cbWarehouseLocation
+            cbWarehouseLocation.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbWarehouseLocation.Font = new Font("Segoe UI", 9F);
+            cbWarehouseLocation.Location = new Point(790, 35);
+            cbWarehouseLocation.Name = "cbWarehouseLocation";
+            cbWarehouseLocation.Size = new Size(260, 28);
+            cbWarehouseLocation.TabIndex = 5;
 
             // lblInventoryStatus
             lblInventoryStatus.AutoSize = false;
@@ -292,7 +295,7 @@
         private Label lblStockQuantity;
         private TextBox txtStockQuantity;
         private Label lblWarehouseLocation;
-        private TextBox txtWarehouseLocation;
+        private ComboBox cbWarehouseLocation;
         private Label lblInventoryStatus;
         private TextBox txtInventoryStatus;
         private Button btnSave;

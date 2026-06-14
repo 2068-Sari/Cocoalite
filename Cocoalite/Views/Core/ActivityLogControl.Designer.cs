@@ -57,9 +57,10 @@
             panelTable.Controls.Add(lblTableTitle);
             panelTable.Controls.Add(btnRefresh);
             panelTable.Controls.Add(dgvActivityLog);
-            panelTable.Location = new Point(40, 120);
+            panelTable.Location = new Point(55, 135);
+            panelTable.Size = new Size(1050, 460);
+            panelTable.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panelTable.Name = "panelTable";
-            panelTable.Size = new Size(780, 375);
             panelTable.TabIndex = 2;
             // 
             // lblTableTitle
@@ -80,24 +81,27 @@
             btnRefresh.FlatStyle = FlatStyle.Flat;
             btnRefresh.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnRefresh.ForeColor = Color.White;
-            btnRefresh.Location = new Point(635, 15);
-            btnRefresh.Name = "btnRefresh";
-            btnRefresh.Size = new Size(120, 35);
-            btnRefresh.TabIndex = 1;
+            btnRefresh.Location = new Point(900, 20);
+            btnRefresh.Size = new Size(120, 40);
+            btnRefresh.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnRefresh.Text = "Refresh";
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.TabIndex = 1;
             btnRefresh.UseVisualStyleBackColor = false;
             btnRefresh.Click += btnRefresh_Click;
             // 
             // dgvActivityLog
             // 
-            dgvActivityLog.BackgroundColor = Color.White;
-            dgvActivityLog.BorderStyle = BorderStyle.None;
-            dgvActivityLog.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvActivityLog.Location = new Point(20, 65);
-            dgvActivityLog.Name = "dgvActivityLog";
-            dgvActivityLog.RowHeadersWidth = 51;
-            dgvActivityLog.Size = new Size(987, 406);
-            dgvActivityLog.TabIndex = 2;
+            dgvActivityLog.Location = new Point(25, 70);
+            dgvActivityLog.Size = new Size(1000, 360);
+            dgvActivityLog.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvActivityLog.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvActivityLog.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvActivityLog.MultiSelect = false;
+            dgvActivityLog.ReadOnly = true;
+            dgvActivityLog.AllowUserToAddRows = false;
+            dgvActivityLog.AllowUserToDeleteRows = false;
+            dgvActivityLog.RowHeadersVisible = false;
             // 
             // ActivityLogControl
             // 

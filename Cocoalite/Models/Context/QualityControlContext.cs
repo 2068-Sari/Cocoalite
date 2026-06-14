@@ -103,9 +103,16 @@ namespace Cocoalite.Models.Context
                 conn.Open();
 
                 string query = @"
-                    SELECT receiving_id,  receiving_code
-                    FROM receiving
-                    ORDER BY receiving_id";
+            SELECT
+                r.receiving_id,
+                r.receiving_code || ' - ' ||
+                s.supplier_name || ' - ' ||
+                TO_CHAR(r.receiving_date, 'DD/MM/YYYY') || ' - ' ||
+                r.cocoa_weight || ' kg' AS receiving_display
+            FROM receiving r
+            JOIN suppliers s ON r.supplier_id = s.supplier_id
+            WHERE r.is_delete = FALSE
+            ORDER BY r.receiving_date DESC, r.receiving_id DESC";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
                 using (var adapter = new NpgsqlDataAdapter(cmd))

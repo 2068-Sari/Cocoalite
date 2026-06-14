@@ -20,6 +20,7 @@ namespace Cocoalite.Views
         {
             LoadBatch();
             LoadInventory();
+            LoadWarehouseLocation();
             AturDataGridView();
             AturTampilanPanelDanTabel();
         }
@@ -55,6 +56,18 @@ namespace Cocoalite.Views
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void LoadWarehouseLocation()
+        {
+            cbWarehouseLocation.Items.Clear();
+
+            cbWarehouseLocation.Items.Add("Gudang Utama");
+            cbWarehouseLocation.Items.Add("Gudang A");
+            cbWarehouseLocation.Items.Add("Gudang B");
+            cbWarehouseLocation.Items.Add("Gudang C");
+
+            cbWarehouseLocation.SelectedIndex = -1;
         }
 
         private void AturDataGridView()
@@ -207,7 +220,7 @@ namespace Cocoalite.Views
             selectedInventoryId = 0;
             cbBatch.SelectedIndex = -1;
             txtStockQuantity.Clear();
-            txtWarehouseLocation.Clear();
+            cbWarehouseLocation.SelectedIndex = -1;
             txtInventoryStatus.Clear();
             cbBatch.Focus();
         }
@@ -242,13 +255,12 @@ namespace Cocoalite.Views
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(txtWarehouseLocation.Text))
+            if (cbWarehouseLocation.SelectedIndex == -1)
             {
-                MessageBox.Show("Warehouse location tidak boleh kosong!");
-                txtWarehouseLocation.Focus();
+                MessageBox.Show("Lokasi gudang harus dipilih!");
+                cbWarehouseLocation.Focus();
                 return false;
             }
-
             return true;
         }
 
@@ -270,7 +282,7 @@ namespace Cocoalite.Views
                 controller.AddInventory(
                     Convert.ToInt32(cbBatch.SelectedValue),
                     stock,
-                    txtWarehouseLocation.Text.Trim()
+                    cbWarehouseLocation.Text.Trim()
                 );
 
                 MessageBox.Show("Data inventory berhasil ditambahkan!");
@@ -304,7 +316,7 @@ namespace Cocoalite.Views
                     selectedInventoryId,
                     Convert.ToInt32(cbBatch.SelectedValue),
                     stock,
-                    txtWarehouseLocation.Text.Trim()
+                    cbWarehouseLocation.Text.Trim()
                 );
 
                 MessageBox.Show("Data inventory berhasil diperbarui!");
@@ -361,8 +373,10 @@ namespace Cocoalite.Views
             if (dgvInventory.Columns.Contains("batch_id"))
                 cbBatch.SelectedValue = Convert.ToInt32(row.Cells["batch_id"].Value);
 
-            txtStockQuantity.Text = row.Cells["stock_quantity"].Value?.ToString() ?? "";
-            txtWarehouseLocation.Text = row.Cells["warehouse_location"].Value?.ToString() ?? "";
+            string lokasi =
+                  row.Cells["warehouse_location"].Value?.ToString() ?? "";
+
+            cbWarehouseLocation.SelectedItem = lokasi;
 
             if (dgvInventory.Columns.Contains("inventory_status"))
                 txtInventoryStatus.Text = row.Cells["inventory_status"].Value?.ToString() ?? "";

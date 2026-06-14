@@ -263,6 +263,14 @@ namespace Cocoalite.Views
 
         private bool ValidasiInput()
         {
+            // ================================================================
+            // ValidasiInput hanya memeriksa hal-hal yang bersifat FORMAT UI:
+            // apakah field dipilih/diisi dan apakah teks bisa diparse sebagai
+            // angka. Validasi business rule (range 0–100, whitelist grade, dsb.)
+            // sepenuhnya diserahkan kepada setter di QualityParameter dan
+            // QualityControl — bukan di sini.
+            // ================================================================
+
             if (cbReceiving.SelectedIndex == -1 || cbReceiving.SelectedValue == null)
             {
                 MessageBox.Show("Receiving harus dipilih!");
@@ -270,44 +278,23 @@ namespace Cocoalite.Views
                 return false;
             }
 
-            if (!decimal.TryParse(txtMoisture.Text, out decimal moisture))
+            if (!decimal.TryParse(txtMoisture.Text, out _))
             {
                 MessageBox.Show("Moisture harus berupa angka!");
                 txtMoisture.Focus();
                 return false;
             }
 
-            if (moisture < 0 || moisture > 100)
-            {
-                MessageBox.Show("Moisture harus berada antara 0 sampai 100!");
-                txtMoisture.Focus();
-                return false;
-            }
-
-            if (!decimal.TryParse(txtFermentation.Text, out decimal fermentation))
+            if (!decimal.TryParse(txtFermentation.Text, out _))
             {
                 MessageBox.Show("Fermentation harus berupa angka!");
                 txtFermentation.Focus();
                 return false;
             }
 
-            if (fermentation < 0 || fermentation > 100)
-            {
-                MessageBox.Show("Fermentation harus berada antara 0 sampai 100!");
-                txtFermentation.Focus();
-                return false;
-            }
-
-            if (!decimal.TryParse(txtDefect.Text, out decimal defect))
+            if (!decimal.TryParse(txtDefect.Text, out _))
             {
                 MessageBox.Show("Defect harus berupa angka!");
-                txtDefect.Focus();
-                return false;
-            }
-
-            if (defect < 0 || defect > 100)
-            {
-                MessageBox.Show("Defect harus berada antara 0 sampai 100!");
                 txtDefect.Focus();
                 return false;
             }
@@ -362,22 +349,12 @@ namespace Cocoalite.Views
 
                 QualityControlController controller = new QualityControlController();
 
-                string grade = controller.DetermineGrade(
-                    moisture,
-                    fermentation,
-                    defect
-                );
+                // Validasi range 0–100 dilempar oleh setter QualityParameter
+                // di dalam DetermineGrade(). Exception ditangkap di bawah.
+                string grade = controller.DetermineGrade(moisture, fermentation, defect);
 
                 txtGrade.Text = grade;
-
-                if (grade == "Reject")
-                {
-                    cbQcStatus.SelectedItem = "Rejected";
-                }
-                else
-                {
-                    cbQcStatus.SelectedItem = "Approved";
-                }
+                cbQcStatus.SelectedItem = (grade == "Reject") ? "Rejected" : "Approved";
             }
             catch (Exception ex)
             {
@@ -388,9 +365,7 @@ namespace Cocoalite.Views
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (!ValidasiInput())
-            {
                 return;
-            }
 
             try
             {
@@ -407,6 +382,8 @@ namespace Cocoalite.Views
                 qc.ReceivingId = Convert.ToInt32(cbReceiving.SelectedValue);
                 qc.InspectedBy = LoginSession.CurrentUser.UserId;
 
+                // Setter QualityParameter melempar ArgumentException jika
+                // nilai di luar range 0–100 — ditangkap oleh catch di bawah.
                 qc.IsiParameter(
                     decimal.Parse(txtMoisture.Text),
                     decimal.Parse(txtFermentation.Text),
@@ -441,9 +418,7 @@ namespace Cocoalite.Views
             }
 
             if (!ValidasiInput())
-            {
                 return;
-            }
 
             try
             {
@@ -494,9 +469,7 @@ namespace Cocoalite.Views
             );
 
             if (result == DialogResult.No)
-            {
                 return;
-            }
 
             try
             {
@@ -525,18 +498,14 @@ namespace Cocoalite.Views
         private void dgvQualityControl_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0)
-            {
                 return;
-            }
 
             DataGridViewRow row = dgvQualityControl.Rows[e.RowIndex];
 
             selectedQcId = Convert.ToInt32(row.Cells["qc_id"].Value);
 
             if (dgvQualityControl.Columns.Contains("receiving_id"))
-            {
                 cbReceiving.SelectedValue = Convert.ToInt32(row.Cells["receiving_id"].Value);
-            }
 
             txtMoisture.Text = row.Cells["moisture_level"].Value?.ToString() ?? "";
             txtFermentation.Text = row.Cells["fermentation_level"].Value?.ToString() ?? "";
@@ -545,16 +514,12 @@ namespace Cocoalite.Views
             txtGrade.Text = row.Cells["grade"].Value?.ToString() ?? "";
 
             if (dgvQualityControl.Columns.Contains("qc_status"))
-            {
                 cbQcStatus.SelectedItem = row.Cells["qc_status"].Value?.ToString() ?? "";
-            }
 
             txtNotes.Text = row.Cells["inspection_notes"].Value?.ToString() ?? "";
 
             if (DateTime.TryParse(row.Cells["inspection_date"].Value?.ToString(), out DateTime date))
-            {
                 dtpInspectionDate.Value = date;
-            }
         }
     }
 }
