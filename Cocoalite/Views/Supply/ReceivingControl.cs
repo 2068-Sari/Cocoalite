@@ -251,13 +251,6 @@ namespace Cocoalite.Views
                 return false;
             }
 
-            if (weight <= 0)
-            {
-                MessageBox.Show("Berat kakao harus lebih dari 0!");
-                txtCocoaWeight.Focus();
-                return false;
-            }
-
             return true;
         }
 

@@ -269,13 +269,6 @@ namespace Cocoalite.Views
                 return false;
             }
 
-            if (weight <= 0)
-            {
-                MessageBox.Show("Berat shipment harus lebih dari 0!");
-                txtShipmentWeight.Focus();
-                return false;
-            }
-
             if (isUpdate && cbShipmentStatus.SelectedIndex == -1)
             {
                 MessageBox.Show("Status shipment harus dipilih!");
@@ -356,9 +349,6 @@ namespace Cocoalite.Views
 
             string statusBaru = cbShipmentStatus.Text.Trim();
 
-            // Konfirmasi khusus pembatalan — ini murni UX, bukan business rule.
-            // Aturan "boleh/tidak boleh Cancel" sepenuhnya dijaga oleh
-            // CocoaWorkflowManager.PastikanTransisiStatusShipment() di layer Controller.
             if (statusBaru == "Cancelled")
             {
                 DialogResult result = MessageBox.Show(
@@ -378,9 +368,6 @@ namespace Cocoalite.Views
             {
                 ShipmentController controller = new ShipmentController();
 
-                // Seluruh validasi transisi status (Cancelled tidak bisa diubah,
-                // Delivered tidak bisa di-Cancel, dsb.) dilempar sebagai
-                // ArgumentException oleh CocoaWorkflowManager dan ditangkap di sini.
                 controller.UpdateShipment(
                     selectedShipmentId,
                     txtDestination.Text.Trim(),
@@ -399,12 +386,10 @@ namespace Cocoalite.Views
             }
             catch (ArgumentException ex)
             {
-                // Business rule violation dari CocoaWorkflowManager atau domain model.
                 MessageBox.Show(ex.Message, "Validasi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                // Error teknis (koneksi DB, dsb.)
                 MessageBox.Show("Terjadi kesalahan: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -485,6 +470,7 @@ namespace Cocoalite.Views
 
             txtVehicleNumber.Text = row.Cells["vehicle_number"].Value?.ToString() ?? "";
             txtDriverName.Text = row.Cells["driver_name"].Value?.ToString() ?? "";
+
         }
     }
 }
