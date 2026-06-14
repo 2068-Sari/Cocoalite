@@ -25,9 +25,7 @@ namespace Cocoalite.Controllers
             DataTable data = _context.GetSuppliers();
 
             if (data != null)
-            {
                 return data;
-            }
 
             return new DataTable();
         }
@@ -37,9 +35,7 @@ namespace Cocoalite.Controllers
             DataTable data = _context.GetAllReceiving();
 
             if (data != null)
-            {
                 return data;
-            }
 
             return new DataTable();
         }
@@ -53,18 +49,14 @@ namespace Cocoalite.Controllers
             string vehicleNumber)
         {
             if (supplierId <= 0)
-            {
                 throw new ArgumentException("Supplier tidak valid.");
-            }
 
             if (receivedBy <= 0)
-            {
                 throw new ArgumentException("User penerima tidak valid.");
-            }
 
             Receiving receiving = new Receiving();
 
-            receiving.Supplier.SupplierId = supplierId;
+            receiving.SupplierId = supplierId;
             receiving.ReceivedBy = receivedBy;
             receiving.ReceivingCode = receivingCode;
             receiving.ReceivingDate = receivingDate;
@@ -72,7 +64,7 @@ namespace Cocoalite.Controllers
             receiving.VehicleNumber = vehicleNumber;
 
             _context.InsertReceiving(
-                receiving.Supplier.SupplierId,
+                receiving.SupplierId,
                 receiving.ReceivedBy,
                 receiving.ReceivingCode,
                 receiving.ReceivingDate,
@@ -90,19 +82,15 @@ namespace Cocoalite.Controllers
             string vehicleNumber)
         {
             if (receivingId <= 0)
-            {
                 throw new ArgumentException("ID receiving tidak valid.");
-            }
 
             if (supplierId <= 0)
-            {
                 throw new ArgumentException("Supplier tidak valid.");
-            }
 
             Receiving receiving = new Receiving();
 
             receiving.ReceivingId = receivingId;
-            receiving.Supplier.SupplierId = supplierId;
+            receiving.SupplierId = supplierId;
             receiving.ReceivingCode = receivingCode;
             receiving.ReceivingDate = receivingDate;
             receiving.CocoaWeight = cocoaWeight;
@@ -110,7 +98,7 @@ namespace Cocoalite.Controllers
 
             _context.UpdateReceiving(
                 receiving.ReceivingId,
-                receiving.Supplier.SupplierId,
+                receiving.SupplierId,
                 receiving.ReceivingCode,
                 receiving.ReceivingDate,
                 receiving.CocoaWeight,
@@ -121,9 +109,7 @@ namespace Cocoalite.Controllers
         public void DeleteReceiving(int receivingId)
         {
             if (receivingId <= 0)
-            {
                 throw new ArgumentException("ID receiving tidak valid.");
-            }
 
             _context.DeleteReceiving(receivingId);
         }

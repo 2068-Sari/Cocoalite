@@ -59,9 +59,9 @@ namespace Cocoalite.Models.Service
         }
 
         public void PastikanShipmentBisaDibuat(
-    Inventory inventory,
-    Shipment shipment)
-        {
+            Inventory inventory,
+            Shipment shipment)
+                {
             if (inventory == null)
             {
                 throw new ArgumentException("Data inventory tidak boleh kosong.");

@@ -7,15 +7,26 @@ namespace Cocoalite.Models.Entity
     public class Supplier : IDapatDilaporkan
     {
         private static readonly Regex _emailRegex = new Regex(
-            @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
-            RegexOptions.Compiled | RegexOptions.IgnoreCase);
+           @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
+           RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
+        private int _supplierId;
         private string _supplierName = "";
         private string _address = "";
         private string _phoneNumber = "";
         private string _email = "";
 
-        public int SupplierId { get; set; }
+        public int SupplierId
+        {
+            get => _supplierId;
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentException("Supplier ID tidak boleh negatif.");
+
+                _supplierId = value;
+            }
+        }
 
         public string SupplierName
         {
@@ -58,7 +69,8 @@ namespace Cocoalite.Models.Entity
                 if (!string.IsNullOrWhiteSpace(value) &&
                     !_emailRegex.IsMatch(value.Trim()))
                 {
-                    throw new ArgumentException("Format email supplier tidak valid. Contoh: nama@domain.com");
+                    throw new ArgumentException(
+                        "Format email supplier tidak valid. Contoh: nama@domain.com");
                 }
 
                 _email = value?.Trim() ?? "";
@@ -67,7 +79,7 @@ namespace Cocoalite.Models.Entity
 
         public string TampilkanInfoSupplier()
         {
-            return $"Supplier: {SupplierName} | Telepon: {PhoneNumber} | Email: {Email}";
+            return $"Supplier: {_supplierName} | Telepon: {_phoneNumber} | Email: {_email}";
         }
 
         public string BuatLaporan()
@@ -75,11 +87,11 @@ namespace Cocoalite.Models.Entity
             return
                 $"LAPORAN SUPPLIER\n" +
                 $"==============================\n" +
-                $"Supplier ID  : {SupplierId}\n" +
-                $"Nama         : {SupplierName}\n" +
-                $"Alamat       : {Address}\n" +
-                $"Telepon      : {PhoneNumber}\n" +
-                $"Email        : {Email}\n" +
+                $"Supplier ID  : {_supplierId}\n" +
+                $"Nama         : {_supplierName}\n" +
+                $"Alamat       : {_address}\n" +
+                $"Telepon      : {_phoneNumber}\n" +
+                $"Email        : {_email}\n" +
                 $"==============================";
         }
     }
