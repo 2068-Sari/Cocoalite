@@ -123,7 +123,7 @@ namespace Cocoalite.Views
 
             return path;
         }
-
+        //dgv
         private void StyleDataGridView(DataGridView dgv)
         {
             dgv.BackgroundColor = Color.White;
