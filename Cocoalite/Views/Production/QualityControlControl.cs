@@ -25,13 +25,13 @@ namespace Cocoalite.Views
             AturTampilanPanelDanTabel();
         }
 
-        private void LoadReceiving()
+        private void LoadReceiving(int? currentReceivingId = null)
         {
             try
             {
                 QualityControlController controller = new QualityControlController();
 
-                cbReceiving.DataSource = controller.GetAllReceiving();
+                cbReceiving.DataSource = controller.GetAllReceiving(currentReceivingId);
                 cbReceiving.DisplayMember = "receiving_display";
                 cbReceiving.ValueMember = "receiving_id";
                 cbReceiving.SelectedIndex = -1;

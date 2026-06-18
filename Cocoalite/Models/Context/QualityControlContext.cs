@@ -94,7 +94,7 @@ namespace Cocoalite.Models.Context
             return list;
         }
 
-        public DataTable GetAllReceiving()
+        public DataTable GetAllReceiving(int? currentReceivingId = null)
         {
             DataTable table = new DataTable();
 
@@ -112,12 +112,30 @@ namespace Cocoalite.Models.Context
             FROM receiving r
             JOIN suppliers s ON r.supplier_id = s.supplier_id
             WHERE r.is_delete = FALSE
+              AND (
+                    NOT EXISTS (
+                        SELECT 1
+                        FROM quality_control qc
+                        WHERE qc.receiving_id = r.receiving_id
+                          AND qc.is_delete = FALSE
+                    )
+                    OR r.receiving_id = @current_receiving_id
+                  )
             ORDER BY r.receiving_date DESC, r.receiving_id DESC";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
-                using (var adapter = new NpgsqlDataAdapter(cmd))
                 {
-                    adapter.Fill(table);
+                    cmd.Parameters.Add(
+                        "@current_receiving_id",
+                        NpgsqlTypes.NpgsqlDbType.Integer
+                    ).Value = currentReceivingId.HasValue
+                        ? currentReceivingId.Value
+                        : DBNull.Value;
+
+                    using (var adapter = new NpgsqlDataAdapter(cmd))
+                    {
+                        adapter.Fill(table);
+                    }
                 }
             }
 

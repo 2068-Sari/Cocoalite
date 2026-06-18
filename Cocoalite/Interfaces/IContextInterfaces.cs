@@ -111,7 +111,7 @@ namespace Cocoalite.Interfaces
 
         List<QualityControl> GetReportQualityControl();
 
-        DataTable GetAllReceiving();
+        DataTable GetAllReceiving(int? currentReceivingId = null);
 
         void InsertQualityControl(QualityControl qc);
 

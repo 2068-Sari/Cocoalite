@@ -38,9 +38,9 @@ namespace Cocoalite.Controllers
             return _context.GetReportQualityControl();
         }
 
-        public DataTable GetAllReceiving()
+        public DataTable GetAllReceiving(int? currentReceivingId = null)
         {
-            DataTable data = _context.GetAllReceiving();
+            DataTable data = _context.GetAllReceiving(currentReceivingId);
 
             if (data != null)
             {
@@ -50,13 +50,7 @@ namespace Cocoalite.Controllers
             return new DataTable();
         }
 
-        /// <summary>
-        /// Menentukan grade kakao berdasarkan parameter kualitas.
-        ///
-        /// PERBAIKAN: Tidak lagi memanggil database. Grade sekarang dihitung
-        /// langsung oleh domain model QualityParameter.TentukanGrade(), yang
-        /// merupakan satu-satunya sumber kebenaran untuk business rule ini.
-        /// </summary>
+
         public string DetermineGrade(
             decimal moistureLevel,
             decimal fermentationLevel,

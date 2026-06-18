@@ -115,12 +115,18 @@ namespace Cocoalite.Models.Context
                 conn.Open();
 
                 string query = @"
-                    SELECT
-                        batch_id,
-                        batch_code
-                    FROM batches
-                    WHERE is_delete = FALSE
-                    ORDER BY batch_id";
+            SELECT
+                b.batch_id,
+                b.batch_code,
+                i.stock_quantity,
+                b.batch_code || ' - Stok: ' ||
+                i.stock_quantity || ' kg' AS batch_display
+            FROM batches b
+            JOIN inventory i ON b.batch_id = i.batch_id
+            WHERE b.is_delete = FALSE
+              AND i.is_delete = FALSE
+              AND i.stock_quantity > 0
+            ORDER BY b.batch_id";
 
                 using (var cmd = new NpgsqlCommand(query, conn))
                 using (var adapter = new NpgsqlDataAdapter(cmd))

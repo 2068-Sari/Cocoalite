@@ -2,6 +2,7 @@
 using Cocoalite.Helpers;
 using Cocoalite.Models.Entity;
 using System;
+using System.Data;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
@@ -33,7 +34,7 @@ namespace Cocoalite.Views
                 ShipmentController controller = new ShipmentController();
 
                 cbBatch.DataSource = controller.GetAllBatch();
-                cbBatch.DisplayMember = "batch_code";
+                cbBatch.DisplayMember = "batch_display";
                 cbBatch.ValueMember = "batch_id";
                 cbBatch.SelectedIndex = -1;
             }
@@ -241,11 +242,14 @@ namespace Cocoalite.Views
 
         private bool ValidasiInput(bool isUpdate = false)
         {
-            if (cbBatch.SelectedIndex == -1 || cbBatch.SelectedValue == null)
+            if (!isUpdate)
             {
-                MessageBox.Show("Batch harus dipilih!");
-                cbBatch.Focus();
-                return false;
+                if (cbBatch.SelectedIndex == -1 || cbBatch.SelectedValue == null)
+                {
+                    MessageBox.Show("Batch harus dipilih!");
+                    cbBatch.Focus();
+                    return false;
+                }
             }
 
             if (string.IsNullOrWhiteSpace(txtDestination.Text))
@@ -255,18 +259,44 @@ namespace Cocoalite.Views
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(txtShipmentWeight.Text))
+            if (!isUpdate)
             {
-                MessageBox.Show("Berat shipment tidak boleh kosong!");
-                txtShipmentWeight.Focus();
-                return false;
-            }
+                if (string.IsNullOrWhiteSpace(txtShipmentWeight.Text))
+                {
+                    MessageBox.Show("Berat shipment tidak boleh kosong!");
+                    txtShipmentWeight.Focus();
+                    return false;
+                }
 
-            if (!decimal.TryParse(txtShipmentWeight.Text, out decimal weight))
-            {
-                MessageBox.Show("Berat shipment harus berupa angka!");
-                txtShipmentWeight.Focus();
-                return false;
+                if (!decimal.TryParse(txtShipmentWeight.Text, out decimal weight))
+                {
+                    MessageBox.Show("Berat shipment harus berupa angka!");
+                    txtShipmentWeight.Focus();
+                    return false;
+                }
+
+                if (weight <= 0)
+                {
+                    MessageBox.Show("Berat shipment harus lebih dari 0!");
+                    txtShipmentWeight.Focus();
+                    return false;
+                }
+
+                if (cbBatch.SelectedItem is System.Data.DataRowView row)
+                {
+                    decimal stokTersedia = Convert.ToDecimal(row["stock_quantity"]);
+
+                    if (weight > stokTersedia)
+                    {
+                        MessageBox.Show(
+                            "Berat shipment melebihi stok tersedia. " +
+                            "Stok saat ini: " + stokTersedia.ToString("N2") + " kg"
+                        );
+
+                        txtShipmentWeight.Focus();
+                        return false;
+                    }
+                }
             }
 
             if (isUpdate && cbShipmentStatus.SelectedIndex == -1)
@@ -322,7 +352,7 @@ namespace Cocoalite.Views
                 ShipmentController controller = new ShipmentController();
                 controller.AddShipment(shipment);
 
-                MessageBox.Show("Data shipment berhasil ditambahkan dengan status Pending.");
+                MessageBox.Show("Data shipment berhasil ditambahkan.");
 
                 LoadShipment();
                 LoadBatch();
