@@ -1,4 +1,4 @@
-CocoaLite🍫🌱 
+**CocoaLite🍫🌱 **
 
 CocoaLite adalah aplikasi desktop berbasis C# Windows Forms dan PostgreSQL yang digunakan untuk mengelola proses manajemen kakao pada PT Cacao Prima Nusantara. Aplikasi ini dirancang untuk membantu pencatatan data supplier, penerimaan bahan baku kakao, pemeriksaan kualitas, pembentukan batch, pengelolaan stok inventory, pengiriman, dashboard, activity log, dan laporan operasional.
 Project ini dikembangkan dengan pendekatan Pemrograman Berorientasi Objek (PBO), sehingga setiap class tidak hanya berisi data, tetapi juga memiliki behavior atau logika utama sesuai tanggung jawabnya.
